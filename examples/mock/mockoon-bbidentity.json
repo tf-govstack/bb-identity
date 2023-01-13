@@ -49,7 +49,7 @@
             {
               "target": "body",
               "modifier": "request.status",
-              "value": "(active|inactive)",
+              "value": "^active$|^inactive$",
               "invert": false,
               "operator": "regex"
             },
@@ -70,7 +70,7 @@
             {
               "target": "body",
               "modifier": "request.authContextRefs",
-              "value": "(mosip:idp:acr:static-code|mosip:idp:acr:generated-code|mosip:idp:acr:linked-wallet|mosip:idp:acr:biometrics)",
+              "value": "^mosip:idp:acr:static-code$|^mosip:idp:acr:generated-code$|^mosip:idp:acr:linked-wallet$|^mosip:idp:acr:biometrics$",
               "invert": false,
               "operator": "regex"
             },
@@ -84,14 +84,14 @@
             {
               "target": "body",
               "modifier": "request.grantTypes",
-              "value": "(authorization_code)",
+              "value": "^authorization_code$",
               "invert": false,
               "operator": "regex"
             },
             {
               "target": "body",
               "modifier": "request.clientAuthMethods",
-              "value": "(private_key_jwt)",
+              "value": "^private_key_jwt$",
               "invert": false,
               "operator": "regex"
             }
@@ -100,6 +100,87 @@
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": true
+        },
+        {
+          "uuid": "87ec1fe5-ec22-4496-b658-ae6b7cd4b964",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"clientId\": \"string\"\n  },\n  \"errors\": [\n    {\n      \"errorCode\": \"Invalid request\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Invalid request.",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "requestTime",
+              "value": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z?",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.clientName",
+              "value": "^.{1,256}$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.status",
+              "value": "^active$|^inactive$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.redirectUris",
+              "value": "^.{1,}$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.logoUri",
+              "value": "^.{1,1024}$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.authContextRefs",
+              "value": "^mosip:idp:acr:static-code$|^mosip:idp:acr:generated-code$|^mosip:idp:acr:linked-wallet$|^mosip:idp:acr:biometrics$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.userClaims",
+              "value": "^.{1,}$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.grantTypes",
+              "value": "^authorization_code$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.clientAuthMethods",
+              "value": "^private_key_jwt$",
+              "invert": true,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
         },
         {
           "uuid": "63ace6d0-22ce-463d-bfef-9f910ce813e5",
