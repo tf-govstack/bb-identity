@@ -6,7 +6,110 @@
   "latency": 0,
   "port": 3003,
   "hostname": "0.0.0.0",
-  "routes": [],
+  "routes": [
+    {
+      "uuid": "f90e90b4-866f-478f-b34c-a358d8196f01",
+      "documentation": "The authorize endpoint of Open ID Connect (OIDC)",
+      "method": "get",
+      "endpoint": "authorize",
+      "responses": [
+        {
+          "uuid": "bf45f01a-d052-430c-8a88-ea4524b29f69",
+          "body": "",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Successfully loads JS application, and validates the provided query parameters using oauth-details endpoint",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "scope",
+              "value": "^openid profile$|^openid$|^profile$|^email$|^address$|^phone$|^office_access$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "query",
+              "modifier": "response_type",
+              "value": "code",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "client_id",
+              "value": "^.{1,}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "query",
+              "modifier": "redirect_uri",
+              "value": "^.{1,}$",
+              "invert": false,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "12e4ba89-6dfb-4c15-a632-9a3158dcfb26",
+          "body": "",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Invalid request",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "scope",
+              "value": "^openid profile$|^openid$|^profile$|^email$|^address$|^phone$|^office_access$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "query",
+              "modifier": "response_type",
+              "value": "code",
+              "invert": true,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "client_id",
+              "value": "^.{1,}$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "query",
+              "modifier": "redirect_uri",
+              "value": "^.{1,}$",
+              "invert": true,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    }
+  ],
   "proxyMode": false,
   "proxyHost": "",
   "proxyRemovePrefix": false,
