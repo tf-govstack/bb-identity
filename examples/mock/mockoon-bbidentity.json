@@ -70,28 +70,28 @@
             {
               "target": "body",
               "modifier": "request.authContextRefs",
-              "value": "^.{1,}$",
+              "value": "^mosip:idp:acr:static-code$|^mosip:idp:acr:generated-code$|^mosip:idp:acr:linked-wallet$|^mosip:idp:acr:biometrics$",
               "invert": false,
               "operator": "regex"
             },
             {
               "target": "body",
               "modifier": "request.userClaims",
-              "value": "^.{1,}$",
+              "value": "^name$|^given_name$|^middle_name$|^preferred_username$|^nickname$|^gender$|^birthdate$|^email$|^phone_number$|^picture$|^address$",
               "invert": false,
               "operator": "regex"
             },
             {
               "target": "body",
               "modifier": "request.grantTypes",
-              "value": "^.{1,}$",
+              "value": "^authorization_code$",
               "invert": false,
               "operator": "regex"
             },
             {
               "target": "body",
               "modifier": "request.clientAuthMethods",
-              "value": "^.{1,}$",
+              "value": "^private_key_jwt$",
               "invert": false,
               "operator": "regex"
             }
@@ -158,28 +158,28 @@
             {
               "target": "body",
               "modifier": "request.authContextRefs",
-              "value": "^.{1,}$",
+              "value": "^mosip:idp:acr:static-code$|^mosip:idp:acr:generated-code$|^mosip:idp:acr:linked-wallet$|^mosip:idp:acr:biometrics$",
               "invert": true,
               "operator": "regex"
             },
             {
               "target": "body",
               "modifier": "request.userClaims",
-              "value": "^.{1,}$",
+              "value": "^name$|^given_name$|^middle_name$|^preferred_username$|^nickname$|^gender$|^birthdate$|^email$|^phone_number$|^picture$|^address$",
               "invert": true,
               "operator": "regex"
             },
             {
               "target": "body",
               "modifier": "request.grantTypes",
-              "value": "^.{1,}$",
+              "value": "^authorization_code$",
               "invert": true,
               "operator": "regex"
             },
             {
               "target": "body",
               "modifier": "request.clientAuthMethods",
-              "value": "^.{1,}$",
+              "value": "^private_key_jwt$",
               "invert": true,
               "operator": "regex"
             }
