@@ -32,15 +32,15 @@ Before(() => {
   specOIDCAuthorize = pactum.spec();
 });
 
-// Scenario: Successfully loads JS application, and validates the provided query parameters using oauth-details endpoint
+// Scenario: Successfully loads the JS application and validates the provided query parameters using the OAuth-details endpoint
 Given(
-  "The user wants to loads JS application, and validates the provided query parameters using oauth-details endpoint",
+  "The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint",
   () => {
     return "Every provided query parameters are valid";
   }
 );
 
-When("The user triggers an action with every required parameters", () => {
+When("The user triggers an action with every required parameter", () => {
   requestFunction(
     validScope,
     validResponseType,
@@ -50,16 +50,16 @@ When("The user triggers an action with every required parameters", () => {
 });
 
 Then(
-  "The user successfully loads JS application, and validates the provided query parameters using oauth-details endpoint",
+  "The user successfully loads the JS application and validates the provided query parameters using the OAuth-details endpoint",
   async () => {
     await specOIDCAuthorize.toss();
     specOIDCAuthorize.response().should.have.status(200);
   }
 );
 
-// Scenario: The user is not able to load JS application, and validates the provided query parameters using the oauth-details endpoint, because of an invalid scope provided
+// Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint, because of an invalid scope provided
 Given(
-  "The user wants to loads JS application, and validates the provided query parameters using oauth-details endpoint with an invalid scope parameter",
+  "The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint with an invalid scope parameter",
   () => {
     invalidScope = "Invalid Scope";
 
@@ -77,15 +77,15 @@ When("The user triggers an action with an invalid scope parameter", () =>
 );
 
 Then(
-  "The result of an operation returns an error, because of an invalid scope provided",
+  "The result of an operation returns an error because of an invalid scope provided",
   async () => {
     await errorResultFunction();
   }
 );
 
-// Scenario: The user is not able to load JS application, and validates the provided query parameters using the oauth-details endpoint, because of an invalid scope provided
+// Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint, because of an invalid scope provided
 Given(
-  "The user wants to loads JS application, and validates the provided query parameters using oauth-details endpoint with an invalid response_type parameter",
+  "The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint with an invalid response_type parameter",
   () => {
     invalidResponseType = "Not a code";
   }
@@ -109,9 +109,9 @@ Then(
   }
 );
 
-// Scenario: The user is not able to load JS application, and validates the provided query parameters using the oauth-details endpoint, because of an invalid client_id provided
+// Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint, because of an invalid client_id provided
 Given(
-  "The user wants to loads JS application, and validates the provided query parameters using oauth-details endpoint with an invalid client_id parameter",
+  "The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint with an invalid client_id parameter",
   () => {
     invalidClientId = "";
     return invalidClientId;
@@ -133,9 +133,9 @@ Then(
     await errorResultFunction();
   }
 );
-// Scenario: The user is not able to load JS application, and validates the provided query parameters using the oauth-details endpoint, because of an invalid redirect_uri provided
+// Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint, because of an invalid redirect_uri provided
 Given(
-  "The user wants to loads JS application, and validates the provided query parameters using oauth-details endpoint with an invalid redirect_uri parameter",
+  "The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint with an invalid redirect_uri parameter",
   () => {
     invalidRedirectUri = "";
     return invalidRedirectUri;
@@ -161,9 +161,9 @@ Then(
   }
 );
 
-// Scenario: The user is not able to load JS application, and validates the provided query parameters using the oauth-details endpoint, because none parameters provided
+// Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint because none parameters provided
 Given(
-  "The user wants to loads JS application, and validates the provided query parameters using oauth-details endpoint without parameters",
+  "The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint without parameters",
   () => {
     return "None parameters provided";
   }
@@ -174,7 +174,7 @@ When("The user triggers an action without parameters", () =>
 );
 
 Then(
-  "The result of an operation returns an error, because none parameters provided",
+  "The result of an operation returns an error because none parameters provided",
   async () => {
     await errorResultFunction();
   }

@@ -295,7 +295,7 @@
             {
               "target": "query",
               "modifier": "scope",
-              "value": "^openid profile$|^openid$|^profile$|^email$|^address$|^phone$|^office_access$",
+              "value": "^openid profile$|^openid$|^profile$|^email$|^address$|^phone$|^offline_access$",
               "invert": false,
               "operator": "regex"
             },
@@ -341,7 +341,7 @@
             {
               "target": "query",
               "modifier": "scope",
-              "value": "^openid profile$|^openid$|^profile$|^email$|^address$|^phone$|^office_access$",
+              "value": "^openid profile$|^openid$|^profile$|^email$|^address$|^phone$|^offline_access$",
               "invert": true,
               "operator": "regex"
             },
