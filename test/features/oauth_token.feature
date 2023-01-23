@@ -2,7 +2,6 @@ Feature: The the OAuth/token endpoint called from the relying party backend appl
 
   Once the client / relying party application receives the authorization code through redirect, this 
   OIDC complaint endpoint will be called from the relying party backend application to get the ID and access token. 
-  Authentication & authroization : validates the code (authorization code) in the request.
 
   Request endpoint: POST /oauth/token
 
