@@ -41,7 +41,7 @@ let specOAuthToken;
 
 const baseUrl = `${localhost}oauth/token`;
 
-let errorResultFunction = async (errorMessage) => {
+const errorResultFunction = async (errorMessage) => {
   specOAuthToken.expectStatus(400).expectJsonMatch({
     error: errorMessage,
   });
@@ -53,17 +53,17 @@ Before(() => {
   specOAuthToken = spec().expectResponseTime(15000);
 });
 
-// Background: The user succesfully recieves the ID and access token using the OAuth token endpoint
+// Background: The user successfully receives the ID and access token using the OAuth token endpoint
 Given(
-  "The user wants to recieve the ID and access token using the OAuth token endpoint",
+  "The user wants to receive the ID and access token using the OAuth token endpoint",
   () => {
-    return "The user wants to recieve the ID and access token using the OAuth token endpoint";
+    return "The user wants to receive the ID and access token using the OAuth token endpoint";
   }
 );
 
-// Scenario: The user succesfully recieves the ID and access token using the OAuth token endpoint
+// Scenario: The user successfully receives the ID and access token using the OAuth token endpoint
 When(
-  "The user triggers an action to recieve the ID and access token with the valid payload",
+  "The user triggers an action to receive the ID and access token with the valid payload",
   () => {
     // add .inspect() to see request/response body
     specOAuthToken
@@ -73,18 +73,18 @@ When(
 );
 
 Then(
-  "The user succesfully recieves the ID and access token using the OAuth token endpoint",
+  "The user successfully receives the ID and access token using the OAuth token endpoint",
   async () => {
     specOAuthToken
       .expectStatus(200)
       .expectJsonMatch({
         id_token: regex(
           "string.string.string",
-          /^([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_\-\+\/=]*)/
+          /^([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_\-\+\/=]+)/
         ),
         access_token: regex(
           "string.string.string",
-          /^([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_\-\+\/=]*)/
+          /^([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_=]+)\.([a-zA-Z0-9_\-\+\/=]+)/
         ),
         token_type: "Bearer",
         expires_in: like(0),
@@ -94,9 +94,9 @@ Then(
 
     await specOAuthToken.toss();
 
-    let responseObject = specOAuthToken._response.json;
-    let id_tokenPayloadEncodedB64 = responseObject.id_token.split(".")[1];
-    let id_tokenPayloadDecoded = base64ToJson(id_tokenPayloadEncodedB64);
+    const responseObject = specOAuthToken._response.json;
+    const id_tokenPayloadEncodedB64 = responseObject.id_token.split(".")[1];
+    const id_tokenPayloadDecoded = base64ToJson(id_tokenPayloadEncodedB64);
 
     let claimsCounter = 0;
     Object.keys(id_tokenPayloadDecoded).forEach((key) => {
@@ -118,9 +118,9 @@ Then(
   }
 );
 
-// Scenario: The user is not able to recieve the ID and access token because of the invalid client_assertion_type
+// Scenario: The user is not able to receive the ID and access token because of the invalid client_assertion_type
 When(
-  "The user triggers an action to recieve the ID and access token with the invalid client_assertion_type",
+  "The user triggers an action to receive the ID and access token with the invalid client_assertion_type",
   () => {
     specOAuthToken.post(baseUrl).withJson({
       "@DATA:TEMPLATE@": "ValidRequestBody",
@@ -138,9 +138,9 @@ Then(
   }
 );
 
-// Scenario: The user is not able to recieve the ID and access token because of the invalid assertion
+// Scenario: The user is not able to receive the ID and access token because of the invalid assertion
 When(
-  "The user triggers an action to recieve the ID and access token with the invalid assertion",
+  "The user triggers an action to receive the ID and access token with the invalid assertion",
   () => {
     specOAuthToken.post(baseUrl).withJson({
       "@DATA:TEMPLATE@": "ValidRequestBody",
@@ -158,9 +158,9 @@ Then(
   }
 );
 
-// Scenario: The user is not able to recieve the ID and access token because of the invalid redirect_uri
+// Scenario: The user is not able to receive the ID and access token because of the invalid redirect_uri
 When(
-  "The user triggers an action to recieve the ID and access token with the invalid redirect_uri",
+  "The user triggers an action to receive the ID and access token with the invalid redirect_uri",
   () => {
     specOAuthToken.post(baseUrl).withJson({
       "@DATA:TEMPLATE@": "ValidRequestBody",
@@ -178,9 +178,9 @@ Then(
   }
 );
 
-// Scenario: The user is not able to recieve the ID and access token because of the invalid input
+// Scenario: The user is not able to receive the ID and access token because of the invalid input
 When(
-  "The user triggers an action to recieve the ID and access token with the invalid input",
+  "The user triggers an action to receive the ID and access token with the invalid input",
   () => {
     specOAuthToken.post(baseUrl).withJson({
       "@DATA:TEMPLATE@": "ValidRequestBody",
@@ -196,9 +196,9 @@ Then(
   }
 );
 
-// Scenario: The user is not able to recieve the ID and access token because of the empty payload
+// Scenario: The user is not able to receive the ID and access token because of the empty payload
 When(
-  "The user triggers an action to recieve the ID and access token with the empty payload",
+  "The user triggers an action to receive the ID and access token with the empty payload",
   () => {
     specOAuthToken.post(baseUrl);
   }
@@ -211,9 +211,9 @@ Then(
   }
 );
 
-// Scenario: The user is not able to recieve the ID and access token because of the invalid payload
+// Scenario: The user is not able to receive the ID and access token because of the invalid payload
 When(
-  "The user triggers an action to recieve the ID and access token with the invalid payload",
+  "The user triggers an action to receive the ID and access token with the invalid payload",
   () => {
     specOAuthToken.post(baseUrl).withJson({
       "@DATA:TEMPLATE@": "ValidRequestBody",
