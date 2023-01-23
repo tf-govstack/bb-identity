@@ -9,6 +9,6 @@
     "pactum": "3.3.2"
   },
   "dependencies": {
-    "chai": "^4.3.7"
+    "chai": "4.3.7"
   }
 }
