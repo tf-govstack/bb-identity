@@ -11,6 +11,6 @@ Feature: API to update existing Open ID Connect (OIDC) client.
     When The user triggers an action to update the client profile in the Open ID Connect (OIDC)
     Then The user successfully updated the client profile in the Open ID Connect (OIDC)
 
-  Scenario: The user is not able to update the client profile, because it does not exist in the Open ID Connect (OIDC)
-    When The user triggers an action to update the client profile in the Open ID Connect (OIDC) with client id whick does not exist
-    Then The result of an operation returns an error, because the client_id does not exist in the Open ID Connect (OIDC)
+  Scenario: The user is not able to update the client profile because it does not exist in the Open ID Connect (OIDC)
+    When The user triggers an action to update the client profile in the Open ID Connect (OIDC) with a client id that does not exist
+    Then The result of an operation returns an error because the client_id does not exist in the Open ID Connect (OIDC)

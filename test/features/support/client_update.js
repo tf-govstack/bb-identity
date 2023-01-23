@@ -63,9 +63,9 @@ Then(
   }
 );
 
-// Scenario: The user is not able to update the client profile, because it does not exist in the Open ID Connect (OIDC)
+// Scenario: The user is not able to update the client profile because it does not exist in the Open ID Connect (OIDC)
 When(
-  "The user triggers an action to update the client profile in the Open ID Connect \\(OIDC) with client id whick does not exist",
+  "The user triggers an action to update the client profile in the Open ID Connect \\(OIDC) with a client id that does not exist",
   () => {
     clientId = "doesnotexist";
     requestFunction(clientId);
@@ -73,7 +73,7 @@ When(
 );
 
 Then(
-  "The result of an operation returns an error, because the client_id does not exist in the Open ID Connect \\(OIDC)",
+  "The result of an operation returns an error because the client_id does not exist in the Open ID Connect \\(OIDC)",
   async () => {
     await specClientUpdate.toss();
     specClientUpdate.response().should.have.status(404);

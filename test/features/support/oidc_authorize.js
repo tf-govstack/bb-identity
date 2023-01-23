@@ -57,7 +57,7 @@ Then(
   }
 );
 
-// Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint, because of an invalid scope provided
+// Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint because of an invalid scope provided
 Given(
   "The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint with an invalid scope parameter",
   () => {
@@ -83,7 +83,7 @@ Then(
   }
 );
 
-// Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint, because of an invalid scope provided
+// Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint because of an invalid scope provided
 Given(
   "The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint with an invalid response_type parameter",
   () => {
@@ -103,13 +103,13 @@ When(
 );
 
 Then(
-  "The result of an operation returns an error, because of an invalid response_type provided",
+  "The result of an operation returns an error because of an invalid response_type provided",
   async () => {
     await errorResultFunction();
   }
 );
 
-// Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint, because of an invalid client_id provided
+// Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint because of an invalid client_id provided
 Given(
   "The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint with an invalid client_id parameter",
   () => {
@@ -128,12 +128,12 @@ When("The user triggers an action with an invalid client_id parameter", () =>
 );
 
 Then(
-  "The result of an operation returns an error, because of an invalid client_id provided",
+  "The result of an operation returns an error because of an invalid client_id provided",
   async () => {
     await errorResultFunction();
   }
 );
-// Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint, because of an invalid redirect_uri provided
+// Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint because of an invalid redirect_uri provided
 Given(
   "The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint with an invalid redirect_uri parameter",
   () => {
@@ -155,7 +155,7 @@ When(
 );
 
 Then(
-  "The result of an operation returns an error, because of an invalid redirect_uri provided",
+  "The result of an operation returns an error because of an invalid redirect_uri provided",
   async () => {
     await errorResultFunction();
   }

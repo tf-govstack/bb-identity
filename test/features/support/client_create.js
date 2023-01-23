@@ -59,7 +59,7 @@ Then(
   }
 );
 
-// Scenario: The user is not able to add the new client to the Open ID Connect (OIDC), because of an invalid clientId
+// Scenario: The user is not able to add the new client to the Open ID Connect (OIDC) because of an invalid clientId
 When(
   "The user triggers an action to add a new client to the Open ID Connect \\(OIDC) with an invalid request",
   () => {
@@ -69,7 +69,7 @@ When(
 );
 
 Then(
-  "The result of an operation returns an error, because of an invalid request",
+  "The result of an operation returns an error because of an invalid request",
   async () => {
     await specClientCreate.toss();
     specClientCreate.response().should.have.status(400);
