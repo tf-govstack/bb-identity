@@ -2842,7 +2842,7 @@
             {
               "target": "body",
               "modifier": "client_assertion",
-              "value": "^([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_\\-\\+\\/=]*)",
+              "value": "^([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_\\-\\+\\/=]+)",
               "invert": false,
               "operator": "regex"
             },
