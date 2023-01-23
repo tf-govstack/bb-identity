@@ -377,13 +377,13 @@
       "responseMode": null
     },
     {
-      "uuid": "f90e90b4-866f-478f-b34c-a358d8196f01",
+      "uuid": "ec556248-eb9b-49a1-b390-72c1312a94ea",
       "documentation": "API to add new open ID connect (OIDC) clients,",
       "method": "post",
       "endpoint": "client-mgmt/oidc-client",
       "responses": [
         {
-          "uuid": "bf45f01a-d052-430c-8a88-ea4524b29f69",
+          "uuid": "ff7da945-fc07-4fc5-8202-377d4d5a398b",
           "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"clientId\": \"string\"\n  },\n  \"errors\": []\n}",
           "latency": 0,
           "statusCode": 200,
@@ -554,6 +554,222 @@
             }
           ],
           "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "a2da4686-811c-404e-a0d4-79d25abac2ef",
+      "documentation": "OAuth details endpoint validates the provided request parameters and resolves the required authentication factors.",
+      "method": "post",
+      "endpoint": "authorization/oauth-details",
+      "responses": [
+        {
+          "uuid": "7a0e1913-3545-4ca1-ac94-330810bc19a2",
+          "body": "{\n  \"responseTime\": \"2022-09-22T08:03:45.287Z\",\n  \"response\": {\n    \"transactionId\": \"string\",\n    \"authFactors\": [\n      {\n        \"type\": \"PIN\"\n      }\n    ],\n    \"essentialClaims\": [\"all claims\"]\n  },\n  \"errors\": []\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Successfully validates the provided request parameters and resolves the required authentication factors.",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "requestTime",
+              "value": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z?",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.scope",
+              "value": "^openid profile$|^openid$|^profile$|^email$|^address$|^phone$|^offline_access$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.responseType",
+              "value": "code",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "request.clientId",
+              "value": "^.{1,50}$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.redirectUri",
+              "value": "^.{1,}$",
+              "invert": false,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "0ca08f0d-1b2f-4f42-bd4e-2829e7827bf8",
+          "body": "{\n  \"responseTime\": \"2022-09-22T08:03:45.287Z\",\n  \"response\": null,\n  \"errors\": [\n    { \n      \"errorCode\": \"invalid_body\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Invalid request - empty body.",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "requestTime",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "request.scope",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "request.responseType",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "request.clientId",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "request.redirectUri",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "d847caa4-96ba-4ff9-82b9-78f1880aa103",
+          "body": "{\n  \"responseTime\": \"2022-09-22T08:03:45.287Z\",\n  \"response\": null,\n  \"errors\": [\n    { \n      \"errorCode\": \"invalid_scope\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Invalid request - invalid scope parameter.",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "request.scope",
+              "value": "^openid profile$|^openid$|^profile$|^email$|^address$|^phone$|^offline_access$",
+              "invert": true,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "166d85e5-6d4d-441e-a9c7-6bd52d8f6201",
+          "body": "{\n  \"responseTime\": \"2022-09-22T08:03:45.287Z\",\n  \"response\": null,\n  \"errors\": [\n    { \n      \"errorCode\": \"invalid_client_id\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Invalid request - invalid clientId parameter.",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "request.clientId",
+              "value": "^.{1,50}$",
+              "invert": true,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "5a799937-344a-49d2-8000-6c30f38ee3ec",
+          "body": "{\n  \"responseTime\": \"2022-09-22T08:03:45.287Z\",\n  \"response\": null,\n  \"errors\": [\n    { \n      \"errorCode\": \"invalid_response_type\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Invalid request - invalid responseType parameter.",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "request.responseType",
+              "value": "code",
+              "invert": true,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "c0a243c5-2421-4e96-bd8e-c587fdda9d27",
+          "body": "{\n  \"responseTime\": \"2022-09-22T08:03:45.287Z\",\n  \"response\": null,\n  \"errors\": [\n    { \n      \"errorCode\": \"invalid_redirect_uri\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Invalid request - invalid redirectUri parameter.",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "request.redirectUri",
+              "value": "^.{1,}$",
+              "invert": true,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": false
