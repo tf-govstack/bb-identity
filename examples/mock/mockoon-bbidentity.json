@@ -1,6 +1,6 @@
 {
   "uuid": "256918d8-70c9-4e45-ad37-a6cb1a3f39f7",
-  "lastMigration": 24,
+  "lastMigration": 25,
   "name": "Mockoon bbidentity",
   "endpointPrefix": "",
   "latency": 0,
@@ -377,13 +377,13 @@
       "responseMode": null
     },
     {
-      "uuid": "f90e90b4-866f-478f-b34c-a358d8196f01",
+      "uuid": "5ed8ef66-e899-4566-8f51-b34750d12b14",
       "documentation": "API to add new open ID connect (OIDC) clients,",
       "method": "post",
       "endpoint": "client-mgmt/oidc-client",
       "responses": [
         {
-          "uuid": "bf45f01a-d052-430c-8a88-ea4524b29f69",
+          "uuid": "75f6cfa6-b949-4b6b-9648-2580a3dab24a",
           "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"clientId\": \"string\"\n  },\n  \"errors\": []\n}",
           "latency": 0,
           "statusCode": 200,
@@ -561,6 +561,70 @@
       ],
       "enabled": true,
       "responseMode": null
+    },
+    {
+      "uuid": "5145302f-f4dc-4353-9d42-8aeffd7c15d5",
+      "documentation": "Once the access token is received through the token endpoint, a backend application of a relying party invokes this OIDC-compliant endpoint to request the user's claims. Consenting user claims are returned in the form of a JWT. This JWT is a nested JWT that is signed with JWS and then encrypted with JWE.",
+      "method": "get",
+      "endpoint": "oidc/userinfo",
+      "responses": [
+        {
+          "uuid": "2476f747-3c9f-4d42-9285-272f265cd6db",
+          "body": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkExMjhDQkMtSFMyNTYifQ.wwHEuE6f-GnApjbmECaK--6CKxLR-Z6qC6OY3E1Bqv9jtcxQUnvU8AdXbrCLvrZjYiphqcDi_cBXlP888lABmPQPlxRCjd03-O3ipKKuhDtQdxYprBhkfrlO7PoA59pbiQVib78X8DwZ1tJHlmtdjyFEWt4QUlX9jJ7pFS_Alz1ULqZ0EVOgDEflm2mggAAzfHCXvdkmaV4uNLWnE80TtohY0DwR3Tk7PUMsCH14sGTmvpibFu0FFLw5FghbpcUK6_qI1PJIPmp5SWZlked7yqJ495FKbVwiCn3AAvFe-V5BiQz6l6A-C7sAhUSCOuZ3_-VFmgSBeN4X_ddXuEHriw._pRSNFngfy36E-P7yPNOOw.YdvocJd5ySz561SiTRGXowesLE8TiihqmcPCfTmxjD_OiNy4E0RiNCpTeWAMdfWQgT9zzb0ABusw0b5FdKrsyRYnRkvDpYWSA6lkhsJjZe_AjlzCh264W8xOHhdHNPA-iIJHDlihfDs4HwzmoeMYIOnk2R6gzlj486A_7wt8-IKfcJJ_gaMcw3U7GjMg454FsxRwRzGTP-pFWoNgJEIG-nKVpBrMqcQ6YLeLpWRnwMW8E5q65VxPKMQ8W_MiSOcAASja8ERWP0m3eusnJULyHcFoE-7BKWJoc74iw4WngSkaUM-XjHNxehf8zgsn2SRmtWSBvYK8qw40ljYMQXw5twNAPEbVR4SyKvZb68wzRhk1NjZkFJjpB_6Wd8gqFyOSOE3RQy8E9YMBHjTfo5Z3F5c5f4yv8yWf0J2V_9IlSq5Gif1tKMGf-JnpffA_51RRXBNKmJBDiNsjaYxoFAXqdK3WWXLcCI2pFNFS5JzZKhJdnOodBROAf0GVDNZ3SJQV8wJjwCcQG9xcBVKw6qtc7g.HiMjVkydBc375QlTWvDtWA",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Authorized",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "^Bearer(\\s)([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_\\-\\+\\/=]+)",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "^.{1,}$",
+              "invert": false,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "026bdda0-80e1-4469-8e5f-7e696c1060c0",
+          "body": "",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "Unauthorized",
+          "headers": [
+            {
+              "key": "WWW-Authenticate",
+              "value": "Bearer error=invalid_token, error_description=MOSIPIDP123: A userinfo request was made with an access token that was not recognized."
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
     }
   ],
   "proxyMode": false,
@@ -594,5 +658,24 @@
       "value": ""
     }
   ],
-  "data": []
+  "data": [],
+  "folders": [],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "5ed8ef66-e899-4566-8f51-b34750d12b14"
+    },
+    {
+      "type": "route",
+      "uuid": "f90e90b4-866f-478f-b34c-a358d8196f01"
+    },
+    {
+      "type": "route",
+      "uuid": "91963d01-81ab-4fdd-8b43-9a08652e6173"
+    },
+    {
+      "type": "route",
+      "uuid": "5145302f-f4dc-4353-9d42-8aeffd7c15d5"
+    }
+  ]
 }
