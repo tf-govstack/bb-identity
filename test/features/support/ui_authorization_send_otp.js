@@ -1,6 +1,12 @@
 const pactum = require("pactum");
 const { Given, When, Then, Before, After } = require("@cucumber/cucumber");
-const { localhost } = require("./helpers/helpers");
+const {
+  localhost,
+  requestTime,
+  validTransactionId,
+  validIndividualId,
+  validChannel,
+} = require("./helpers/helpers");
 
 let specUIAuthSendOTP;
 let invalidTransactionId;
@@ -8,11 +14,6 @@ let invalidIndividualId;
 let invalidChannel;
 
 const baseUrl = `${localhost}authorization/send-otp`;
-
-const validTransactionId = "jskSD23wes324545F";
-const validIndividualId = "345-234-234-242";
-const validChannel = "sms";
-const requestTime = new Date().toISOString();
 
 const requestFunction = (transactionId, individualId, channel) =>
   specUIAuthSendOTP.post(baseUrl).withBody({
@@ -24,7 +25,7 @@ const requestFunction = (transactionId, individualId, channel) =>
     },
   });
 
-const errorResultFunction = async (transactionId, errorMessage) => {
+const errorResultFunction = async (transactionId, errorCode) => {
   await specUIAuthSendOTP.toss();
   specUIAuthSendOTP.response().should.have.status(400);
   specUIAuthSendOTP.response().should.have.jsonLike({
@@ -35,7 +36,7 @@ const errorResultFunction = async (transactionId, errorMessage) => {
     },
     errors: [
       {
-        errorCode: errorMessage,
+        errorCode: errorCode,
         errorMessage: "string",
       },
     ],
@@ -52,24 +53,24 @@ Given(
   () => "Every required body parameters are valid"
 );
 
-When("The end-user triggers an action with every required parameter", () => {
-  requestFunction(validTransactionId, validIndividualId, validChannel);
-});
+When("The end-user triggers an action with every required parameter", () =>
+  requestFunction(validTransactionId, validIndividualId, validChannel)
+);
 
 Then(
   "The end-user successfully authenticates using OTP auth factor",
   async () => {
-    await specUIAuthSendOTP.toss();
-    specUIAuthSendOTP.toss();
-    specUIAuthSendOTP.response().should.have.status(200);
-    specUIAuthSendOTP.response().should.have.jsonLike({
-      responseTime: "string",
-      response: {
-        transactionId: validTransactionId,
-        messageCode: "string",
-      },
-      errors: [],
-    });
+    await specUIAuthSendOTP.toss(),
+      specUIAuthSendOTP.toss(),
+      specUIAuthSendOTP.response().should.have.status(200),
+      specUIAuthSendOTP.response().should.have.jsonLike({
+        responseTime: "string",
+        response: {
+          transactionId: validTransactionId,
+          messageCode: "string",
+        },
+        errors: [],
+      });
   }
 );
 
@@ -86,9 +87,8 @@ When(
 
 Then(
   "The result of an operation returns an error because of an invalid transactionId provided",
-  async () => {
-    await errorResultFunction(invalidTransactionId, "invalid_transaction_id");
-  }
+  async () =>
+    await errorResultFunction(invalidTransactionId, "invalid_transaction_id")
 );
 
 // Scenario: The user is not able to authenticate using OTP auth factor because of an invalid individualId provided
@@ -103,9 +103,8 @@ When("The user triggers an action with an invalid individualId parameter", () =>
 
 Then(
   "The result of an operation returns an error because of an invalid individualId provided",
-  async () => {
-    await errorResultFunction(validTransactionId, "invalid_individual_id");
-  }
+  async () =>
+    await errorResultFunction(validTransactionId, "invalid_individual_id")
 );
 
 // Scenario: The user is not able to authenticate using OTP auth factor because of an invalid channel provided
@@ -120,9 +119,7 @@ When("The user triggers an action with an invalid channel parameter", () =>
 
 Then(
   "The result of an operation returns an error because of an invalid channel provided",
-  async () => {
-    await errorResultFunction(validTransactionId, "invalid_channel");
-  }
+  async () => await errorResultFunction(validTransactionId, "invalid_channel")
 );
 
 // Scenario: The user is not able to authenticate using OTP auth factor because none parameters provided
@@ -131,15 +128,13 @@ Given(
   () => "None of the required parameters was provided."
 );
 
-When("The user triggers an action with an empty payload", () => {
-  specUIAuthSendOTP.post(baseUrl);
-});
+When("The user triggers an action with an empty payload", () =>
+  specUIAuthSendOTP.post(baseUrl)
+);
 
 Then(
   "The result of an operation returns an error because none parameters provided to the payload",
-  async () => {
-    await errorResultFunction(null, "empty_body");
-  }
+  async () => await errorResultFunction(null, "empty_body")
 );
 
 After(() => {
