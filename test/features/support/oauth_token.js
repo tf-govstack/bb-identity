@@ -3,11 +3,7 @@ const chai = require("chai");
 const { like, regex } = require("pactum-matchers");
 const { Given, When, Then, Before, After } = require("@cucumber/cucumber");
 const { localhost } = require("./helpers/helpers");
-
-const jsonToBase64 = (jsonObj) => {
-  const jsonString = JSON.stringify(jsonObj);
-  return Buffer.from(jsonString).toString("base64");
-};
+const { jsonToBase64 } = require("./helpers/utils");
 
 const base64ToJson = (base64String) => {
   const jsonString = Buffer.from(base64String, "base64").toString();
