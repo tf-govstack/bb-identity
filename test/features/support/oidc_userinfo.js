@@ -2,13 +2,9 @@ const { stash, spec } = require("pactum");
 const { regex } = require("pactum-matchers");
 const { Given, When, Then, Before, After } = require("@cucumber/cucumber");
 const { localhost } = require("./helpers/helpers");
+const { jsonToBase64 } = require("./helpers/utils");
 
 const baseUrl = `${localhost}oidc/userinfo`;
-
-const jsonToBase64 = (jsonObj) => {
-  const jsonString = JSON.stringify(jsonObj);
-  return Buffer.from(jsonString).toString("base64");
-};
 
 stash.addDataTemplate({
   Bearer: {
@@ -42,19 +38,17 @@ Before(() => {
 // Background
 Given(
   "The user wants to receive the user's claims via the oidc userinfo endpoint",
-  () => {
-    return "The user wants to receive the user's claims via the oidc userinfo endpoint";
-  }
+  () =>
+    "The user wants to receive the user's claims via the oidc userinfo endpoint"
 );
 
 // Scenario: Successfully retrieves the user's claims via the oidc userinfo endpoint
 When(
   "The user sends a request with a valid header to retrieve the user's claims",
-  () => {
+  () =>
     specOIDCUserinfo.get(baseUrl).withHeaders({
       "@DATA:TEMPLATE@": "Bearer",
-    });
-  }
+    })
 );
 
 Then(
@@ -76,22 +70,19 @@ Then(
 // Scenario: The user is unable to retrieve the user's claims via the oidc userinfo endpoint because the request does not contain an authorization header
 When(
   "The user sends a request without an authorization header to retrieve the user's claims",
-  () => {
-    specOIDCUserinfo.get(baseUrl);
-  }
+  () => specOIDCUserinfo.get(baseUrl)
 );
 
 // Scenario: The user is unable to retrieve the user's claims via the oidc userinfo endpoint because the authorization header is invalid
 When(
   "The user sends a request with an invalid authorization header to retrieve the user's claims",
-  () => {
+  () =>
     specOIDCUserinfo.get(baseUrl).withHeaders({
       "@DATA:TEMPLATE@": "Bearer",
       "@OVERRIDES@": {
         Authorization: "Bearer fake.bearer",
       },
-    });
-  }
+    })
 );
 
 // The result for unsuccessful scenarios
