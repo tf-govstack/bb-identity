@@ -377,13 +377,13 @@
       "responseMode": null
     },
     {
-      "uuid": "f90e90b4-866f-478f-b34c-a358d8196f01",
+      "uuid": "8c73a52f-1125-4508-a005-529e1d0d273a",
       "documentation": "API to add new open ID connect (OIDC) clients,",
       "method": "post",
       "endpoint": "client-mgmt/oidc-client",
       "responses": [
         {
-          "uuid": "bf45f01a-d052-430c-8a88-ea4524b29f69",
+          "uuid": "a1c98d60-5483-4d20-a2b8-15c42a6477f4",
           "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"clientId\": \"string\"\n  },\n  \"errors\": []\n}",
           "latency": 0,
           "statusCode": 200,
@@ -554,6 +554,98 @@
             }
           ],
           "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "21decdf3-79e0-453f-b9e5-fb5234fb6cd0",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "authorization/auth-code",
+      "responses": [
+        {
+          "uuid": "7b24fa35-f434-4bfe-b48c-e76d0e0a1d11",
+          "body": "{\n\t\"responseTime\": \"string\",\n\t\"response\": {\n\t\t\"code\": \"string\",\n\t\t\"redirectUri\": \"string\",\n\t\t\"nonce\": \"string\",\n\t\t\"state\": \"string\"\n\t}\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Successfully send the accepted consent and permitted scopes.",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "requestTime",
+              "value": "^\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d\\.\\d+([+-][0-2]\\d:[0-5]\\d|Z)$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.transactionId",
+              "value": "[a-zA-Z0-9_]",
+              "invert": false,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "d2089dce-3451-4dcc-85d6-d8acf8a85b2f",
+          "body": "{\n\t\"responseTime\": \"string\",\n\t\"response\": null,\n\t\"errors\": [{\n      \"errorCode\": \"invalid_request\",\n      \"errorMessage\": \"string\"\n  }]\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Invalid request - invalid transactionId parameter.",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "request.transactionId",
+              "value": "[a-zA-Z0-9_]",
+              "invert": true,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "9c996a79-6cd1-4165-bc6c-19c18e3721af",
+          "body": "{\n\t\"responseTime\": \"string\",\n\t\"response\": null,\n\t\"errors\": [{\n      \"errorCode\": \"invalid_request\",\n      \"errorMessage\": \"string\"\n  }]\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Invalid request - invalid responseTime parameter.",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "requestTime",
+              "value": "^\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d\\.\\d+([+-][0-2]\\d:[0-5]\\d|Z)$",
+              "invert": true,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": false
