@@ -570,7 +570,7 @@
       "responses": [
         {
           "uuid": "7a0e1913-3545-4ca1-ac94-330810bc19a2",
-          "body": "{\n  \"responseTime\": \"2022-09-22T08:03:45.287Z\",\n  \"response\": {\n    \"transactionId\": \"string\",\n    \"authFactors\": [\n      {\n        \"type\": \"PIN\"\n      }\n    ],\n    \"essentialClaims\": [\"all claims\"]\n  },\n  \"errors\": []\n}",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"transactionId\": \"string\",\n    \"authFactors\": [\n      [\n      {\n        \"type\": \"PIN\"\n      }\n      ]\n    ],\n    \"essentialClaims\": [ \"name\" ]\n  },\n  \"errors\": null\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Successfully validates the provided request parameters and resolves the required authentication factors.",
@@ -623,9 +623,9 @@
         },
         {
           "uuid": "0ca08f0d-1b2f-4f42-bd4e-2829e7827bf8",
-          "body": "{\n  \"responseTime\": \"2022-09-22T08:03:45.287Z\",\n  \"response\": null,\n  \"errors\": [\n    { \n      \"errorCode\": \"invalid_body\"\n    }\n  ]\n}",
+          "body": "{\n\t\"responseTime\": \"2022-09-22T08:03:45.287Z\",\n\t\"response\": {\n\t\t\"transactionId\": \"string\",\n\t\t\"authFactors\": [\n\t\t  [{\n\t\t\t\"type\": \"PIN\"\n\t\t}]\n\t\t],\n\t\t\"essentialClaims\": [\"name\"]\n\t},\n\t\"errors\": [{\n\t\t\"errorCode\": \"unknown_error\",\n\t\t\"errorMessage\": \"string\"\n\t}]\n}",
           "latency": 0,
-          "statusCode": 400,
+          "statusCode": 200,
           "label": "Invalid request - empty body.",
           "headers": [],
           "bodyType": "INLINE",
@@ -676,9 +676,9 @@
         },
         {
           "uuid": "d847caa4-96ba-4ff9-82b9-78f1880aa103",
-          "body": "{\n  \"responseTime\": \"2022-09-22T08:03:45.287Z\",\n  \"response\": null,\n  \"errors\": [\n    { \n      \"errorCode\": \"invalid_scope\"\n    }\n  ]\n}",
+          "body": "{\n\t\"responseTime\": \"2022-09-22T08:03:45.287Z\",\n\t\"response\": {\n\t\t\"transactionId\": \"string\",\n\t\t\"authFactors\": [\n\t\t  [{\n\t\t\t\"type\": \"PIN\"\n\t\t}]\n\t\t],\n\t\t\"essentialClaims\": [\"name\"]\n\t},\n\t\"errors\": [{\n\t\t\"errorCode\": \"invalid_scope\",\n\t\t\"errorMessage\": \"string\"\n\t}]\n}",
           "latency": 0,
-          "statusCode": 400,
+          "statusCode": 200,
           "label": "Invalid request - invalid scope parameter.",
           "headers": [],
           "bodyType": "INLINE",
@@ -701,9 +701,9 @@
         },
         {
           "uuid": "166d85e5-6d4d-441e-a9c7-6bd52d8f6201",
-          "body": "{\n  \"responseTime\": \"2022-09-22T08:03:45.287Z\",\n  \"response\": null,\n  \"errors\": [\n    { \n      \"errorCode\": \"invalid_client_id\"\n    }\n  ]\n}",
+          "body": "{\n\t\"responseTime\": \"2022-09-22T08:03:45.287Z\",\n\t\"response\": {\n\t\t\"transactionId\": \"string\",\n\t\t\"authFactors\": [\n\t\t  [{\n\t\t\t\"type\": \"PIN\"\n\t\t}]\n\t\t],\n\t\t\"essentialClaims\": [\"name\"]\n\t},\n\t\"errors\": [{\n\t\t\"errorCode\": \"invalid_client_id\",\n\t\t\"errorMessage\": \"string\"\n\t}]\n}",
           "latency": 0,
-          "statusCode": 400,
+          "statusCode": 200,
           "label": "Invalid request - invalid clientId parameter.",
           "headers": [],
           "bodyType": "INLINE",
@@ -726,9 +726,9 @@
         },
         {
           "uuid": "5a799937-344a-49d2-8000-6c30f38ee3ec",
-          "body": "{\n  \"responseTime\": \"2022-09-22T08:03:45.287Z\",\n  \"response\": null,\n  \"errors\": [\n    { \n      \"errorCode\": \"invalid_response_type\"\n    }\n  ]\n}",
+          "body": "{\n\t\"responseTime\": \"2022-09-22T08:03:45.287Z\",\n\t\"response\": {\n\t\t\"transactionId\": \"string\",\n\t\t\"authFactors\": [\n\t\t  [{\n\t\t\t\"type\": \"PIN\"\n\t\t}]\n\t\t],\n\t\t\"essentialClaims\": [\"name\"]\n\t},\n\t\"errors\": [{\n\t\t\"errorCode\": \"unknown_error\",\n\t\t\"errorMessage\": \"string\"\n\t}]\n}",
           "latency": 0,
-          "statusCode": 400,
+          "statusCode": 200,
           "label": "Invalid request - invalid responseType parameter.",
           "headers": [],
           "bodyType": "INLINE",
@@ -751,9 +751,9 @@
         },
         {
           "uuid": "c0a243c5-2421-4e96-bd8e-c587fdda9d27",
-          "body": "{\n  \"responseTime\": \"2022-09-22T08:03:45.287Z\",\n  \"response\": null,\n  \"errors\": [\n    { \n      \"errorCode\": \"invalid_redirect_uri\"\n    }\n  ]\n}",
+          "body": "{\n\t\"responseTime\": \"2022-09-22T08:03:45.287Z\",\n\t\"response\": {\n\t\t\"transactionId\": \"string\",\n\t\t\"authFactors\": [\n\t\t  [{\n\t\t\t\"type\": \"PIN\"\n\t\t}]\n\t\t],\n\t\t\"essentialClaims\": [\"name\"]\n\t},\n\t\"errors\": [{\n\t\t\"errorCode\": \"invalid_redirect_uri\",\n\t\t\"errorMessage\": \"string string\"\n\t}]\n}",
           "latency": 0,
-          "statusCode": 400,
+          "statusCode": 200,
           "label": "Invalid request - invalid redirectUri parameter.",
           "headers": [],
           "bodyType": "INLINE",
