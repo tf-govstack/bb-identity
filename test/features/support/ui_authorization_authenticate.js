@@ -13,6 +13,26 @@ let invalidIndividualId;
 
 const baseUrl = `${localhost}authorization/authenticate`;
 
+const responseSchema = {
+  type: "object",
+  properties: {
+    responseTime: {
+      type: "string",
+    },
+    response: {
+      type: "object",
+      properties: {
+        transactionId: {
+          type: "string",
+        },
+      },
+      additionalProperties: false,
+    },
+    errors: {},
+  },
+  additionalProperties: false,
+};
+
 const requestFunction = (transactionId, individualId) =>
   specUIAuthAuthenticate.post(baseUrl).withBody({
     requestTime: requestTime,
@@ -28,21 +48,30 @@ const requestFunction = (transactionId, individualId) =>
     },
   });
 
-const errorResultFunction = async (transactionId, errorCode) => {
-  await specUIAuthAuthenticate.toss();
-  specUIAuthAuthenticate.response().should.have.status(400);
-  specUIAuthAuthenticate.response().should.have.jsonLike({
-    responseTime: "string",
-    response: {
-      transactionId: transactionId,
-    },
-    errors: [
-      {
-        errorCode: errorCode,
-        errorMessage: "string",
+const responseValidator = async (withErrors = false) => {
+  if (!withErrors) {
+    responseSchema.properties.errors = { type: "array" };
+  } else {
+    responseSchema.properties.errors = {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          errorCode: {
+            type: "string",
+            enum: ["invalid_transaction", "auth_failed", "invalid_request"],
+          },
+          errorMessage: {
+            type: "string",
+          },
+        },
+        additionalProperties: false,
       },
-    ],
-  });
+    };
+  }
+
+  specUIAuthAuthenticate.expectStatus(200).expectJsonSchema(responseSchema);
+  await specUIAuthAuthenticate.toss();
 };
 
 Before(() => {
@@ -55,74 +84,61 @@ Given(
   () => "Every required body parameters are valid"
 );
 
-When("The end-user triggers an action with the required parameters", () =>
-  requestFunction(validTransactionId, validIndividualId)
+When(
+  "The end-user tries to trigger an action with the required parameters",
+  () => requestFunction(validTransactionId, validIndividualId)
 );
 
 Then(
   "The end-user successfully authenticates after authenticating using the OTP auth factor",
-  async () => {
-    await specUIAuthAuthenticate.toss();
-    specUIAuthAuthenticate.toss();
-    specUIAuthAuthenticate.response().should.have.status(200);
-    specUIAuthAuthenticate.response().should.have.jsonLike({
-      responseTime: "string",
-      response: {
-        transactionId: validTransactionId,
-      },
-    });
-  }
+  async () => await responseValidator()
 );
 
 // Scenario: The user is not able to authenticate after authentication using the OTP auth factor because of an invalid transactionId parameter
 Given(
-  "The user wants to authenticate after authenticating using the OTP auth factor with an invalid transactionId parameter",
+  "The end-user wants to authenticate after authenticating using the OTP auth factor with an invalid transactionId parameter",
   () => (invalidTransactionId = "")
 );
 
-When("The user triggers an action with an invalid transactionId", () =>
-  requestFunction(invalidTransactionId, validIndividualId)
+When(
+  "The end-user tries to trigger an action with an invalid transactionId",
+  () => requestFunction(invalidTransactionId, validIndividualId)
 );
 
 Then(
-  "The result of an operation to authenticate returns an error because of an invalid transactionId provided",
-  async () => {
-    await errorResultFunction(invalidTransactionId, "invalid_transaction_id");
-  }
+  "The result of an operation to authenticate returns an error because an invalid transactionId was specified",
+  async () => await responseValidator(true)
 );
 
 // Scenario: The user is not able to authenticate after authentication using the OTP auth factor because an invalid individualId provided
 Given(
-  "The user wants to authenticate after authenticating using the OTP auth factor with an invalid individualId parameter",
+  "The end-user wants to authenticate after authenticating using the OTP auth factor with an invalid individualId parameter",
   () => (invalidIndividualId = "")
 );
 
-When("The user triggers an action with an invalid individualId", () =>
-  requestFunction(validTransactionId, invalidIndividualId)
+When(
+  "The end-user tries to trigger an action with an invalid individualId",
+  () => requestFunction(validTransactionId, invalidIndividualId)
 );
 
 Then(
-  "The result of an operation to authenticate returns an error because an invalid individualId provided",
-  async () => {
-    await errorResultFunction(validTransactionId, "invalid_individual_id");
-  }
+  "The result of an operation to authenticate returns an error because an invalid individualId was specified",
+  async () => await responseValidator(true)
 );
 
 // Scenario: The user is not able to authenticate after authentication using the OTP auth factor because none parameters provided
 Given(
-  "The user wants to authenticate after authenticating using the OTP auth factor without parameters",
+  "The end-user wants to authenticate after authenticating using the OTP auth factor without parameters",
   () => "None of the required parameters was provided."
 );
 
-When("The user triggers an action with an empty body payload", () =>
+When("The end-user tries to trigger an action with an empty body payload", () =>
   specUIAuthAuthenticate.post(baseUrl).withBody()
 );
 
 Then(
-  "The result of an operation to authenticate returns an error because none parameters provided to the payload",
-  async () => {
-    await errorResultFunction(null, "invalid_request");
-  }
+  "The result of an operation to authenticate returns an error because none parameters were specified to the payload",
+  async () => await responseValidator(true)
 );
 
 After(() => {

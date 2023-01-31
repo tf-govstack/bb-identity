@@ -570,7 +570,7 @@
       "responses": [
         {
           "uuid": "79006e6c-030a-4785-a680-2c754ddfd32a",
-          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"transactionId\": \"{{bodyRaw 'request.transactionId'}}\"\n  }\n}",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"transactionId\": \"{{bodyRaw 'request.transactionId'}}\"\n  },\n  \"errors\": []\n}",
           "latency": 0,
           "statusCode": 200,
           "label": " Successfully authenticate after authentication using the OTP auth factor.",
@@ -616,9 +616,9 @@
         },
         {
           "uuid": "da5ddab0-1197-4e81-b194-739329cfdc1a",
-          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"transactionId\": null\n  },\n  \"errors\": [\n      {\n        \"errorCode\": \"invalid_request\",\n        \"errorMessage\": \"string\"\n      }\n  ]\n}",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"transactionId\": \"string\"\n  },\n  \"errors\": [\n      {\n        \"errorCode\": \"invalid_request\",\n        \"errorMessage\": \"string\"\n      }\n  ]\n}",
           "latency": 0,
-          "statusCode": 400,
+          "statusCode": 200,
           "label": "Invalid request - invalid body.",
           "headers": [],
           "bodyType": "INLINE",
@@ -641,9 +641,9 @@
         },
         {
           "uuid": "ccf28139-f7a9-4fb6-b5a0-719c6cef11fb",
-          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"transactionId\": \"{{bodyRaw 'request.transactionId'}}\"\n  },\n  \"errors\": [\n      {\n        \"errorCode\": \"invalid_transaction_id\",\n        \"errorMessage\": \"string\"\n      }\n  ]\n}",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"transactionId\": \"{{bodyRaw 'request.transactionId'}}\"\n  },\n  \"errors\": [\n      {\n        \"errorCode\": \"invalid_request\",\n        \"errorMessage\": \"string\"\n      }\n  ]\n}",
           "latency": 0,
-          "statusCode": 400,
+          "statusCode": 200,
           "label": "Invalid request - invalid transactionId parameter.",
           "headers": [],
           "bodyType": "INLINE",
@@ -666,9 +666,9 @@
         },
         {
           "uuid": "ec0eeea7-cc43-407a-9524-3e2cc007c6a6",
-          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"transactionId\": \"{{bodyRaw 'request.transactionId'}}\"\n  },\n  \"errors\": [\n      {\n        \"errorCode\": \"invalid_individual_id\",\n        \"errorMessage\": \"string\"\n      }\n  ]\n}",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"transactionId\": \"{{bodyRaw 'request.transactionId'}}\"\n  },\n  \"errors\": [\n      {\n        \"errorCode\": \"invalid_request\",\n        \"errorMessage\": \"string\"\n      }\n  ]\n}",
           "latency": 0,
-          "statusCode": 400,
+          "statusCode": 200,
           "label": "Invalid request - invalid individualId parameter.",
           "headers": [],
           "bodyType": "INLINE",
