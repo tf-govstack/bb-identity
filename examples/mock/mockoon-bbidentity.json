@@ -1,6 +1,6 @@
 {
   "uuid": "256918d8-70c9-4e45-ad37-a6cb1a3f39f7",
-  "lastMigration": 24,
+  "lastMigration": 25,
   "name": "Mockoon bbidentity",
   "endpointPrefix": "",
   "latency": 0,
@@ -377,13 +377,13 @@
       "responseMode": null
     },
     {
-      "uuid": "f90e90b4-866f-478f-b34c-a358d8196f01",
+      "uuid": "1ad5b529-c043-4496-945d-5816fad329ca",
       "documentation": "API to add new open ID connect (OIDC) clients,",
       "method": "post",
       "endpoint": "client-mgmt/oidc-client",
       "responses": [
         {
-          "uuid": "bf45f01a-d052-430c-8a88-ea4524b29f69",
+          "uuid": "fb8fcc9b-c870-4c34-9ea9-b138d44e3e49",
           "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"clientId\": \"string\"\n  },\n  \"errors\": []\n}",
           "latency": 0,
           "statusCode": 200,
@@ -561,6 +561,126 @@
       ],
       "enabled": true,
       "responseMode": null
+    },
+    {
+      "uuid": "4ee480bf-603e-4180-933b-2227434c378d",
+      "documentation": "This endpoint accepts an access token or ID token and returns a boolean value indicating whether it is active. If the token is active, additional data about the token is also returned. If the token is invalid, expired, or revoked, it is considered inactive.",
+      "method": "get",
+      "endpoint": "introspect",
+      "responses": [
+        {
+          "uuid": "a1303c0f-072b-4e49-801c-77e2c9d64194",
+          "body": "{\n  \"active\": true\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Active token",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "client_id",
+              "value": "^\\S+$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "query",
+              "modifier": "token",
+              "value": "^([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_\\-\\+\\/=]+)",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "query",
+              "modifier": "token_type_hint",
+              "value": "^access_token$|^id_token$",
+              "invert": false,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        },
+        {
+          "uuid": "d92cee43-545f-4c8c-87a1-f54040c3e1fe",
+          "body": "{\n  \"active\": false\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Inactive token",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "client_id",
+              "value": "^\\S+$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "query",
+              "modifier": "token",
+              "value": "^([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_\\-\\+\\/=]+)",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "query",
+              "modifier": "token_type_hint",
+              "value": "^access_token$|^id_token$",
+              "invert": false,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "43280e4d-7348-4227-aa4f-9c30e2f8df3e",
+          "body": "{\n  \"error\": \"string\",\n  \"error_description\": \"string\"\n}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "Unauthorized",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "client_id",
+              "value": "^\\S+$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "query",
+              "modifier": "token_type_hint",
+              "value": "^access_token$|^id_token$",
+              "invert": true,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
     }
   ],
   "proxyMode": false,
@@ -594,5 +714,24 @@
       "value": ""
     }
   ],
-  "data": []
+  "data": [],
+  "folders": [],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "1ad5b529-c043-4496-945d-5816fad329ca"
+    },
+    {
+      "type": "route",
+      "uuid": "91963d01-81ab-4fdd-8b43-9a08652e6173"
+    },
+    {
+      "type": "route",
+      "uuid": "f90e90b4-866f-478f-b34c-a358d8196f01"
+    },
+    {
+      "type": "route",
+      "uuid": "4ee480bf-603e-4180-933b-2227434c378d"
+    }
+  ]
 }
