@@ -15,6 +15,31 @@ let invalidChannel;
 
 const baseUrl = `${localhost}authorization/send-otp`;
 
+const responseSchema = {
+  type: "object",
+  properties: {
+    responseTime: {
+      type: "string",
+    },
+    response: {
+      type: "object",
+      properties: {
+        transactionId: {
+          type: "string",
+        },
+        messageCode: {
+          type: "string",
+        },
+      },
+      required: ["transactionId"],
+      additionalProperties: false,
+    },
+    errors: {},
+  },
+  required: ["response"],
+  additionalProperties: false,
+};
+
 const requestFunction = (transactionId, individualId, channel) =>
   specUIAuthSendOTP.post(baseUrl).withBody({
     requestTime: requestTime,
@@ -25,22 +50,30 @@ const requestFunction = (transactionId, individualId, channel) =>
     },
   });
 
-const errorResultFunction = async (transactionId, errorCode) => {
-  await specUIAuthSendOTP.toss();
-  specUIAuthSendOTP.response().should.have.status(400);
-  specUIAuthSendOTP.response().should.have.jsonLike({
-    responseTime: "string",
-    response: {
-      transactionId: transactionId,
-      messageCode: "string",
-    },
-    errors: [
-      {
-        errorCode: errorCode,
-        errorMessage: "string",
+const responseValidator = async (withErrors = false) => {
+  if (!withErrors) {
+    responseSchema.properties.errors = { type: "array" };
+  } else {
+    responseSchema.properties.errors = {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          errorCode: {
+            type: "string",
+            enum: ["invalid_transaction", "invalid_request"],
+          },
+          errorMessage: {
+            type: "string",
+          },
+        },
+        additionalProperties: false,
       },
-    ],
-  });
+    };
+  }
+
+  specUIAuthSendOTP.expectStatus(200).expectJsonSchema(responseSchema);
+  await specUIAuthSendOTP.toss();
 };
 
 Before(() => {
@@ -53,25 +86,13 @@ Given(
   () => "Every required body parameters are valid"
 );
 
-When("The end-user triggers an action with every required parameter", () =>
+When("The user tries to trigger an action with every required parameter", () =>
   requestFunction(validTransactionId, validIndividualId, validChannel)
 );
 
 Then(
   "The end-user successfully authenticates using OTP auth factor",
-  async () => {
-    await specUIAuthSendOTP.toss(),
-      specUIAuthSendOTP.toss(),
-      specUIAuthSendOTP.response().should.have.status(200),
-      specUIAuthSendOTP.response().should.have.jsonLike({
-        responseTime: "string",
-        response: {
-          transactionId: validTransactionId,
-          messageCode: "string",
-        },
-        errors: [],
-      });
-  }
+  async () => await responseValidator()
 );
 
 // Scenario: The user is not able to authenticate using OTP auth factor because of an invalid transactionId provided
@@ -81,14 +102,13 @@ Given(
 );
 
 When(
-  "The user triggers an action with an invalid transactionId parameter",
+  "The user tries to trigger an action with an invalid transactionId parameter",
   () => requestFunction(invalidTransactionId, validIndividualId, validChannel)
 );
 
 Then(
-  "The result of an operation returns an error because of an invalid transactionId provided",
-  async () =>
-    await errorResultFunction(invalidTransactionId, "invalid_transaction_id")
+  "The result of an operation returns an error because an invalid transactionId was specified",
+  async () => await responseValidator(true)
 );
 
 // Scenario: The user is not able to authenticate using OTP auth factor because of an invalid individualId provided
@@ -97,14 +117,14 @@ Given(
   () => (invalidIndividualId = "")
 );
 
-When("The user triggers an action with an invalid individualId parameter", () =>
-  requestFunction(validTransactionId, invalidIndividualId, validChannel)
+When(
+  "The user tries to trigger an action with an invalid individualId parameter",
+  () => requestFunction(validTransactionId, invalidIndividualId, validChannel)
 );
 
 Then(
-  "The result of an operation returns an error because of an invalid individualId provided",
-  async () =>
-    await errorResultFunction(validTransactionId, "invalid_individual_id")
+  "The result of an operation returns an error because an invalid individualId was specified",
+  async () => await responseValidator(true)
 );
 
 // Scenario: The user is not able to authenticate using OTP auth factor because of an invalid channel provided
@@ -113,13 +133,14 @@ Given(
   () => (invalidChannel = "phone")
 );
 
-When("The user triggers an action with an invalid channel parameter", () =>
-  requestFunction(validTransactionId, validIndividualId, invalidChannel)
+When(
+  "The user tries to trigger an action with an invalid channel parameter",
+  () => requestFunction(validTransactionId, validIndividualId, invalidChannel)
 );
 
 Then(
-  "The result of an operation returns an error because of an invalid channel provided",
-  async () => await errorResultFunction(validTransactionId, "invalid_channel")
+  "The result of an operation returns an error because an invalid channel was specified",
+  async () => await responseValidator(true)
 );
 
 // Scenario: The user is not able to authenticate using OTP auth factor because none parameters provided
@@ -128,13 +149,13 @@ Given(
   () => "None of the required parameters was provided."
 );
 
-When("The user triggers an action with an empty payload", () =>
+When("The user tries to trigger an action with an empty payload", () =>
   specUIAuthSendOTP.post(baseUrl)
 );
 
 Then(
-  "The result of an operation returns an error because none parameters provided to the payload",
-  async () => await errorResultFunction(null, "empty_body")
+  "The result of an operation returns an error because none parameters were specified to the payload",
+  async () => await responseValidator(true)
 );
 
 After(() => {

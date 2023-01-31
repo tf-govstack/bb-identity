@@ -9,25 +9,25 @@ Feature: The API to authenticate using OTP auth factor.
 
   Scenario: Successfully authenticate using OTP auth factor.
     Given The end-user wants to authenticate using OTP auth factor
-    When The end-user triggers an action with every required parameter
+    When The user tries to trigger an action with every required parameter
     Then The end-user successfully authenticates using OTP auth factor
 
   Scenario: The user is not able to authenticate using OTP auth factor because of an invalid transactionId provided
     Given The user wants to authenticate using OTP auth factor with an invalid transactionId parameter
-    When The user triggers an action with an invalid transactionId parameter
-    Then The result of an operation returns an error because of an invalid transactionId provided
+    When The user tries to trigger an action with an invalid transactionId parameter
+    Then The result of an operation returns an error because an invalid transactionId was specified
 
   Scenario: The user is not able to authenticate using OTP auth factor because of an invalid individualId provided
     Given The user wants to authenticate using OTP auth factor with an invalid individualId parameter
-    When The user triggers an action with an invalid individualId parameter
-    Then The result of an operation returns an error because of an invalid individualId provided
+    When The user tries to trigger an action with an invalid individualId parameter
+    Then The result of an operation returns an error because an invalid individualId was specified
 
   Scenario: The user is not able to authenticate using OTP auth factor because of an invalid channel provided
     Given The user wants to authenticate using OTP auth factor with an invalid channel parameter
-    When The user triggers an action with an invalid channel parameter
-    Then The result of an operation returns an error because of an invalid channel provided
+    When The user tries to trigger an action with an invalid channel parameter
+    Then The result of an operation returns an error because an invalid channel was specified
 
   Scenario: The user is not able to authenticate using OTP auth factor because none parameters provided
     Given The user wants to authenticate using OTP auth factor without parameters
-    When The user triggers an action with an empty payload
-    Then The result of an operation returns an error because none parameters provided to the payload
+    When The user tries to trigger an action with an empty payload
+    Then The result of an operation returns an error because none parameters were specified to the payload
