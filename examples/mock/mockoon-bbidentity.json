@@ -602,9 +602,9 @@
         },
         {
           "uuid": "d2089dce-3451-4dcc-85d6-d8acf8a85b2f",
-          "body": "{\n\t\"responseTime\": \"string\",\n\t\"response\": null,\n\t\"errors\": [{\n      \"errorCode\": \"invalid_request\",\n      \"errorMessage\": \"string\"\n  }]\n}",
+          "body": "{\n\t\"responseTime\": \"string\",\n\t\"errors\": [{\n      \"errorCode\": \"invalid_request\",\n      \"errorMessage\": \"string\"\n  }]\n}",
           "latency": 0,
-          "statusCode": 400,
+          "statusCode": 200,
           "label": "Invalid request - invalid transactionId parameter.",
           "headers": [],
           "bodyType": "INLINE",
@@ -627,9 +627,9 @@
         },
         {
           "uuid": "9c996a79-6cd1-4165-bc6c-19c18e3721af",
-          "body": "{\n\t\"responseTime\": \"string\",\n\t\"response\": null,\n\t\"errors\": [{\n      \"errorCode\": \"invalid_request\",\n      \"errorMessage\": \"string\"\n  }]\n}",
+          "body": "{\n\t\"responseTime\": \"string\",\n\t\"errors\": [{\n      \"errorCode\": \"invalid_request\",\n      \"errorMessage\": \"string\"\n  }]\n}",
           "latency": 0,
-          "statusCode": 400,
+          "statusCode": 200,
           "label": "Invalid request - invalid responseTime parameter.",
           "headers": [],
           "bodyType": "INLINE",

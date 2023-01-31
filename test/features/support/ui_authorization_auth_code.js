@@ -11,6 +11,35 @@ let invalidTransactionId;
 
 const baseUrl = `${localhost}authorization/auth-code`;
 
+const responseSchema = {
+  type: "object",
+  properties: {
+    responseTime: {
+      type: "string",
+    },
+    response: {
+      type: "object",
+      properties: {
+        code: {
+          type: "string",
+        },
+        redirectUri: {
+          type: "string",
+        },
+        nonce: {
+          type: "string",
+        },
+        state: {
+          type: "string",
+        },
+      },
+      additionalProperties: false,
+    },
+    errors: {},
+  },
+  additionalProperties: false,
+};
+
 const requestFunction = (transactionId) =>
   specUIAuthCode.post(baseUrl).withBody({
     requestTime: requestTime,
@@ -21,19 +50,30 @@ const requestFunction = (transactionId) =>
     },
   });
 
-const errorResultFunction = async () => {
-  await specUIAuthCode.toss();
-  specUIAuthCode.response().should.have.status(400);
-  specUIAuthCode.response().should.have.jsonLike({
-    responseTime: "string",
-    response: null,
-    errors: [
-      {
-        errorCode: "invalid_request",
-        errorMessage: "string",
+const responseValidator = async (withErrors = false) => {
+  if (!withErrors) {
+    responseSchema.properties.errors = { type: "array" };
+  } else {
+    responseSchema.properties.errors = {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          errorCode: {
+            type: "string",
+            enum: ["invalid_request", "invalid_transaction"],
+          },
+          errorMessage: {
+            type: "string",
+          },
+        },
+        additionalProperties: false,
       },
-    ],
-  });
+    };
+  }
+
+  specUIAuthCode.expectStatus(200).expectJsonSchema(responseSchema);
+  await specUIAuthCode.toss();
 };
 
 Before(() => {
@@ -47,55 +87,45 @@ Given(
 );
 
 When(
-  "The end-user triggers an action with the required parameters to receive the authorization code",
+  "The end-user tries to trigger an action with the required parameters to receive the authorization code",
   () => requestFunction(validTransactionId)
 );
 
-Then("The end-user successfully received the authorization code", async () => {
-  await specUIAuthCode.toss();
-  specUIAuthCode.toss();
-  specUIAuthCode.response().should.have.status(200);
-  specUIAuthCode.response().should.have.jsonLike({
-    responseTime: "string",
-    response: {
-      code: "string",
-      redirectUri: "string",
-      nonce: "string",
-      state: "string",
-    },
-  });
-});
+Then(
+  "The end-user successfully received the authorization code",
+  async () => await responseValidator()
+);
 
 // Scenario: The user is not able to receive the authorization code because of an invalid transactionId parameter
 Given(
-  "The user wants to receive the authorization code with an invalid transactionId parameter",
+  "The end-user wants to receive the authorization code with an invalid transactionId parameter",
   () => (invalidTransactionId = "")
 );
 
 When(
-  "The user triggers an action with an invalid transactionId to receive the authorization code",
+  "The end-user tries to trigger an action with an invalid transactionId to receive the authorization code",
   () => requestFunction(invalidTransactionId)
 );
 
 Then(
-  "The result of an operation to receive the authorization code because of an invalid transactionId provided",
-  async () => await errorResultFunction()
+  "The result of an operation to receive the authorization code because an invalid transactionId was specified",
+  async () => await responseValidator(true)
 );
 
 // Scenario: The user cannot get the authorization code because no parameter was specified
 Given(
-  "The user wants to obtain the authorization code without specifying a parameter",
+  "The end-user wants to obtain the authorization code without specifying a parameter",
   () => "None of the required parameters was provided."
 );
 
 When(
-  "The user triggers an action without specifying a parameter to receive the authorization code",
+  "The end-user tries to trigger an action without specifying a parameter to receive the authorization code",
   () => specUIAuthCode.post(baseUrl).withBody()
 );
 
 Then(
   "The result of an operation to receive the authorization code because no parameter was specified",
-  async () => await errorResultFunction()
+  async () => await responseValidator(true)
 );
 
 After(() => {
