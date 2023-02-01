@@ -21,7 +21,6 @@ stash.addDataTemplate({
       active: { type: "boolean" },
     },
     required: ["active"],
-    additionalProperties: true,
   },
 });
 
@@ -33,7 +32,6 @@ stash.addDataTemplate({
       error_description: { type: "string" },
     },
     required: ["error", "error_description"],
-    additionalProperties: false,
   },
 });
 
