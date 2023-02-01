@@ -37,7 +37,7 @@ stash.addDataTemplate({
   },
 });
 
-const resultFunction = async (
+const resultValidator = async (
   expectedStatus,
   schemaToUse,
   allowAdditionalProperties
@@ -71,7 +71,7 @@ When("The request is sent with valid parameters", () =>
 
 Then(
   "The operation returns an active status of the token",
-  async () => await resultFunction(200, "ResponseSchemaOK", true)
+  async () => await resultValidator(200, "ResponseSchemaOK", true)
 );
 
 // Scenario: The endpoint is called with an invalid token parameter and returns an inactive status
@@ -86,7 +86,7 @@ When("The request is sent with an invalid token parameter", () =>
 
 Then(
   "The operation returns an inactive status of the token",
-  async () => await resultFunction(200, "ResponseSchemaOK", false)
+  async () => await resultValidator(200, "ResponseSchemaOK", false)
 );
 
 // Scenario: The endpoint is called with an invalid token_type_hint parameter and returns an unauthorized error
@@ -101,7 +101,7 @@ When("The request is sent with an invalid token_type_hint parameter", () =>
 
 Then(
   "The operation returns an error because of invalid token_type_hint parameter",
-  async () => await resultFunction(401, "ResponseSchemaUnauthorized", false)
+  async () => await resultValidator(401, "ResponseSchemaUnauthorized", false)
 );
 
 // Scenario: The endpoint is called with an invalid client_id parameter and returns an unauthorized error
@@ -114,7 +114,7 @@ When("The request is sent with an invalid client_id parameter", () =>
 
 Then(
   "The operation returns an error because of invalid client_id parameter",
-  async () => await resultFunction(401, "ResponseSchemaUnauthorized", false)
+  async () => await resultValidator(401, "ResponseSchemaUnauthorized", false)
 );
 
 // Scenario: The endpoint is called without the required parameters and returns an unauthorized error
@@ -124,7 +124,7 @@ When("The request is sent without the required parameters", () =>
 
 Then(
   "The operation returns an error because no parameters were specified",
-  async () => await resultFunction(401, "ResponseSchemaUnauthorized", false)
+  async () => await resultValidator(401, "ResponseSchemaUnauthorized", false)
 );
 
 After(() => {
