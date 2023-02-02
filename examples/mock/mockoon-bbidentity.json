@@ -616,7 +616,7 @@
         },
         {
           "uuid": "571534ff-9161-410a-a6f6-d7fd6c375964",
-          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"transactionId\": \"\",\n    \"messageCode\": \"string\"\n  },\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_request\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": null,\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_request\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Invalid request - empty body provided.",
@@ -641,7 +641,7 @@
         },
         {
           "uuid": "8fbf88aa-d7e8-4ef4-a7bd-5aa7d9d584df",
-          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"transactionId\": \"{{bodyRaw 'request.transactionId'}}\",\n    \"messageCode\": \"string\"\n  },\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_request\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": null,\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_request\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Invalid request - invalid transactionId parameter.",
@@ -666,7 +666,7 @@
         },
         {
           "uuid": "5021d0ff-5561-4742-9430-0327d1b39e0f",
-          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"transactionId\": \"{{bodyRaw 'request.transactionId'}}\",\n    \"messageCode\": \"string\"\n  },\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_request\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": null,\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_request\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Invalid request - invalid individualId parameter.",
@@ -691,7 +691,7 @@
         },
         {
           "uuid": "3a189f0e-7ad3-4ab5-a6b2-24e1e4265371",
-          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"transactionId\": \"{{bodyRaw 'request.transactionId'}}\",\n    \"messageCode\": \"string\"\n  },\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_request\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": null,\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_request\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Invalid request - invalid channel parameter.",
@@ -716,7 +716,7 @@
         },
         {
           "uuid": "a8427f80-d382-4083-b184-27a51d960f38",
-          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"transactionId\": \"string\",\n    \"messageCode\": \"string\"\n  },\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_request\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": null,\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_request\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Invalid request.",

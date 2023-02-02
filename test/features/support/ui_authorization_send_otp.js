@@ -52,8 +52,9 @@ const requestFunction = (transactionId, individualId, channel) =>
 
 const responseValidator = async (withErrors = false) => {
   if (!withErrors) {
-    responseSchema.properties.errors = { type: "array" };
+    responseSchema.properties.errors = { type: "array", maxItems: 0 };
   } else {
+    responseSchema.properties.response = { type: "null" };
     responseSchema.properties.errors = {
       type: "array",
       items: {
@@ -78,6 +79,7 @@ const responseValidator = async (withErrors = false) => {
 
 Before(() => {
   specUIAuthSendOTP = pactum.spec();
+  specUIAuthSendOTP.expectResponseTime(1500);
 });
 
 // Scenario: Successfully authenticate using OTP auth factor.
