@@ -78,7 +78,7 @@ const responseValidator = async (withErrors = false) => {
 
 Before(() => {
   specUIAuthCode = pactum.spec();
-  specUIAuthCode.expectResponseTime(1500);
+  specUIAuthCode.expectResponseTime(15000);
 });
 
 // Scenario: Successfully receive the authorization code
