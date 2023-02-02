@@ -52,7 +52,7 @@ const requestFunction = (transactionId) =>
 
 const responseValidator = async (withErrors = false) => {
   if (!withErrors) {
-    responseSchema.properties.errors = { type: "array" };
+    responseSchema.properties.errors = { type: "array", maxItems: 0 };
   } else {
     responseSchema.properties.errors = {
       type: "array",
@@ -78,6 +78,7 @@ const responseValidator = async (withErrors = false) => {
 
 Before(() => {
   specUIAuthCode = pactum.spec();
+  specUIAuthCode.expectResponseTime(1500);
 });
 
 // Scenario: Successfully receive the authorization code
