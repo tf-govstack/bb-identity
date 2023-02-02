@@ -583,7 +583,7 @@
             {
               "target": "body",
               "modifier": "requestTime",
-              "value": "^\\\\d{4}-[01]\\\\d-[0-3]\\\\dT[0-2]\\\\d:[0-5]\\\\d:[0-5]\\\\d\\\\.\\\\d+([+-][0-2]\\\\d:[0-5]\\\\d|Z)$",
+              "value": "^\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d\\.\\d+([+-][0-2]\\d:[0-5]\\d|Z)$",
               "invert": false,
               "operator": "regex"
             },
@@ -606,13 +606,13 @@
               "modifier": "request.challengeList",
               "value": "",
               "invert": true,
-              "operator": "empty_array"
+              "operator": "null"
             }
           ],
           "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
-          "default": true
+          "default": false
         },
         {
           "uuid": "da5ddab0-1197-4e81-b194-739329cfdc1a",
@@ -637,7 +637,7 @@
           "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
-          "default": false
+          "default": true
         },
         {
           "uuid": "ccf28139-f7a9-4fb6-b5a0-719c6cef11fb",

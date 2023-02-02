@@ -50,7 +50,7 @@ const requestFunction = (transactionId, individualId) =>
 
 const responseValidator = async (withErrors = false) => {
   if (!withErrors) {
-    responseSchema.properties.errors = { type: "array" };
+    responseSchema.properties.errors = { type: "array", maxItems: 0 };
   } else {
     responseSchema.properties.errors = {
       type: "array",
@@ -94,7 +94,7 @@ Then(
   async () => await responseValidator()
 );
 
-// Scenario: The user is not able to authenticate after authentication using the OTP auth factor because of an invalid transactionId parameter
+// Scenario: The user is not able to authenticate after authentication using the OTP auth factor because of an invalid transactionId was specified
 Given(
   "The end-user wants to authenticate after authenticating using the OTP auth factor with an invalid transactionId parameter",
   () => (invalidTransactionId = "")
@@ -110,7 +110,7 @@ Then(
   async () => await responseValidator(true)
 );
 
-// Scenario: The user is not able to authenticate after authentication using the OTP auth factor because an invalid individualId provided
+// Scenario: The user is not able to authenticate after authentication using the OTP auth factor because an invalid individualId was specified
 Given(
   "The end-user wants to authenticate after authenticating using the OTP auth factor with an invalid individualId parameter",
   () => (invalidIndividualId = "")
@@ -126,7 +126,7 @@ Then(
   async () => await responseValidator(true)
 );
 
-// Scenario: The user is not able to authenticate after authentication using the OTP auth factor because none parameters provided
+// Scenario: The user is not able to authenticate after authentication using the OTP auth factor because none parameters were specified
 Given(
   "The end-user wants to authenticate after authenticating using the OTP auth factor without parameters",
   () => "None of the required parameters was provided."
