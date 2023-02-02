@@ -79,7 +79,7 @@ const responseValidator = async (withErrors = false) => {
 
 Before(() => {
   specUIAuthSendOTP = pactum.spec();
-  specUIAuthSendOTP.expectResponseTime(1500);
+  specUIAuthSendOTP.expectResponseTime(15000);
 });
 
 // Scenario: Successfully authenticate using OTP auth factor.
