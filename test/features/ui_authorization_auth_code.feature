@@ -10,11 +10,10 @@ Feature: The API sends the accepted consent and permitted scopes and retrieves t
     When POST request with given current date as requestTime "jskSD23wes324545F" as transactionId "string" as permittedAuthorizeScopes "string" as acceptedClaims is sent
     Then The response is received
     And The response should be returned in a timely manner
-    And The response should match json schema
-    And The response should contain authorization code
     And The response should have status 200
     And The response header content-type should be "application/json; charset=utf-8"
-
+    And The response should contain authorization code
+    And The response should match json schema
 
   @unit @negative
   Scenario: Unable to retrieve the authorization code because of an invalid transactionId parameter
@@ -23,9 +22,9 @@ Feature: The API sends the accepted consent and permitted scopes and retrieves t
     When POST request with given current date as requestTime "<transactionId>" as transactionId "<permittedAuthorizeScopes>" as permittedAuthorizeScopes "<acceptedClaims>" as acceptedClaims is sent
     Then The response is received
     And The response should be returned in a timely manner
-    And The response should match json schema
     And The response should have status 200
     And The response header content-type should be "application/json; charset=utf-8"
+    And The response should match json schema
 
   Examples: Invalid transactionId
   | transactionId | permittedAuthorizeScopes | acceptedClaims   |
@@ -42,6 +41,6 @@ Feature: The API sends the accepted consent and permitted scopes and retrieves t
     When POST request without payload is sent
     Then The response is received
     And The response should be returned in a timely manner
-    And The response should match json schema
     And The response should have status 200
     And The response header content-type should be "application/json; charset=utf-8"
+    And The response should match json schema

@@ -55,8 +55,12 @@ Then('The response should be returned in a timely manner', () =>
   specUIAuthCode.response().to.have.responseTimeLessThan(defaultResponseTime)
 );
 
-Then('The response should match json schema', () =>
-  chai.expect(specUIAuthCode._response.json).to.be.jsonSchema(uiAuthCodeResponseSchema)
+Then('The response should have status 200', () =>
+  specUIAuthCode.response().to.have.status(statusCode200)
+);
+
+Then('The response header content-type should be {string}', (header_value) =>
+  specUIAuthCode.response().to.have.header('content-type', header_value)
 );
 
 Then('The response should contain authorization code', () => {
@@ -66,12 +70,8 @@ Then('The response should contain authorization code', () => {
   chai.expect(specUIAuthCode._response.json.response.code).to.not.be.empty;
 });
 
-Then('The response should have status 200', () =>
-  specUIAuthCode.response().to.have.status(statusCode200)
-);
-
-Then('The response header content-type should be {string}', (header_value) =>
-  specUIAuthCode.response().to.have.header('content-type', header_value)
+Then('The response should match json schema', () =>
+  chai.expect(specUIAuthCode._response.json).to.be.jsonSchema(uiAuthCodeResponseSchema)
 );
 
 // Scenario: Unable to retrieve the authorization code because of an invalid transactionId parameter
