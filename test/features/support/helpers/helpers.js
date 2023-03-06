@@ -1,11 +1,11 @@
 module.exports = {
   localhost: 'http://localhost:3344/',
-  status_code_200: 200,
+  statusCode200: 200,
   validTransactionId: 'jskSD23wes324545F',
-  request_time: new Date().toISOString(),
-  default_response_time: 15000,
-  ui_auth_code_endpoint: 'authorization/auth-code',
-  ui_auth_code_response_schema: {
+  requestTime: new Date().toISOString(),
+  defaultResponseTime: 15000,
+  uiAuthCodeEndpoint: 'authorization/auth-code',
+  uiAuthCodeResponseSchema: {
     type: 'object',
     properties: {
       id: {

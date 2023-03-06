@@ -3,26 +3,26 @@ const { spec } = require('pactum');
 const { Given, When, Then, Before, After } = require('@cucumber/cucumber');
 const {
   localhost,
-  default_response_time,
-  ui_auth_code_endpoint,
-  ui_auth_code_response_schema,
-  status_code_200,
-  request_time,
+  defaultResponseTime,
+  uiAuthCodeEndpoint,
+  uiAuthCodeResponseSchema,
+  statusCode200,
+  requestTime,
 } = require('./helpers/helpers');
 
 chai.use(require('chai-json-schema'));
 
 let specUIAuthCode;
-const baseUrl = localhost + ui_auth_code_endpoint;
-const tag = { tags: `@endpoint=/${ui_auth_code_endpoint}` };
+const baseUrl = localhost + uiAuthCodeEndpoint;
+const tag = { tags: `@endpoint=/${uiAuthCodeEndpoint}` };
 
-const requestFunction = (transactionId, permitted_authorize_scopes, accepted_claims) =>
+const requestFunction = (transactionId, permittedAuthorizeScopes, acceptedClaims) =>
   specUIAuthCode.post(baseUrl).withBody({
-    requestTime: request_time,
+    requestTime: requestTime,
     request: {
       transactionId: transactionId,
-      permittedAuthorizeScopes: permitted_authorize_scopes,
-      acceptedClaims: accepted_claims,
+      permittedAuthorizeScopes: permittedAuthorizeScopes,
+      acceptedClaims: acceptedClaims,
     },
   });
 
@@ -38,11 +38,11 @@ Given(
 
 When(
   'POST request with given current date as requestTime {string} as transactionId {string} as permittedAuthorizeScopes {string} as acceptedClaims is sent',
-  (transactionId, permitted_authorize_scopes, accepted_claims) => {
-    const scopes = permitted_authorize_scopes.split(',').map((scope) => {
+  (transactionId, permittedAuthorizeScopes, acceptedClaims) => {
+    const scopes = permittedAuthorizeScopes.split(',').map((scope) => {
       return scope.trim();
     });
-    const claims = accepted_claims.split(',').map((claim) => {
+    const claims = acceptedClaims.split(',').map((claim) => {
       return claim.trim();
     });
     requestFunction(transactionId, scopes, claims);
@@ -52,11 +52,11 @@ When(
 Then('The response is received', async () => await specUIAuthCode.toss());
 
 Then('The response should be returned in a timely manner', () =>
-  specUIAuthCode.response().to.have.responseTimeLessThan(default_response_time)
+  specUIAuthCode.response().to.have.responseTimeLessThan(defaultResponseTime)
 );
 
 Then('The response should match json schema', () =>
-  chai.expect(specUIAuthCode._response.json).to.be.jsonSchema(ui_auth_code_response_schema)
+  chai.expect(specUIAuthCode._response.json).to.be.jsonSchema(uiAuthCodeResponseSchema)
 );
 
 Then('The response should contain authorization code', () => {
@@ -67,7 +67,7 @@ Then('The response should contain authorization code', () => {
 });
 
 Then('The response should have status 200', () =>
-  specUIAuthCode.response().to.have.status(status_code_200)
+  specUIAuthCode.response().to.have.status(statusCode200)
 );
 
 Then('The response header content-type should be {string}', (header_value) =>
