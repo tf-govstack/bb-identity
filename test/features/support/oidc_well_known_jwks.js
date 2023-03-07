@@ -1,12 +1,22 @@
-const { spec } = require("pactum");
-const chai = require("chai");
-const { Given, When, Then, Before, After } = require("@cucumber/cucumber");
-const { localhost } = require("./helpers/helpers");
+const chai = require('chai');
+const { spec } = require('pactum');
+const { Given, When, Then, Before, After } = require('@cucumber/cucumber');
+const {
+  localhost,
+  statusCode200,
+  defaultResponseTime,
+  oidcWellKnownJWKSEndpoint,
+  oidcWellKnownJWKSResponseSchema,
+} = require('./helpers/helpers');
 
-const baseUrl = `${localhost}.well-known/jwks.json`;
+chai.use(require('chai-json-schema'));
 
-Before(() => {
-  specJWKS = spec().expectResponseTime(15000);
+let specJWKS;
+const baseUrl = localhost + oidcWellKnownJWKSEndpoint;
+const tag = { tags: `@endpoint=/${oidcWellKnownJWKSEndpoint}` };
+
+Before(tag, () => {
+  specJWKS = spec();
 });
 
 // Scenario: Successfully retrieves the IdP server's public keys
@@ -15,38 +25,33 @@ Given(
   () => "Wants to retrieve the IdP server's public keys"
 );
 
-When("The request to retrieve all public keys of the IdP server is sent", () =>
+When('GET request to retrieve all the public keys of the IdP server is sent', () =>
   specJWKS.get(baseUrl)
 );
 
-Then("The operation returns a public key set in JWKS format", async () => {
-  specJWKS.expectStatus(200).expectJsonLike({
-    keys: [
-      {
-        kid: /^\S+$/,
-        alg: "RS256",
-        use: "sig",
-        kty: "RSA",
-        e: /^\S+$/,
-        n: /^\S+$/,
-      },
-    ],
-  });
+Then('The response is received', async () => await specJWKS.toss());
 
-  await specJWKS.toss();
+Then('The response should be returned in a timely manner', () =>
+  specJWKS.response().to.have.responseTimeLessThan(defaultResponseTime)
+);
 
-  specJWKS._response.json.keys.forEach((keyJWKS) => {
-    if (keyJWKS.hasOwnProperty("status")) {
-      chai
-        .expect(keyJWKS.status)
-        .to.match(/^ACTIVE$|^EXPIRED$|^NEXT$/, "Invalid status value");
-    }
-    if (keyJWKS.hasOwnProperty("x5c")) {
-      chai.expect(keyJWKS.x5c).to.match(/^\S+$/, "Invalid x5c value");
-    }
-  });
-});
+Then('The response should have status 200', () =>
+  specJWKS.response().to.have.status(statusCode200)
+);
 
-After(() => {
+Then('The response header content-type should be {string}', (header_value) =>
+  specJWKS.response().to.have.header('content-type', header_value)
+);
+
+Then('The response should match json schema', () =>
+  chai
+    .expect(specJWKS._response.json)
+    .to.be.jsonSchema(
+      oidcWellKnownJWKSResponseSchema,
+      'Response body does not match with the json-schema\n'
+    )
+);
+
+After(tag, () => {
   specJWKS.end();
 });
