@@ -74,7 +74,7 @@ Then('The response should match json schema', () =>
   chai.expect(specUIAuthCode._response.json).to.be.jsonSchema(uiAuthCodeResponseSchema)
 );
 
-// Scenario: Unable to retrieve the authorization code because of an invalid transactionId parameter
+// Scenario Outline: Unable to retrieve the authorization code because of an invalid transactionId parameter
 // Code for this scenario is written in the aforementioned example
 
 // Scenario: Unable to retrieve the authorization code because no parameter was specified

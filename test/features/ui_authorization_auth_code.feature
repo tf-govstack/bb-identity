@@ -16,7 +16,7 @@ Feature: The API sends the accepted consent and permitted scopes and retrieves t
     And The response should match json schema
 
   @unit @negative
-  Scenario: Unable to retrieve the authorization code because of an invalid transactionId parameter
+  Scenario Outline: Unable to retrieve the authorization code because of an invalid transactionId parameter
 
     Given The end-user wants to send the accepted consent and permitted scopes via JS application
     When POST request with given current date as requestTime "<transactionId>" as transactionId "<permittedAuthorizeScopes>" as permittedAuthorizeScopes "<acceptedClaims>" as acceptedClaims is sent
