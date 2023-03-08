@@ -573,7 +573,7 @@
           "body": "{\n  \"active\": true\n}",
           "latency": 0,
           "statusCode": 200,
-          "label": "Active token",
+          "label": "Active token - ID token",
           "headers": [],
           "bodyType": "INLINE",
           "filePath": "",
@@ -583,21 +583,21 @@
             {
               "target": "query",
               "modifier": "client_id",
-              "value": "^\\S+$",
+              "value": "^[a-zA-Z\\d.]+$",
               "invert": false,
               "operator": "regex"
             },
             {
               "target": "query",
               "modifier": "token",
-              "value": "^([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_\\-\\+\\/=]+)",
+              "value": "^([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_\\-\\+\\/=]+)$",
               "invert": false,
               "operator": "regex"
             },
             {
               "target": "query",
               "modifier": "token_type_hint",
-              "value": "^access_token$|^id_token$",
+              "value": "^id_token$",
               "invert": false,
               "operator": "regex"
             }
@@ -605,14 +605,14 @@
           "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
-          "default": true
+          "default": false
         },
         {
-          "uuid": "d92cee43-545f-4c8c-87a1-f54040c3e1fe",
-          "body": "{\n  \"active\": false\n}",
+          "uuid": "32d1c4b5-c730-4833-a5fb-65fb24858bdb",
+          "body": "{\n  \"active\": true\n}",
           "latency": 0,
           "statusCode": 200,
-          "label": "Inactive token",
+          "label": "Active token - Access token",
           "headers": [],
           "bodyType": "INLINE",
           "filePath": "",
@@ -622,7 +622,46 @@
             {
               "target": "query",
               "modifier": "client_id",
-              "value": "^\\S+$",
+              "value": "^[a-zA-Z\\d.]+$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "query",
+              "modifier": "token",
+              "value": "^([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_\\-\\+\\/=]+)$|^[a-zA-Z\\d-._~+/]+$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "query",
+              "modifier": "token_type_hint",
+              "value": "^access_token$",
+              "invert": false,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "d92cee43-545f-4c8c-87a1-f54040c3e1fe",
+          "body": "{\n  \"active\": false\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Inactive token - ID token",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "client_id",
+              "value": "^[a-zA-Z\\d.]+$",
               "invert": false,
               "operator": "regex"
             },
@@ -636,7 +675,46 @@
             {
               "target": "query",
               "modifier": "token_type_hint",
-              "value": "^access_token$|^id_token$",
+              "value": "^id_token$",
+              "invert": false,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "4937c315-1b62-41a2-a42c-ebf8060d6be5",
+          "body": "{\n  \"active\": false\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Inactive token - Access token",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "client_id",
+              "value": "^[a-zA-Z\\d.]+$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "query",
+              "modifier": "token",
+              "value": "^([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_\\-\\+\\/=]+)",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "query",
+              "modifier": "token_type_hint",
+              "value": "^access_token$",
               "invert": false,
               "operator": "regex"
             }
@@ -661,14 +739,7 @@
             {
               "target": "query",
               "modifier": "client_id",
-              "value": "^\\S+$",
-              "invert": true,
-              "operator": "regex"
-            },
-            {
-              "target": "query",
-              "modifier": "token_type_hint",
-              "value": "^access_token$|^id_token$",
+              "value": "^[a-zA-Z\\d.]+$",
               "invert": true,
               "operator": "regex"
             }
@@ -676,7 +747,7 @@
           "rulesOperator": "OR",
           "disableTemplating": false,
           "fallbackTo404": false,
-          "default": false
+          "default": true
         }
       ],
       "enabled": true,
