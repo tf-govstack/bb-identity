@@ -1,3 +1,9 @@
+---
+description: >-
+  This section will highlight important requirements or describe any additional
+  cross-cutting requirements that apply to this Building Block.
+---
+
 # 5 Cross-Cutting Requirements
 
 The following requirements should be added to other Building Block cross-cutting requirements.

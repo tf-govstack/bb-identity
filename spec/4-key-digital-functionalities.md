@@ -1,3 +1,9 @@
+---
+description: >-
+  Key Digital Functionalities describe the core (required) functions that this
+  Building Block must be able to perform.
+---
+
 # 4 Key Digital Functionalities
 
 Identity systems can follow different approaches between centralized, federated, or distributed identities.

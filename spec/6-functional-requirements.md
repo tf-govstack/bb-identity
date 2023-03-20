@@ -1,3 +1,7 @@
+---
+description: This section lists the technical capabilities of this Building Block.
+---
+
 # 6 Functional Requirements
 
 ### 6.1 Identity Registration <a href="#docs-internal-guid-54ffa6d1-7fff-1219-8f59-d45ca47b2ad7" id="docs-internal-guid-54ffa6d1-7fff-1219-8f59-d45ca47b2ad7"></a>

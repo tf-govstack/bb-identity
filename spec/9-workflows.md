@@ -1,3 +1,9 @@
+---
+description: >-
+  This section provides a detailed view of how this Building Block will interact
+  with other Building Blocks to support common use cases.
+---
+
 # 9 Internal Workflows
 
 If GovStack will offer global workflow management for cross-building block use cases, Identity and Verification Building Block will have its internal workflows for its own internal business flows execution.

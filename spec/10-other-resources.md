@@ -1,3 +1,10 @@
+---
+description: >-
+  This section links to any external documents that may be relevant, such as
+  standards documents or other descriptions of this Building Block that may be
+  useful.
+---
+
 # 10 Other Resources
 
 The results presented here benefit from publicly available sources that are referenced here. This report is recommending the use of open standards throughout any implementation. For this purpose, the team is suggesting the following already available and recognized open standard providers:

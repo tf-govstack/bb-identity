@@ -1,3 +1,7 @@
+---
+description: This section provides context for this Building Block.
+---
+
 # 2 Description
 
 The purpose of this document is to be the high-level specification of the Identity and Verification Building Block, describing its internal architecture, its external interfaces, and how it is expected to interact with external Building Blocks.
