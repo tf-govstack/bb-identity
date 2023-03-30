@@ -6,7 +6,7 @@ description: >-
 
 # 4 Key Digital Functionalities
 
-Identity systems can follow different approaches between centralized, federated, or distributed identities.
+Identity systems can follow different approaches between centralized, federated, or distributed identities for issuing and verifying identities.
 
 * With the **Centralized Identity approach**, the identity is managed in a unique central place and offered as a service to the systems around. Foundational Identity follows a Centralized approach.
 * With the **Federated Identity approach**, the identities are multiple and managed in different systems which are all trusted to ensure identity verification services. Federated systems may be functional systems that could include different characteristics of persons. This approach helps to leverage existing identity assets.
