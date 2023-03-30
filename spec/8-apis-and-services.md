@@ -71,6 +71,49 @@ The API definition file can be found here:
 * [Technical description](https://osia.readthedocs.io/en/latest/05%20-%20interfaces.html#id-usage)
 * [Yaml file](https://osia.readthedocs.io/en/latest/annexes/technical/idusage.html)
 
+\-----------------------
+
+IDBB verification specification is inspired from OIDC protocol, we have chosen the most secure and privacy preserving options in OIDC and OAuth 2.0 to facilitate user verification in the context of foundational ID
+
+### API standards <a href="#_heading-h.3o7alnk" id="_heading-h.3o7alnk"></a>
+
+* The microservice interfaces are defined as per [OPENAPI Ver3.0 standards](https://swagger.io/specification/).&#x20;
+
+#### Service Group: Client Management
+
+| Endpoint                      | Inputs                              | Returns                                                                     | Description                                                                                                                     |
+| ----------------------------- | ----------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| POST:/client-mgmt/oidc-client | \[Client Details]                   | Error code details or success response with unique ID of registered client  | <p>Add new open ID connect (OIDC) clients to IDBB. </p><p>Each relying party can associate to one or multiple OIDC clients.</p> |
+| PUT:/client-mgmt/oidc-client  | \[Client ID, Client update details] | Error code details or success response with unique ID of updated client     | Update allowed details on existing Open ID Connect (OIDC) clients                                                               |
+
+#### Service Group: OIDC
+
+| Endpoint                              | Inputs                                          | Returns                                                                  | Description                                                                                                                                                        |
+| ------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| GET:/authorize                        | \[Authorization   Details]                      | No return data since this is a browser redirection                       | Redirects the user to UI of the IDBB, completes the authentication and takes permissions for sharing data and redirects back the user to relying party application |
+| POST:/oauth/token                     | \[Authorization code, Client Assertion Details] | ID Token and Access Token with expire information                        | Authenticated endpoint that allows exchange of authorization code to relvant ID and Access Tokens                                                                  |
+| GET:/oidc/userinfo                    | \[Access Token]                                 | End-user claims in JWT or JWE format                                     | Enables exchange of Access token to receive the verified end-user  information                                                                                     |
+| GET:/.well-known/jwks.json            | \[]                                             | Public key set in JWKS format                                            | Endpoint to fetch all the public keys of the IDBB that can be used for signature verification and other crypto operations.                                         |
+| GET:/.well-known/openid-configuration | \[]                                             | All IDBB details required for the relying party application to integrate | Endpoint to provide all the details of IDBB in a standard format.                                                                                                  |
+
+#### Service Group: Wallet - QR Code
+
+IDBB implementation that supports mobile wallet integration, the following API spec should also be implemented.
+
+| Endpoint                                     | Inputs                                                                         | Returns                                                                                                               | Description                                                                                                                        |
+| -------------------------------------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| POST:/linked-authorization/link-code         | \[Transaction Id]                                                              | Error code or Newly generated link code with expiry details                                                           | Generates and returns a random link code that is connected to the given transaction id                                             |
+| POST:/linked-authorization/link-status       | \[Transaction Id, Link Code ]                                                  | Error code or link status with date time when the linking was done                                                    | A long polling request which responds once the link transaction endpoint is called for this link code from wallet app              |
+| POST:/linked-authorization/link-auth-code    | \[Transaction Id, Link Code ]                                                  | Error code or Authorization code along with redirect URI and state details                                            | A long polling request which responds once the consent / permission endpoint is invoked from wallet app for the linked transaction |
+| POST: /linked-authorization/link-transaction | \[Link Code]                                                                   | Error code or Linked transaction ID, relying party details, requested user claims and authentication factor details   | Generates a linked transaction using the link code and responds with all the transaction details                                   |
+| POST:/linked-authorization/authenticate      | \[Link Transaction Id, individual Id, list of authentication challenges]       | Error code or linked transaction ID                                                                                   | Endpoint to authenticate the end-user based on the provided authentication challenges                                              |
+| POST:/linked-authorization/consent           | \[Linked Transaction Id, permitted authorize scopes, accepted claims]          | Error code or linked transaction ID                                                                                   | Endpoint to submit the user accepted claims so the original transaction can redirect back to relying party                         |
+| POST:/wallet-binding (DRAFT)                 | \[Individual Id, auth factor details, authentication challenges, public key  ] | Error code or wallet user Id, certificate along with expiry details                                                   | Binds a key generated in a wallet application to a user in IDBB. This enables wallet to be used as an authentication factor.       |
+
+Detailed API schemas written in YAML that define REST API endpoints for each of the services mentioned above are available on GitHub located at
+
+[https://github.com/GovStackWorkingGroup/bb-identity/pull/6](https://github.com/GovStackWorkingGroup/bb-identity/pull/6)
+
 ### 8.2 Building Block API Requirements
 
 This section lists the GovStack Identity and Verification Building Block high-level and generic requirements to be followed by the candidate implementations of Building Blocks.
