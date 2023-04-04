@@ -2,35 +2,36 @@ openapi: 3.1.0
 x-stoplight:
   id: 6f1syzijynu40
 info:
-  title: Identity Provider
+  title: ID Building Block
   version: '1.0'
+  contact:
+    name: MOSIP Team
+    email: info@mosip.io
+    url: 'https://www.mosip.io/'
   description: |-
-    <b>Abbreviations:</b></br>
+    This API document details on the below categories of endpoints
+    <ul>
+    <li> Client Management - Endpoints for creation and updation of OIDC client details </li>
+    <li> OIDC - All OIDC compliant endpoints for performing the Open ID Connect flows</li>
+    <li> Wallet - QR Code - All endpoints used by the Wallet binding and Wallet - QR code based authentication</li>
+    </ul>
+
+    <b>Abbreviations:</b></br></br>
     OIDC - Open ID Connect</br>
     IdP - Identity provider</br>
-    PMP - Partner Management portal</br>
     KYC - Know Your Customer</br>
-    IDA - Authentication server</br>
+    UIN - Unique Identification Number</br>
+    VID - Virtual Identifier</br>
+    PSUT - Partner(Relying Party) Specific User Token</br>
 
-
-    </br>
-    <b>Initial Setup:</b>
-    </br>
-    1. Generate IdP root key.
-    </br> 
-    2. Generate IdP master keys.
-
-        -> IDP_SERVICE used to sign id_token and access_token.
-        
-        -> IDP_PARTNER used to onboard IDP as one of the MISP in PMP & IDA.
         
         
        
   license:
-    identifier: MPL-2.0
     name: MPL-2.0
-servers:
-  - url: 'https://dev.mosip.net/v1/idp'
+    url: 'https://www.mozilla.org/en-US/MPL/2.0/'
+  summary: Open ID Connect based identity verifier for large scale authentications
+servers: []
 paths:
   /client-mgmt/oidc-client:
     post:
@@ -41,21 +42,12 @@ paths:
           application/json:
             schema:
               type: object
-              description: 'Name of the client, length constraint required.'
+              description: OIDC client details
               properties:
-                id:
-                  type: string
-                version:
-                  type: string
                 requestTime:
                   type: string
-                  format: date-time
-                  pattern: 'yyyy-MM-dd''T''HH:mm:ss.SSS''Z'''
-                metadata:
-                  type: object
-                  properties:
-                    '':
-                      type: string
+                  pattern: ''
+                  description: Current date and time when the request is sent
                 request:
                   type: object
                   required:
@@ -71,8 +63,8 @@ paths:
                   properties:
                     clientId:
                       type: string
-                      description: 'Unique OIDC client id (Case-Sensitive). It is validated in IdP. If duplicates found, request will be rejected.'
-                      example: e-health-service
+                      description: 'Unique OIDC client id (Case-Sensitive). If duplicates found, request will be rejected.'
+                      example: 785b806d0e594657b05aabdb30fff8a4
                       maxLength: 50
                       minLength: 1
                     clientName:
@@ -80,25 +72,27 @@ paths:
                       minLength: 1
                       maxLength: 256
                       description: Name of OIDC client.
-                      example: Health Service
+                      example: ABC Health Care
                     relyingPartyId:
                       type: string
                       description: |-
-                        Relying Party ID of the client. This may be used further to fetch KYC from IDA servers.
+                        Relying Party ID of the client. This will be passed on to authentications servers when KYC is fetched.
 
-                        Note: Use the client Id as relyingPartyId if there is no separate concept of relying party in the IDA system.
+                        Note: Use the client Id as relyingPartyId if there is no separate concept of relying party in the ID authentication system.
                       example: bharathi-inc
                       minLength: 1
                       maxLength: 50
                     logoUri:
                       type: string
-                      description: Relying party logo URL which will be displayed in the OIDC login and consent pages.
+                      description: Relying party logo URI which will used to display logo in OIDC login and permission pages.
                       format: uri
                       minLength: 1
                       maxLength: 1024
                     redirectUris:
                       type: array
-                      description: Uri to where the response with authorization_code to be redirected. This will be cross verified with the redirect_uri query parameter sent in the authorize request.
+                      description: |-
+                        Valid list of callback Uris of the relying party. 
+                        When OIDC authorize API is called, any one Uri from this list should be sent as redirect_uri. authorization_code will be redirected to this Uri on successful authentication.
                       items:
                         type: string
                     authContextRefs:
@@ -108,33 +102,41 @@ paths:
                       items:
                         type: string
                         enum:
-                          - 'mosip:idp:acr:static-code'
-                          - 'mosip:idp:acr:generated-code'
-                          - 'mosip:idp:acr:linked-wallet'
-                          - 'mosip:idp:acr:biometrics'
+                          - 'idbb:acr:static-code'
+                          - 'idbb:acr:generated-code'
+                          - 'idbb:acr:linked-wallet'
+                          - 'idbb:acr:biometrics'
+                          - 'idbb:acr:biometrics-generated-code'
+                          - 'idbb:acr:linked-wallet-static-code'
                     publicKey:
                       type: object
                       description: |-
-                        OIDC client's public key used to verify the client's signature at IdP. 
-                        Format : Json Web Key (JWK)
+                        OIDC client's public key used to verify the client's private_key_jwt when OIDC token endpoint is invoked. 
+                        This field will not be allowed to udpate later, if the private key is compromised, then new OIDC client to be created.
+                        Format : Json Web Key (JWK).
                     userClaims:
                       type: array
-                      description: Allowed user info claims.
+                      description: 'Allowed user info claims, that can be requested by OIDC client in the authorize API'
                       minItems: 1
                       items:
                         type: string
                         enum:
                           - name
                           - given_name
+                          - family_name
                           - middle_name
                           - preferred_username
                           - nickname
                           - gender
                           - birthdate
                           - email
+                          - email_verified
                           - phone_number
+                          - phone_number_verified
                           - picture
                           - address
+                          - locale
+                          - zoneinfo
                     grantTypes:
                       type: array
                       description: Form of Authorization Grant presented to token endpoint
@@ -158,11 +160,7 @@ paths:
             examples:
               example-1:
                 value:
-                  id: string
-                  version: string
-                  requestTime: '2019-08-24T14:15:22.340Z'
-                  metadata:
-                    '': string
+                  requestTime: '2011-10-05T14:48:00.000Z'
                   request:
                     clientId: e-health-service
                     clientName: Health Service
@@ -170,7 +168,7 @@ paths:
                     logoUri: 'http://example.com'
                     publicKey: {}
                     authContextRefs:
-                      - 'mosip:idp:acr:static-code'
+                      - 'idbb:acr:generated-code'
                     userClaims:
                       - name
                     grantTypes:
@@ -179,14 +177,11 @@ paths:
                       - private_key_jwt
         description: ''
       description: |-
-        Create OIDC client request raised from PMP to IdP for a relying party.
-        One relying party can create multiple OIDC clients.
+        API to add new open ID connect (OIDC) clients, it can be invoked by other modules which manages the relying parties / partners.
 
-        Authentication & Authorization: Scope based.
+        Each relying party can associate to one or multiple OIDC client Ids.
 
-        IdP will accept client registration request from PMP only with valid authorization token. Expected scope in the token is "<b>add_oidc_client</b>".
-
-        On create, OIDC client status will be set to "<b>active</b>".
+        On create, OIDC client status will be by default set to "**active**".
       x-internal: false
       responses:
         '200':
@@ -196,18 +191,15 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
+                  responseTime:
                     type: string
-                  version:
-                    type: string
+                    description: Date and time when the response is generated
                   response:
                     type: object
                     properties:
                       clientId:
                         type: string
                         description: Client id as provided in the request.
-                  responseTime:
-                    type: string
                   errors:
                     type: array
                     items:
@@ -231,13 +223,19 @@ paths:
                             - invalid_client_auth
                         errorMessage:
                           type: string
+        '401':
+          description: Unauthorized
       tags:
-        - Management
+        - Client Management
+      parameters: []
+      security:
+        - Authorization-add_oidc_client: []
     parameters: []
   '/client-mgmt/oidc-client/{client_id}':
     parameters:
       - schema:
           type: string
+          example: 785b806d0e594657b05aabdb30fff8a4
         name: client_id
         in: path
         required: true
@@ -253,12 +251,9 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: string
-                  version:
-                    type: string
                   responseTime:
                     type: string
+                    description: Date and time when the response is generated
                   response:
                     type: object
                     properties:
@@ -269,7 +264,7 @@ paths:
                       - clientId
                   errors:
                     type: array
-                    description: List of Errors in case of request validation / processing failure in Idp server.
+                    description: 'List of Errors in case of request validation / processing failure in IDBB server. When request processing is fully successful, this array will be empty.'
                     items:
                       type: object
                       properties:
@@ -287,24 +282,19 @@ paths:
                         errorMessage:
                           type: string
       description: |-
-        OIDC-Client update endpoint. Invoked from PMP with valid OIDC client id.
+        API to update existing Open ID Connect (OIDC) client, it can be invoked by other modules which manages the relying parties / partners when there any updates on the fields accepted in this API.
 
-        Authentication & Authorization: Scope based.
-
-        IdP will accept client registration request from PMP only with valid authorization token. Expected scope in the token is "<b>update_oidc_client</b>".
+        **Authentication and authorization** is based on a valid JWT issued by a trusted IAM system including "**update_oidc_client**" scope.
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                id:
-                  type: string
-                version:
-                  type: string
                 requestTime:
                   type: string
-                  pattern: 'yyyy-MM-dd''T''HH:mm:ss.SSS''Z'''
+                  pattern: ''
+                  description: Current date and time when the request is sent
                 request:
                   type: object
                   required:
@@ -322,6 +312,7 @@ paths:
                       description: Name of the OIDC client.
                       minLength: 1
                       maxLength: 256
+                      example: ABC Health Care
                     status:
                       type: string
                       enum:
@@ -330,13 +321,13 @@ paths:
                       description: Status of OIDC client.
                     logoUri:
                       type: string
-                      description: Relying party or client specific logo URI.
+                      description: Relying party logo URI which will used to display logo in OIDC login and permissi
                       format: uri
                       minLength: 1
                       maxLength: 1024
                     redirectUris:
                       type: array
-                      description: Uri to where the response with authorization_code to be redirected. This will be cross verified with the redirect_uri query parameter sent in the authorize request.
+                      description: 'Valid list of callback Uris of the relying party. When OIDC authorize API is called, any one Uri from this list should be sent as redirect_uri. authorization_code will be redirected to this Uri on successful authentication.'
                       minItems: 1
                       uniqueItems: true
                       items:
@@ -344,22 +335,27 @@ paths:
                         format: uri
                     userClaims:
                       type: array
-                      description: Allowed user claims.
+                      description: 'Allowed user info claims, that can be requested by OIDC client in the authorize API'
                       minItems: 1
                       items:
                         type: string
                         enum:
                           - name
                           - given_name
+                          - family_name
                           - middle_name
                           - preferred_username
                           - nickname
                           - gender
                           - birthdate
                           - email
+                          - email_verified
                           - phone_number
+                          - phone_number_verified
                           - picture
                           - address
+                          - locale
+                          - zoneinfo
                     authContextRefs:
                       type: array
                       description: The Authentication Context Class Reference is case-sensitive string specifying a list of Authentication Context Class values that identifies the Authentication Context Class. Values that the authentication performed satisfied implying a Level Of Assurance.
@@ -368,10 +364,12 @@ paths:
                       items:
                         type: string
                         enum:
-                          - 'mosip:idp:acr:static-code'
-                          - 'mosip:idp:acr:generated-code'
-                          - 'mosip:idp:acr:linked-wallet'
-                          - 'mosip:idp:acr:biometrics'
+                          - 'idbb:acr:static-code'
+                          - 'idbb:acr:generated-code'
+                          - 'idbb:acr:linked-wallet'
+                          - 'idbb:acr:biometrics'
+                          - 'idbb:acr:biometrics-generated-code'
+                          - 'idbb:acr:linked-wallet-static-code'
                     grantTypes:
                       type: array
                       description: Form of Authorization Grant presented to token endpoint.
@@ -382,23 +380,19 @@ paths:
                           - authorization_code
                     clientAuthMethods:
                       type: array
-                      description: Auth method supported for token endpoint. Currently "private_key_jwt"
+                      description: Auth method supported for token endpoint. At present only "private_key_jwt" is supported.
                       minItems: 1
                       items:
                         type: string
                         enum:
                           - private_key_jwt
-                metadata:
-                  type: object
               required:
                 - requestTime
                 - request
             examples:
               example-1:
                 value:
-                  id: string
-                  version: string
-                  requestTime: '2019-08-24T14:15:22.340Z'
+                  requestTime: '2022-09-22T08:03:45.000Z'
                   request:
                     clientName: Health Service
                     status: active
@@ -408,24 +402,26 @@ paths:
                     userClaims:
                       - name
                     authContextRefs:
-                      - 'mosip:idp:acr:static-code'
+                      - 'idbb:acr:generated-code'
                     grantTypes:
                       - authorization_code
                     clientAuthMethods:
                       - private_key_jwt
-                  metadata: {}
+        description: ''
+      security:
+        - Authorization-update_oidc_client: []
       tags:
-        - Management
+        - Client Management
   /authorize:
     get:
       summary: Authorization Endpoint
       operationId: get-authorize
       description: |-
-        This URL lands enduser to IdP single page JS application. UI is rendered based on the provided display request parameter.
+        This is the authorize endpoint of Open ID Connect (OIDC). The relying party applications will do a browser redirect to this endpoint with all required details passed as query parameters.
 
-        On load of the page IdP UI echoes all the authorize request parameters to oauth-details endpoint for server-sdie validation.
+        This endpoint will respond with a HTML page / JS application to be loaded in the browser.
 
-        Authentication & authroization : None
+        All the validations on the query parameter values will be performed, in case of any failures respective error message will be sent along with browser redirection back to relying party application.
       parameters:
         - schema:
             type: string
@@ -440,7 +436,7 @@ paths:
               - offline_access
           in: query
           name: scope
-          description: Secifies what access privileges are being requested for Access Tokens. The scopes associated with Access Tokens determine what resources will be available when they are used to access OAuth 2.0 protected endpoints. OpenID Connect requests MUST contain the openid scope value.
+          description: Specifies what access privileges are being requested for Access Tokens. The scopes associated with Access Tokens determine what resources will be available when they are used to access OAuth 2.0 protected endpoints. OpenID Connect requests MUST contain the OpenID scope value.
           required: true
         - schema:
             type: string
@@ -448,7 +444,7 @@ paths:
               - code
           in: query
           name: response_type
-          description: 'Value that determines the authorization processing flow to be used. When using the Authorization Code Flow, this value is code.'
+          description: 'The value set here determines the authorization processing flow. To use the Authorization Code Flow, the value should be configured to "code".'
           required: true
         - schema:
             type: string
@@ -456,13 +452,13 @@ paths:
           in: query
           name: client_id
           required: true
-          description: OAuth 2.0 Client Identifier valid at the Authorization Server
+          description: Valid OAuth 2.0 Client Identifier in the Authorization Server.
         - schema:
             type: string
             format: uri
           in: query
           name: redirect_uri
-          description: Redirection URI to which the response will be sent. This URI MUST exactly match one of the Redirection URI values for the Client pre-registered
+          description: Redirection URI to which the response would be sent. This URI must match one of the redirection URI values during the client ID creation.
           required: true
         - schema:
             type: string
@@ -484,7 +480,7 @@ paths:
               - wap
           in: query
           name: display
-          description: ASCII string value that specifies how the Authorization Server displays the authentication and consent user interface pages to the End-User.
+          description: ASCII string value that specifies how the Authorization Server displays the authentication and consent user interface pages to the end user.
         - schema:
             type: string
             enum:
@@ -495,19 +491,26 @@ paths:
             example: consent
           in: query
           name: prompt
-          description: 'Space delimited, case sensitive list of ASCII string values that specifies whether the Authorization Server prompts the End-User for reauthentication and consent.'
+          description: Space delimited case-sensitive list of ASCII string values that specifies whether the Authorization Server prompts the End-User for re-authentication and consent.
         - schema:
             type: number
           in: query
           name: max_age
-          description: 'Maximum Authentication Age. Specifies the allowable elapsed time in seconds since the last time the End-User was actively authenticated by the OP. If the elapsed time is greater than this value, the OP MUST attempt to actively re-authenticate the End-User. (The max_age request parameter corresponds to the OpenID 2.0 PAPE [OpenID.PAPE] max_auth_age request parameter.) When max_age is used, the ID Token returned MUST include an auth_time Claim Value.'
+          description: 'Maximum Authentication Age. This specifies the allowable elapsed time in seconds since the last time the end user was actively authenticated by the OP. If the elapsed time is greater than this value, then the OP MUST attempt to actively re-authenticate the end user. The max_age request parameter corresponds to the OpenID 2.0 PAPE [OpenID.PAPE] max_auth_age request parameter. When max_age is used, the ID Token returned MUST include an auth_time claim value.'
         - schema:
             type: string
           in: query
           name: ui_locales
-          description: 'End-User''s preferred languages and scripts for the user interface, represented as a space-separated list of BCP47 [RFC5646] language tag values, ordered by preference. For instance, the value "fr-CA fr en" represents a preference for French as spoken in Canada, then French (without a region designation), followed by English (without a region designation). An error SHOULD NOT result if some or all of the requested locales are not supported by the OpenID Provider.'
+          description: 'End user''s preferred languages and scripts for the user interface, represented as a space-separated list of BCP47 [RFC5646] language tag values, ordered by preference. For instance, the value "fr-CA fr en" represents a preference for French as spoken in Canada, then French (without a region designation), followed by English (without a region designation). An error SHOULD NOT result if some or all of the requested locales are not supported by the OpenID Provider.'
         - schema:
             type: string
+            enum:
+              - 'idbb:acr:static-code'
+              - 'idbb:acr:generated-code'
+              - 'idbb:acr:linked-wallet'
+              - 'idbb:acr:biometrics'
+              - 'idbb:acr:biometrics-generated-code'
+              - 'idbb:acr:linked-wallet-static-code'
           in: query
           name: acr_values
           description: 'Requested Authentication Context Class Reference values. Space-separated string that specifies the acr values that the Authorization Server is being requested to use for processing this Authentication Request, with the values appearing in order of preference. The Authentication Context Class satisfied by the authentication performed is returned as the acr Claim Value, as specified in Section 2. The acr Claim is requested as a Voluntary Claim by this parameter.'
@@ -520,20 +523,19 @@ paths:
             type: string
           in: query
           name: claims
-          description: This parameter is used to request that specific Claims be returned. The value is a JSON object listing the requested Claims. The claims parameter value is represented in an OAuth 2.0 request as UTF-8 encoded JSON
+          description: This parameter is used to request specific claims to be returned. The value is a JSON object listing the requested claims. The claims parameter value is represented in an OAuth 2.0 request as UTF-8 encoded JSON.
       responses:
         '200':
           description: |-
             OK
 
-            Loads JS application, and validates the provided query parameters using oauth-details endpoint.
+            Loads IDBB UI application in browser for interacting with user for Login process
       tags:
-        - OAuth
+        - OIDC
     parameters: []
-  /authorization/oauth-details:
+  /linked-authorization/link-code:
     post:
-      summary: OAuth Details Endpoint
-      operationId: post-oauth-details
+      summary: Generate Link Code endpoint
       responses:
         '200':
           description: OK
@@ -542,10 +544,6 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: string
-                  version:
-                    type: string
                   responseTime:
                     type: string
                   response:
@@ -553,297 +551,146 @@ paths:
                     properties:
                       transactionId:
                         type: string
-                        description: This value is passed through unmodified from the /oauth-details request to the /auth-code request.
-                      authFactors:
-                        type: array
-                        description: |-
-                          Auth factors defines the authentication screens displayed in IDP frontend.
-                          More than one authFactor may be resolved or combination of authfactors.
-                          Precedence of authFactors is based on its order  
-                        items:
-                          $ref: '#/components/schemas/AuthFactor'
-                      essentialClaims:
-                        type: array
-                        description: Array holds all the requested essential claims.
-                        items:
-                          type: string
-                      voluntaryClaims:
-                        type: array
-                        description: Array holds all the requested optional claims.
-                        items:
-                          type: string
-                      authorizeScopes:
-                        type: array
-                        description: Scopes to be permitted by enduser.
-                        items:
-                          type: string
-                      configs:
-                        type: object
-                        description: UI configuration key-value pairs.
-                    required:
-                      - transactionId
-                      - authFactors
-                      - essentialClaims
+                        description: The same transactionId passed as part of the request.
+                      linkCode:
+                        type: string
+                        description: Unique random string mapped to this transactionId.
+                      expireDateTime:
+                        type: string
+                        description: Expire date time (ISO format) for the generated linkCode. After this date time linkCode in this request is not valid.
                   errors:
                     type: array
-                    description: List of Errors in case of request validation / processing failure in Idp server.
                     items:
                       type: object
                       properties:
                         errorCode:
                           type: string
                           enum:
-                            - invalid_client_id
-                            - invalid_redirect_uri
-                            - invalid_scope
-                            - no_acr_registered
+                            - invalid_transaction_id
+                            - link_code_gen_failed
+                            - invalid_transaction
+                        errorMessage:
+                          type: string
+      operationId: get-authorization-generate-link-code
+      description: |-
+        Generate link code request is raised from IDBB UI application.
+
+        1. UI application creates a deeplink with this link-code as parameter.
+        2. This deeplink is embedded in a Machine-readable-code (like QR code) and the same is rendered in the UI.
+        3. End user scans this machine-readable-code to open wallet app.
+        4. On open of wallet-app, wallet-app invokes /link-transaction endpoint.
+        5. In the UI application, once machine-readable-code is rendered, at the same time /link-status endpoint is invoked as a long polling request.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestTime:
+                  type: string
+                request:
+                  type: object
+                  required:
+                    - transactionId
+                  properties:
+                    transactionId:
+                      type: string
+                      description: TransactionId that associates the current transaction / session with the relying party redirection. IDBB backend application should be able to maintain this association with respective to the transaction Id.
+              required:
+                - requestTime
+                - request
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: X-XSRF-TOKEN
+          description: CSRF token as set in cookie key 'XSRF-TOKEN'
+          required: true
+      tags:
+        - Wallet - QR Code
+    parameters: []
+  /linked-authorization/link-status:
+    post:
+      summary: Link status endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  responseTIme:
+                    type: string
+                  response:
+                    type: object
+                    properties:
+                      transactionId:
+                        type: string
+                        description: This is the same transactionId as sent in the request.
+                      linkStatus:
+                        type: string
+                        description: Link status of the linkCode passed in the request.
+                        enum:
+                          - LINKED
+                      linkedDateTime:
+                        type: string
+                        description: Epoch in milliseconds at which the wallet-app acknowledged the link-code.
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        errorCode:
+                          type: string
+                          enum:
+                            - invalid_transaction_id
+                            - invalid_link_code
+                            - response_timeout
                             - unknown_error
                         errorMessage:
                           type: string
-              examples:
-                example-1:
-                  value:
-                    id: id
-                    version: '1.0'
-                    responseTime: '2022-09-22T08:03:45.287Z'
-                    response:
-                      transactionId: vKb8cVbq9PX_yt46_hX0xlBJNExl9cnYtL8kGRxU5OM
-                      clientName: Health service OIDC Client
-                      logoUrl: 'https://health-services.com/logo.png'
-                      authFactors:
-                        - - type: PIN
-                            count: 0
-                            subTypes: null
-                      authorizeScopes: []
-                      essentialClaims:
-                        - given_name
-                        - email
-                      voluntaryClaims:
-                        - birthdate
-                        - gender
-                        - phone
-                      configs:
-                        sbi.env: Staging
-                        sbi.threshold.face: 40
-                        sbi.threshold.finger: 40
-                        sbi.threshold.iris: 40
-                    errors: null
-      description: |
-        OAuth details Endpoint is raised from the single page JS application on page load.
-
-        OAuth details Endpoint validates the provided request parameters and resolves the required authentication factors. Combination of resolved authentication factors and the consent details are sent back as response with a unique transactionId.
-
-        The transcationId in the response is used to identify/maintain the enduser pre-auth session. This pre-auth session has timeout (configurable in Idp service).
-
-        Authentication & authroization : None, starts the pre-auth session with unique transactionId.
-
-        All the query params passed to /authorize API MUST be sent to /oauth-details API. All these parameters MUST be validated in IDP before returning success response.
-
-        1. Validates the clientId.
-        2. validates redirectUri is one of the redirectUri during client create/update.
-        3. validates display,responseType,prompts values are part of supported values in Idp properties.
-        4. scope / acrValues / claims / locales / claim_locales - unknown values are ignored. Only valid values are considered.
-        5. scopes like profile, email and phone are allowed only if "openid" is also part of the requested scope.
-        6. Claims request parameter is allowed, only if 'openid' is part of the scope request parameter
-        7. claims considered only if part of registered claims.
-        8. ACR in claims request parameter is given the first priority over acr_values query pararmeter.if none of them are part of the registered acrs, Registered ACRs are only considered to derive the authfactors.
+      operationId: post-authorization-link-status
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                id:
-                  type: string
-                version:
-                  type: string
                 requestTime:
                   type: string
-                  pattern: 'yyyy-MM-dd''T''HH:mm:ss.SSS''Z'''
                 request:
                   type: object
                   required:
-                    - scope
-                    - responseType
-                    - clientId
-                    - redirectUri
-                    - nonce
+                    - transactionId
+                    - linkCode
                   properties:
-                    scope:
+                    transactionId:
                       type: string
-                      description: Secifies what access privileges are being requested for Access Tokens. The scopes associated with Access Tokens determine what resources will be available when they are used to access OAuth 2.0 protected endpoints. OpenID Connect requests MUST contain the openid scope value.
-                    responseType:
+                      description: This is the same transactionId sent in the /link-code request
+                    linkCode:
                       type: string
-                      description: 'Value that determines the authorization processing flow to be used. When using the Authorization Code Flow, this value is code.'
-                    clientId:
-                      type: string
-                      description: OAuth 2.0 Client Identifier valid at the Authorization Server
-                    redirectUri:
-                      type: string
-                      description: Redirection URI to which the response will be sent. This URI MUST exactly match one of the Redirection URI values for the Client pre-registered
-                    display:
-                      type: string
-                      description: ASCII string value that specifies how the Authorization Server displays the authentication and consent user interface pages to the End-User.
-                    prompt:
-                      type: string
-                      description: 'Space delimited, case sensitive list of ASCII string values that specifies whether the Authorization Server prompts the End-User for reauthentication and consent.'
-                    acrValues:
-                      type: string
-                      description: |-
-                        Space separated ACR values, Unknown ACR are ignored. Only registered ACR values will be considered.
-                        if none of the provided acr value is among the registered values, Error response is returned with error code "invalid_acr".
-                    claims:
-                      $ref: '#/components/schemas/Claim'
-                    maxAge:
-                      type: number
-                      description: 'Maximum Authentication Age. Specifies the allowable elapsed time in seconds since the last time the End-User was actively authenticated by the OP. If the elapsed time is greater than this value, the OP MUST attempt to actively re-authenticate the End-User. (The max_age request parameter corresponds to the OpenID 2.0 PAPE [OpenID.PAPE] max_auth_age request parameter.) When max_age is used, the ID Token returned MUST include an auth_time Claim Value.'
-                    claimsLocales:
-                      type: string
-                      description: 'End-User''s preferred languages and scripts for Claims being returned, represented as a space-separated list of BCP47 [RFC5646] language tag values, ordered by preference. An error SHOULD NOT result if some or all of the requested locales are not supported by the OpenID Provider.'
-                    state:
-                      type: string
-                      description: client state value echoed.
-                    nonce:
-                      type: string
-                      description: Client's nonce value echoed.
-                metadata:
-                  type: object
+                      description: This is same linkCode returned in the generate-link-code response.
               required:
                 - requestTime
                 - request
-            examples:
-              example-1:
-                value:
-                  id: id
-                  version: '1.0'
-                  requestTime: '2022-09-22T08:01:10.081Z'
-                  request:
-                    clientId: healthservicev1
-                    scope: openid resident-service profile
-                    responseType: code
-                    redirectUri: 'http://health-services.com/userprofile'
-                    display: popup
-                    prompt: login
-                    acrValues: 'mosip:idp:acr:static-code mosip:idp:acr:generated-code'
-                    claims:
-                      userinfo:
-                        given_name:
-                          essential: true
-                        phone: null
-                        email:
-                          essential: true
-                        picture:
-                          essential: false
-                        gender:
-                          essential: false
-                      id_token: {}
-                    nonce: 973eieljzng
-                    state: eree2311
-                    claimsLocales: en
-      parameters: []
-      tags:
-        - UI
-    parameters: []
-  /authorization/send-otp:
-    post:
-      summary: Send OTP Endpoint
-      operationId: post-send-otp
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  version:
-                    type: string
-                  responseTime:
-                    type: string
-                  response:
-                    type: object
-                    description: 'Successful message, or null if failed to deliver OTP.'
-                    properties:
-                      transactionId:
-                        type: string
-                        description: oauth-details transactionId is used until the /token call.
-                      messageCode:
-                        type: string
-                        description: Send OTP status message as returned from IDA servers.
-                    required:
-                      - transactionId
-                  errors:
-                    type: array
-                    description: 'List of Errors in case of request validation / processing failure in Idp server. if failure from IDA, the same error is relayed in this response.'
-                    items:
-                      type: object
-                      properties:
-                        errorCode:
-                          type: string
-                          enum:
-                            - invalid_transaction
-                            - invalid_request
-                        errorMessage:
-                          type: string
       description: |-
-        Send OTP Endpoint to connect to IDA with the provided UIN/VID to generate OTP. Returns status of OTP generation and sending the same to enduser over configured/chosen OTP channel.
+        The link status endpoint is invoked from IDBB UI application.
 
-        Send OTP Endpoint is raised from the single page JS application.
-
-        Authentication & authroization : None, validates transactionId, must be same as the one started with oauth-details API.
-
-        1. Validates the transactionId.
-        2. Validates null / empty individualId.
-        3. Delegates the call to integrated IDA.
-        4. Relays error from IDA to UI on failure.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: string
-                version:
-                  type: string
-                requestTime:
-                  type: string
-                  pattern: 'yyyy-MM-dd''T''HH:mm:ss.SSS''Z'''
-                request:
-                  type: object
-                  required:
-                    - transactionId
-                    - individualId
-                    - channel
-                  properties:
-                    transactionId:
-                      type: string
-                      description: oauth-details transactionId is used until the /token call.
-                    individualId:
-                      type: string
-                      description: Actual UIN or VID value of the authenticating enduser.
-                    channel:
-                      enum:
-                        - email
-                        - sms
-                      description: Channel to be used to deliver request OTP.
-                      type: string
-                metadata:
-                  type: object
-              required:
-                - requestTime
-                - request
-        description: ''
-      parameters: []
+        1. Checks the status of link code and will return the status as LINKED once the /link-transaction endpoint is called from wallet application.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: X-XSRF-TOKEN
+          description: CSRF token as set in cookie key 'XSRF-TOKEN'
+          required: true
       tags:
-        - UI
+        - Wallet - QR Code
     parameters: []
-  /authorization/authenticate:
+  /linked-authorization/link-auth-code:
     post:
-      summary: Authentication Endpoint
-      operationId: post-authenticate
+      summary: Link authorization code endpoint
       responses:
         '200':
           description: OK
@@ -852,152 +699,6 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: string
-                  version:
-                    type: string
-                  responseTime:
-                    type: string
-                  response:
-                    type: object
-                    properties:
-                      transactionId:
-                        type: string
-                        description: This is the same transactionId sent in the oauth-details response.
-                  errors:
-                    type: array
-                    description: List of Errors in case of request validation / processing failure in Idp server.
-                    items:
-                      type: object
-                      properties:
-                        errorCode:
-                          type: string
-                          enum:
-                            - invalid_transaction
-                            - auth_failed
-                            - invalid_request
-                        errorMessage:
-                          type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: string
-                version:
-                  type: string
-                requestTime:
-                  type: string
-                  pattern: 'yyyy-MM-dd''T''HH:mm:ss.SSS''Z'''
-                request:
-                  type: object
-                  required:
-                    - transactionId
-                    - individualId
-                    - challengeList
-                  properties:
-                    transactionId:
-                      type: string
-                      description: This is the same transactionId sent in the oauth-details response.
-                    individualId:
-                      type: string
-                      description: ' User identifier (UIN/VID).'
-                    challengeList:
-                      type: array
-                      description: Authentication Challenge.
-                      items:
-                        $ref: '#/components/schemas/AuthChallenge'
-                metadata:
-                  type: object
-              required:
-                - requestTime
-                - request
-      description: |
-        Authentication endpoint, takes following input: user identifier (UIN/VID) and auth challenge.
-
-        Supported auth-challenge depends on the integrated authentication server.
-
-        Mock-authentication-server : supports only <b>pin</b> based authentication.
-
-        Authentication & authroization : None, validates transactionId, must be same as the one started with oauth-details API.
-
-        1. Validates transactionId.
-        2. Validates null / empty individualId.
-        3. invokes kyc-auth call to integrated authentication server (IDA).
-        4. Relays error from integrated authentication server to UI on failure.
-
-
-        On Authentication Success: Only transaction Id is returned in the below response without any errors.
-
-        On Authentication Failure: Error list will be set with the errors returned from the integrated authentication server.
-      parameters: []
-      tags:
-        - UI
-    parameters: []
-  /authorization/auth-code:
-    post:
-      summary: Authorization Code Endpoint
-      operationId: post-auth-code
-      description: |-
-        This endpoint is invoked from JS application to send the accepted consent and permitted scopes.
-
-        Authentication & authroization : None, validates transactionId, must be same as the one started with oauth-details API.
-
-        1. Validates transactionId. If valid, stores the accepted claims and permitted scopes in the cache and returns back the authorization code.
-
-        TODO:
-        Validate accepted claims and permitted scopes in the request.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                id:
-                  type: string
-                version:
-                  type: string
-                requestTime:
-                  type: string
-                  pattern: 'yyyy-MM-dd''T''HH:mm:ss.SSS''Z'''
-                request:
-                  type: object
-                  required:
-                    - transactionId
-                  properties:
-                    transactionId:
-                      type: string
-                      description: Transaction id echoed starting from /authorize call.
-                    permittedAuthorizeScopes:
-                      type: array
-                      description: List of permitted scopes by end-user.
-                      items:
-                        type: string
-                    acceptedClaims:
-                      type: array
-                      description: List of accepted essential and voluntary claims by end-user.
-                      items:
-                        type: string
-                metadata:
-                  type: object
-              required:
-                - requestTime
-                - request
-      parameters: []
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  version:
-                    type: string
                   responseTime:
                     type: string
                   response:
@@ -1009,12 +710,121 @@ paths:
                       redirectUri:
                         type: string
                         description: Client's validated redirect URI.
-                      nonce:
-                        type: string
-                        description: 'The echoed nonce value, if one was passed with the request. Clients must validate the value before proceeding.'
                       state:
                         type: string
                         description: 'The echoed state value, used to maintain state between the request and the callback'
+                      nonce:
+                        type: string
+                        description: 'The echoed nonce value, if one was passed with the request. Clients must validate the value before proceeding.'
+                  errors:
+                    type:
+                      - array
+                    items:
+                      type: object
+                      properties:
+                        errorCode:
+                          type: string
+                          enum:
+                            - invalid_transaction
+                            - invalid_transaction_id
+                            - invalid_link_code
+                            - response_timeout
+                            - unknown_error
+                        errorMessage:
+                          type: string
+      operationId: post-authorization-link-auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestTime:
+                  type: string
+                request:
+                  type: object
+                  required:
+                    - transactionId
+                    - linkedCode
+                  properties:
+                    transactionId:
+                      type: string
+                      description: This is the same transactionId sent in the /link-code request.
+                    linkedCode:
+                      type: string
+                      description: linkCode for which status is already received as LINKED.
+              required:
+                - requestTime
+                - request
+      description: |-
+        Link authorization code endpoint is invoked from UI application.
+
+        1. This is a Long polling request to IDBB backend.
+        2. validates the transactionId
+        3. validates the linkCode if its LINKED.
+        4. checks the cache to see if the auth-code is generated, if yes returns the response.
+        5. If the auth-code is not yet generated, polling request waits for the configured time.
+        6. On successful response, IDBB UI should redirect to the provided redirectUri with auth-code or error details.
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: X-XSRF-TOKEN
+          description: CSRF token as set in cookie key 'XSRF-TOKEN'
+          required: true
+      tags:
+        - Wallet - QR Code
+    parameters: []
+  /linked-authorization/link-transaction:
+    post:
+      summary: Link Transaction endpoint
+      operationId: post-authorization-link-transaction
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  responseTime:
+                    type: string
+                  response:
+                    type: object
+                    properties:
+                      linkTransactionId:
+                        type: string
+                        description: Unique link-transaction-id.
+                      clientName:
+                        type: string
+                        description: Registered name of the OIDC client.
+                      logoUrl:
+                        type: string
+                        description: Registered OIDC client Logo URL.
+                      authorizeScopes:
+                        type: array
+                        description: List of requested scopes to be permitted by the end user.
+                        items:
+                          type: string
+                      essentialClaims:
+                        type: array
+                        description: List of client request mandatory claim names.
+                        items:
+                          type: string
+                      voluntaryClaims:
+                        type: array
+                        description: List of client request optional claim names.
+                        items:
+                          type: string
+                      authFactors:
+                        type: array
+                        description: Auth factors defines the authentication modes that can be used to veifiy the user. More than one authFactor may be resolved or combination of auth factors. Precedence of authFactors is based on its order
+                        items:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/AuthFactor'
+                      configs:
+                        type: object
                   errors:
                     type: array
                     items:
@@ -1023,12 +833,200 @@ paths:
                         errorCode:
                           type: string
                           enum:
-                            - invalid_request
+                            - invalid_link_code
                             - invalid_transaction
+                            - invalid_client_id
+                            - unknown_error
+                        errorMessage:
+                          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestTime:
+                  type: string
+                request:
+                  type: object
+                  required:
+                    - linkCode
+                  properties:
+                    linkCode:
+                      type: string
+                      description: Link code as received by the wallet-app from the QR code scanning.
+              required:
+                - requestTime
+                - request
+      description: |-
+        The link transaction endpoint is invoked from Wallet-app.
+
+        1. Validates the link-code and its expiry and generates the linkTransactionId. This linkTransactionId is linked to transactionId used in the /link-code endpoint.
+
+        2. Returns the auth-factors, clientName, logoUrl, User claims, authorize scopes along with linkTransactionId.
+
+        **Note:**
+        Wallet-app will hereafter address the transaction with this linkTransactionId for the /authenticate and /consent endpoints.
+      tags:
+        - Wallet - QR Code
+    parameters: []
+  /linked-authorization/authenticate:
+    post:
+      summary: Linked Authentication Endpoint
+      operationId: post-linked-authenticate
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  responseTime:
+                    type: string
+                  response:
+                    type: object
+                    properties:
+                      linkedTransactionId:
+                        type: string
+                        description: This is the same transactionId received from /link-transaction endpoint.
+                  errors:
+                    type: array
+                    description: List of Errors in case of request validation / processing failure in IDBB server.
+                    items:
+                      type: object
+                      properties:
+                        errorCode:
+                          type: string
+                          enum:
+                            - invalid_transaction_id
+                            - invalid_transaction
+                            - invalid_identifier
+                            - invalid_no_of_challenges
+                            - auth_failed
+                            - unknown_error
+                        errorMessage:
+                          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestTime:
+                  type: string
+                  pattern: 'yyyy-MM-dd''T''HH:mm:ss.SSS''Z'''
+                request:
+                  type: object
+                  required:
+                    - linkedTransactionId
+                    - individualId
+                    - challengeList
+                  properties:
+                    linkedTransactionId:
+                      type: string
+                      description: This is the same transactionId received from /link-transaction endpoint
+                    individualId:
+                      type: string
+                      description: User identifier (UIN/VID).
+                    challengeList:
+                      type: array
+                      description: Authentication Challenge.
+                      items:
+                        $ref: '#/components/schemas/AuthChallenge'
+              required:
+                - requestTime
+                - request
+        description: ''
+      description: |-
+        Once end user provides the user identifier (UIN/VID) and all the required auth challenge to the Wallet-app, this endpoint will be invoked from wallet-app.
+
+        Supported auth-challenge depends on the integrated IDBB implementation.
+
+        1. Validates linkedTransactionId.
+        2. Validates null / empty individualId.
+
+        On Authentication Success: Only linkTransactionId is returned in the below response without any errors.
+
+        On Authentication Failure: Error list will be returned.
+      parameters: []
+      tags:
+        - Wallet - QR Code
+    parameters: []
+  /linked-authorization/consent:
+    post:
+      summary: Linked Consent Endpoint
+      operationId: post-linked-consent
+      description: |
+        Once the authentication is successful and user permission is obtained, this endpoint will be invoked by the wallet app to send the accepted user claims and permitted scopes.
+
+        1. Validates linkedTransactionId.
+        2. Validate accepted claims and permitted scopes in the request.
+        3. If valid, stores the accepted claims and permitted scopes in the datastore.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestTime:
+                  type: string
+                  pattern: 'yyyy-MM-dd''T''HH:mm:ss.SSS''Z'''
+                request:
+                  type: object
+                  required:
+                    - linkedTransactionId
+                  properties:
+                    linkedTransactionId:
+                      type: string
+                      description: This is the same transactionId received from /link-transaction endpoint.
+                    permittedAuthorizeScopes:
+                      type: array
+                      description: List of permitted scopes by end-user.
+                      items:
+                        type: string
+                    acceptedClaims:
+                      type: array
+                      description: List of accepted essential and voluntary claims by end-user.
+                      items:
+                        type: string
+              required:
+                - requestTime
+                - request
+        description: ''
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  responseTime:
+                    type: string
+                  response:
+                    type: object
+                    properties:
+                      linkedTransactionId:
+                        type: string
+                        description: This is the same transactionId received from /link-transaction endpoint.
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        errorCode:
+                          type: string
+                          enum:
+                            - invalid_transaction_id
+                            - invalid_transaction
+                            - invalid_accepted_claim
+                            - invalid_permitted_scope
                         errorMessage:
                           type: string
       tags:
-        - UI
+        - Wallet - QR Code
     parameters: []
   /oauth/token:
     post:
@@ -1044,10 +1042,22 @@ paths:
                 properties:
                   id_token:
                     type: string
-                    description: Identity token.
+                    description: |-
+                      Identity token in JWT format. Will have the below claims in the payload.
+                      <ul>
+                      <li>iss</li>
+                      <li>sub - (PSUT)</li>
+                      <li>aud</li>
+                      <li>exp</li>
+                      <li>iat</li>
+                      <li>auth_time</li>
+                      <li>nonce</li>
+                      <li>acr</li>
+                      <li>at_hash</li>
+                      </ul>
                   access_token:
                     type: string
-                    description: The access token. The token that will be used to call the UserInfo endpoint.
+                    description: The access token in JWT format. This token will be used to call the UserInfo endpoint. Relying party application should handle access token as opaque.
                   token_type:
                     type: string
                     default: Bearer
@@ -1098,73 +1108,27 @@ paths:
                 required:
                   - error
       description: |-
-        Client invokes this Token endpoint with authorization code to get ID and access token.
+        Once the client / relying party application receives the authorization code through redirect, this OIDC complaint endpoint will be called from the relying party backend application to get the ID Token and Access Token.
 
-        Authentication & authroization : validates the code (authorization code) in the request.
-
-        1. The only supported client authentication methods : <b>private_key_jwt</b>
-        2. clientAssertion is a signed JWT with Clients private key, corresponding public key should be shared with IdP during the OIDC client registration process.
+        1. The only supported client authentication method : <b>private_key_jwt</b>
+        2. ClientAssertion is a signed JWT with client's private key, corresponding public key should be shared with IDBB during the OIDC client creation process.
         3. clientAssertion JWT payload must be as below: 
 
-        The JWT MUST contain the following REQUIRED Claim Values and MAY contain the following OPTIONAL Claim Values:
+        The JWT MUST contain the following REQUIRED Claim Values and MAY contain few additional OPTIONAL Claim Values:
 
-        <b>iss</b>
+        **iss**<span style="color:#FF0000">*</span> (Issuer): This MUST contain the client_id of the OIDC / OAuth Client.
 
-        REQUIRED. Issuer. This MUST contain the client_id of the OAuth Client.
+        **sub**<span style="color:#FF0000">*</span> (Subject): This MUST contain the client_id of the OIDC / OAuth Client.
 
-        <b>sub</b>
+        **aud**<span style="color:#FF0000">*</span> (Audience): Value that identifies the IDBB server as an intended audience. The IDBB server MUST verify that it is an intended audience for the token. The audience SHOULD be the URL of the IDBB's token endpoint.
 
-        REQUIRED. Subject. This MUST contain the client_id of the OAuth Client.
+        **exp**<span style="color:#FF0000">*</span> (Expiration): Time on or after which the ID token MUST NOT be accepted for processing.
 
-        <b>aud</b>
+        **iat**<span style="color:#FF0000">*</span>: Time at which the JWT was issued.</p>
 
-        REQUIRED. Audience. The aud (audience) Claim. Value that identifies the Authorization Server as an intended audience. The Authorization Server MUST verify that it is an intended audience for the token. The Audience SHOULD be the URL of the Authorization Server's Token Endpoint.
-
-        <b>exp</b>
-
-        REQUIRED. Expiration time on or after which the ID Token MUST NOT be accepted for processing.
-
-        <b>iat</b>
-
-        REQUIRED. Time at which the JWT was issued.
-
-        <b>Note:</b>
-        The ClientAssertion JWT MAY contain other Claims. Any Claims used that are not understood MUST be ignored.
+        **Note**: The Client Assertion JWT can contain other Claims. Any Claims used that are not understood WILL be ignored.</p>
       requestBody:
         content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                grant_type:
-                  type: string
-                  enum:
-                    - authorization_code
-                  description: Authorization code grant type.
-                code:
-                  type: string
-                  description: 'Authorization code, sent as query param in the client''s redirect URI.'
-                client_id:
-                  type: string
-                  description: Client Id of the OIDC client.
-                client_assertion_type:
-                  type: string
-                  enum:
-                    - 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer'
-                  description: Type of the client assertion part of this request.
-                client_assertion:
-                  type: string
-                  description: 'Private key signed JWT, This JWT payload structure is defined above as part of request description.'
-                redirect_uri:
-                  type: string
-                  description: Valid client redirect_uri. Must be same as the one sent in the authorize call.
-              required:
-                - grant_type
-                - code
-                - client_id
-                - client_assertion_type
-                - client_assertion
-                - redirect_uri
           application/x-www-form-urlencoded:
             schema:
               type: object
@@ -1198,14 +1162,13 @@ paths:
                 - client_assertion_type
                 - client_assertion
                 - redirect_uri
+        description: ''
       tags:
-        - OAuth
+        - OIDC
     parameters: []
   /oidc/userinfo:
     get:
       summary: UserInfo Endpoint
-      tags:
-        - OIDC
       responses:
         '200':
           description: OK
@@ -1214,7 +1177,7 @@ paths:
               schema:
                 type: string
                 format: jwt
-                description: 'The response is signed and then encrypted, with the result being a Nested JWT. Signed using IDA server''s private key. Signed full JWT will then be encrypted using OIDC client''s public key.'
+                description: 'The response is signed and then encrypted, with the result being a Nested JWT. Signed using the IDBB''s private key. Signed full JWT will then be encrypted using OIDC client''s public key.'
         '401':
           description: Unauthorized
           headers:
@@ -1224,55 +1187,62 @@ paths:
                 enum:
                   - invalid_token
                   - unknown_error
-              description: 'Bearer error=invalid_token,  error_description=MOSIPIDP123: A userinfo request was made with an access token that was not recognized.'
+              description: 'Bearer error=invalid_token,  error_description=IDBB123: A user info request was made with an access token that was not recognized.'
       operationId: get-userinfo
-      parameters:
-        - schema:
-            type: string
-            example: Bearer <access token as received in token endpoint response>
-          in: header
-          name: Authorization
-          description: 'Need to have the Bearer access token,Must start with word Bearer.'
-          required: true
+      parameters: []
       description: |-
-        The UserInfo Endpoint returns accepted Claims about the authenticated End-User. OIDC Client makes a request to the UserInfo Endpoint using an Access Token obtained through IDP's /token endpoint. Claims are returned as JSON, collection of name and value pairs for the Claims.
+        Once the access token is received via the token endpoint, relying party backend application can call this OIDC compliant endpoint to request for the user claims.
+
+        Consented user claims will be returned as a JWT. This JWT will be a nested JWT which is signed using JWS and then encrypted using JWE. 
 
 
-        Eg 1: OIDC Client requested claims 
+        **Example**: Assuming the below are the requested claims by the relying party
 
         name : { "essential" : true }
+
         phone: { "essential" : true }
 
-        Response 1: Enduser after authentication, provided his/her consent to both name and phone. Response will look as below:
+        **Response 1**: When consent is provided for both name and phone number:
 
-        { "name" : "xyz", "phone" : "033456743" }
+        { "name" : "John Doe", "phone" : "033456743" }
 
-        Resonse 2: Enduser after authentication, provided his/her consent to only name. Response will look as below:
+        **Response 2**: When consent is provided for only name:
 
-        { "name" : "xyz" }
+        { "name" : "John Doe" }
 
-        Response 3: Claims requested with claims_locales : "en fr"
+        **Response 3**: When Claims are requested with claims_locales : "en fr"
 
-        { "name#en" : "xyz", "name#fr" : "xyz in french", "phone" : "033456743" } 
+        { "name#en" : "John Doe", "name#fr" : "Jean Doe", "phone" : "033456743" } 
 
-        Userinfo Claims
-            sub - partner-specific user token (PSUT)
-            name
-            address
-            gender
-            birthdate
-            profile photo
-            email
-            phone
-            locale
-            Custom
-                individual_id (What we share in this claim is a system-level config and it can be UIN, perceptual VID or temporary VID)
-    parameters: []
-  /.well-known/openid-configuration:
-    get:
-      summary: Configuration Endpoint
+        **Supported User Info Claims**
+        <ul>
+        <li>sub - Partner Specific User Token (PSUT)</li>
+        <li>name</li>
+        <li>given_name</li>
+        <li>family_name</li>
+        <li>middle_name</li>
+        <li>preferred_username</li>
+        <li>nickname</li>
+        <li>address</li>
+        <li>gender</li>
+        <li>birthdate</li>
+        <li>profile photo</li>
+        <li>email</li>
+        <li>phone</li>
+        <li>locale</li>
+        <li>zoneinfo</li>
+        <li>email_verified</li>
+        <li>phone_number_verified</li>
+        </ul>
       tags:
         - OIDC
+      security:
+        - Authorization-access_token: []
+    parameters: []
+  /wallet-binding:
+    post:
+      summary: Wallet Binding Endpoint (Draft)
+      operationId: post-wallet-binding
       responses:
         '200':
           description: OK
@@ -1281,82 +1251,86 @@ paths:
               schema:
                 type: object
                 properties:
-                  issuer:
+                  responseTime:
                     type: string
-                    description: URL using the https scheme with no query or fragment component that the RP asserts as its Issuer Identifier.This also MUST be identical to the iss Claim value in ID Tokens issued from this Issuer.
-                  authorization_endpoint:
-                    type: string
-                    description: URL of the OAuth 2.0 Authorization Endpoint.
-                  token_endpoint:
-                    type: string
-                    description: URL of the OAuth 2.0 Token Endpoint.
-                  jwks_uri:
-                    type: string
-                    description: 'URL of the OP''s JSON Web Key Set [JWK] document. '
-                  registration_endpoint:
-                    type: string
-                    description: URL of Client Registration Endpoint.
-                  scopes_supported:
-                    type: string
-                    description: 'JSON array containing a list of the OAuth 2.0 [RFC6749] scope values that this server supports.'
-                    enum:
-                      - openid
-                  response_types_supported:
-                    type: string
-                    description: JSON array containing a list of the OAuth 2.0 response_type values that this OP supports.
-                    enum:
-                      - code
-                  acr_values_supported:
-                    type: string
-                    description: ' JSON array containing a list of the Authentication Context Class References that IDP supports.'
-                  userinfo_signing_alg_values_supported:
-                    type: string
-                    description: 'JSON array containing a list of the JWS [JWS] signing algorithms.'
-                  userinfo_encryption_alg_values_supported:
-                    type: string
-                    description: 'SON array containing a list of the JWE [JWE] encryption algorithms.'
-                  userinfo_encryption_enc_values_supported:
-                    type: string
-                    description: 'JSON array containing a list of the JWE encryption algorithms (enc values) [JWA] supported by the UserInfo Endpoint to encode the Claims in a JWT.'
-                  token_endpoint_auth_methods_supported:
-                    type: string
-                    description: JSON array containing a list of Client Authentication methods supported by this Token Endpoint.
-                    enum:
-                      - private_key_jwt
-                  display_values_supported:
-                    type: string
-                    description: JSON array containing a list of the display parameter values that the OpenID Provider supports.
-                  claim_types_supported:
-                    type: string
-                    description: JSON array containing a list of the Claim Types that the OpenID Provider supports.
-                    enum:
-                      - normal
-                      - aggregated
-                      - distributed
-                  claims_supported:
-                    type: string
-                    description: JSON array containing a list of the Claim Names of the Claims that the OpenID Provider MAY be able to supply values for.
-                  claims_locales_supported:
-                    type: string
-                    description: Languages and scripts supported for values in Claims being returned.
-                  ui_locales_supported:
-                    type: string
-                    description: Languages and scripts supported for the user interface.
+                  response:
+                    type: object
+                    properties:
+                      walletUserId:
+                        type: string
+                        description: Unique identifier given to public-key and partner specific userId mapping.
+                      certificate:
+                        type: string
+                        description: Key binder signed certificate.
+                      expireDateTime:
+                        type: string
+                        description: Expire date time of the signed certificate.
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        errorCode:
+                          type: string
+                          enum:
+                            - unsupported_challenge_format
+                            - key_binding_failed
+                            - invalid_public_key
+                            - invalid_auth_challenge
+                            - duplicate_public_key
+                        errorMessage:
+                          type: string
                 required:
-                  - issuer
-                  - authorization_endpoint
-                  - token_endpoint
-                  - jwks_uri
-                  - registration_endpoint
-                  - scopes_supported
-                  - response_types_supported
-      operationId: get-.well-known-openid-configuration
+                  - responseTime
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                requestTime:
+                  type: string
+                request:
+                  type: object
+                  required:
+                    - individualId
+                    - authFactorType
+                    - format
+                    - challengeList
+                    - publicKey
+                  properties:
+                    individualId:
+                      type: string
+                      description: User Id (UIN/VID).
+                    authFactorType:
+                      type: string
+                      description: Auth factor type to be binded for the provided key.
+                    format:
+                      type: string
+                      description: 'Format of the auth factor type supported in the wallet app.This is not stored, this value is only validated to check if its a supported format in the IDBB implementation.'
+                    challengeList:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/AuthChallenge'
+                    publicKey:
+                      type: object
+                      description: key to be binded in JWK format.
+              required:
+                - requestTime
+                - request
       description: |-
-        NOTE : Endpoint Under discussion
+        Wallet binding endpoint is invoked by Wallet's backend server.
 
-        Reference : https://openid.net/specs/openid-connect-discovery-1_0.html
+        1. Action will be initiated from wallet-app with authChallenge by user.
+        2. Wallet backend server will receive the authChallenge, create this request and send to IDBB to complete the binding process.
+        3. Binded walletUserId (WUID) is returned with IDBB signed certificate. 
 
-        TODO - https://www.rfc-editor.org/rfc/rfc5646.html
+        **Note**: Binding entry uniqueness is combination of these 3 values -> (PSUT, public-key, auth-factor-type)
+      parameters: []
+      security:
+        - Authorization-wallet_binding: []
+      tags:
+        - Wallet - QR Code
     parameters: []
   /.well-known/jwks.json:
     get:
@@ -1379,11 +1353,6 @@ paths:
                         kid:
                           type: string
                           description: The certificate's Key ID
-                        alg:
-                          type: string
-                          description: 'The algorithm used with the Key. Valid value: RS256'
-                          enum:
-                            - RS256
                         use:
                           type: string
                           description: 'How the Key is used. Valid value: sig'
@@ -1400,35 +1369,40 @@ paths:
                         'n':
                           type: string
                           description: RSA modulus value
-                        status:
+                        x5t#S256:
                           type: string
-                          enum:
-                            - ACTIVE
-                            - EXPIRED
-                            - NEXT
-                          description: |-
-                            ACTIVE Key is used to sign tokens issued by the Idp server.
-                            NEXT Key is the next Key that the IdP Server uses to sign tokens when Keys are rotated. The NEXT Key might not be listed if it hasn't been generated yet.
-                            EXPIRED Key is the previous Key that the IdP Server used to sign tokens. The EXPIRED Key might not be listed if no Key has expired or the expired Key has been deleted.
+                          x-stoplight:
+                            id: 52n5251u1kfap
+                          description: SHA-256 thumbprint of the certificate.
                         x5c:
-                          type: string
+                          type: array
                           description: Certificate to validate the Oauth server trust.
+                          items:
+                            x-stoplight:
+                              id: l0l1kpf2b9jcn
+                            type: string
+                        exp:
+                          type: string
+                          x-stoplight:
+                            id: q4o4nzqtvb09p
+                          description: Expire datetime of the key. Given in ISO format.
+                          format: date-time
+                          example: '2026-02-05T13:43:07.979Z'
                       required:
                         - kid
-                        - alg
                         - use
                         - kty
                         - e
                         - 'n'
+                        - x5t#S256
+                        - x5c
+                        - exp
       operationId: get-certs
-      description: |-
-        NOTE : Endpoint Under discussion
-
-        Endpoint to fetch all the public keys of the IdP server.Returns public key set in the JWKS format.
+      description: Endpoint to fetch all the public keys of the IDBB server. Returns public key set in the JWKS format.
     parameters: []
-  /introspect:
+  /.well-known/openid-configuration:
     get:
-      summary: Introspect Endpoint
+      summary: Configuration Endpoint
       tags:
         - OIDC
       responses:
@@ -1439,154 +1413,155 @@ paths:
               schema:
                 type: object
                 properties:
-                  active:
-                    type: boolean
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
+                  issuer:
                     type: string
-                  error_description:
+                    description: URL using the https scheme with no query or fragment component that the RP asserts as its Issuer Identifier. This also MUST be identical to the iss Claim value in ID Tokens issued from this Issuer.
+                  authorization_endpoint:
                     type: string
+                    description: URL of the OAuth 2.0 Authorization Endpoint.
+                  token_endpoint:
+                    type: string
+                    description: URL of the OAuth 2.0 Token Endpoint.
+                  userinfo_endpoint:
+                    type: string
+                    description: URL of the OP's UserInfo Endpoint.
+                  jwks_uri:
+                    type: string
+                    description: 'URL of the OP''s JSON Web Key Set [JWK] document.'
+                  registration_endpoint:
+                    type: string
+                    description: URL of Client Registration Endpoint.
+                  scopes_supported:
+                    type: array
+                    description: 'JSON array containing a list of the OAuth 2.0 [RFC6749] scope values that this server supports.'
+                    items:
+                      type: string
+                      enum:
+                        - openid
+                  response_types_supported:
+                    type: array
+                    description: JSON array containing a list of the OAuth 2.0 response_type values that this OP supports.
+                    items:
+                      type: string
+                      enum:
+                        - code
+                  acr_values_supported:
+                    type: array
+                    description: JSON array containing a list of the Authentication Context Class References that IDP supports.
+                    items: {}
+                  userinfo_signing_alg_values_supported:
+                    type: array
+                    description: 'JSON array containing a list of the JWS [JWS] signing algorithms.'
+                    items: {}
+                  userinfo_encryption_alg_values_supported:
+                    type: array
+                    description: 'JSON array containing a list of the JWE [JWE] encryption algorithms.'
+                    items: {}
+                  userinfo_encryption_enc_values_supported:
+                    type: array
+                    description: 'JSON array containing a list of the JWE encryption algorithms (enc values) [JWA] supported by the UserInfo Endpoint to encode the Claims in a JWT.'
+                    items: {}
+                  token_endpoint_auth_methods_supported:
+                    type: array
+                    description: JSON array containing a list of Client Authentication methods supported by this Token Endpoint.
+                    items:
+                      type: string
+                      enum:
+                        - private_key_jwt
+                  display_values_supported:
+                    type: array
+                    description: JSON array containing a list of the display parameter values that the OpenID Provider supports.
+                    items: {}
+                  claim_types_supported:
+                    type: array
+                    description: JSON array containing a list of the Claim Types that the OpenID Provider supports.
+                    items:
+                      type: string
+                      enum:
+                        - normal
+                        - aggregated
+                        - distributed
+                  claims_supported:
+                    type: array
+                    description: JSON array containing a list of the Claim Names of the Claims that the OpenID Provider MAY be able to supply values for.
+                    items:
+                      type: string
+                  claims_locales_supported:
+                    type: array
+                    description: Languages and scripts supported for values in Claims being returned.
+                    items:
+                      type: string
+                  ui_locales_supported:
+                    type: array
+                    description: Languages and scripts supported for the user interface.
+                    items:
+                      type: string
+                  response_modes_supported:
+                    type: array
+                    description: Mechanism to be used for returning parameters from the Authorization Endpoint.
+                    items:
+                      type: string
+                      enum:
+                        - query
+                  token_endpoint_auth_signing_alg_values_supported:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                        - RS256
+                  id_token_signing_alg_values_supported:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                        - RS256
                 required:
-                  - error
-                  - error_description
-      operationId: get-introspect
+                  - issuer
+                  - authorization_endpoint
+                  - token_endpoint
+                  - userinfo_endpoint
+                  - jwks_uri
+                  - registration_endpoint
+                  - scopes_supported
+                  - response_types_supported
+      operationId: get-.well-known-openid-configuration
       description: |-
-        NOTE : Endpoint Under discussion
+        This endpoint is only for facilitating the OIDC provider details in a standard way.
 
-        This endpoint takes an access token or ID token and returns a boolean that indicates whether it is active. If the token is active, additional data about the token is also returned. If the token is invalid, expired, or revoked, it is considered inactive.
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: client_id
-          description: OIDC client Id
-          required: true
-        - schema:
-            type: string
-          in: query
-          name: token
-          description: An access token or ID token
-          required: true
-        - schema:
-            type: string
-            enum:
-              - access_token
-              - id_token
-          in: query
-          name: token_type_hint
-          description: 'Indicates the type of token being passed. Valid values: access_token, id_token'
-          required: true
+        **Reference**: https://openid.net/specs/openid-connect-discovery-1_0.html
     parameters: []
 components:
   schemas:
-    Error:
-      title: Error
-      x-stoplight:
-        id: et1b1aqs2g0r3
-      type: object
-      description: Any server-side errors are returned in this error object.
-      properties:
-        errorCode:
-          type: string
-          description: Predefined error codes.
-        errorMessage:
-          type: string
-          description: |
-            Descriptive error message.
-      required:
-        - errorCode
-        - errorMessage
-    Claim:
-      title: Claim
-      x-stoplight:
-        id: z7c32949w8qet
-      type: object
-      description: |
-        The userinfo and id_token members of the claims request both are JSON object. if null, Indicates that this Claim is being requested as Voluntary Claim.
-
-        Note: Unknown claim names either in userinfo or id_token are ignored.
-      properties:
-        userinfo:
-          type: object
-          properties:
-            name:
-              $ref: '#/components/schemas/ClaimDetail'
-            given_name:
-              $ref: '#/components/schemas/ClaimDetail'
-            email:
-              $ref: '#/components/schemas/ClaimDetail'
-            gender:
-              $ref: '#/components/schemas/ClaimDetail'
-            birthdate:
-              $ref: '#/components/schemas/ClaimDetail'
-            phone_number:
-              $ref: '#/components/schemas/ClaimDetail'
-            profile_photo:
-              $ref: '#/components/schemas/ClaimDetail'
-            address:
-              $ref: '#/components/schemas/ClaimDetail'
-            locale:
-              $ref: '#/components/schemas/ClaimDetail'
-            individual_id:
-              $ref: '#/components/schemas/ClaimDetail'
-        id_token:
-          type: object
-          properties:
-            name:
-              $ref: '#/components/schemas/ClaimDetail'
-            acrs:
-              $ref: '#/components/schemas/ClaimDetail'
-        locales:
-          type: array
-          items:
-            type: string
-    ClaimDetail:
-      title: ClaimDetail
-      x-stoplight:
-        id: kypheo15jidj9
-      type: object
-      properties:
-        essential:
-          type: boolean
-          description: |
-            Indicates whether the Claim being requested is an Essential Claim. If the value is true, this indicates that the Claim is an Essential Claim. The default is false.
-        value:
-          type: string
-          description: |-
-            Requests that the Claim be returned with a particular value. For instance the Claim request.
-
-            "sub": {"value": "248289761001"} can be used to specify that the request apply to the End-User with Subject Identifier 248289761001.
-        values:
-          type: array
-          description: 'Requests that the Claim be returned with one of a set of values, with the values appearing in order of preference.'
-          items:
-            type: string
     AuthChallenge:
       title: AuthChallenge
       x-stoplight:
         id: n3fy2qkg9r7h2
       type: object
-      description: Model to take any type of challenge from the enduser as part of authenticate request.
+      description: Model to take any type of challenge from the end user as part of authenticate request.
       properties:
         authFactorType:
           type: string
           description: Defines the type of auth challenge. It should be same as authfactor.type (oauth-details response).
           enum:
-            - otp
-            - pin
-            - bio
+            - OTP
+            - BIO
+            - PIN
+            - WLA
         challenge:
           type: string
           description: Actual challenge as string.
+        format:
+          type: string
+          description: Format of the challenge provided.
+          enum:
+            - alpha-numeric
+            - jwt
+            - encoded-json
+            - number
       required:
         - authFactorType
         - challenge
+        - format
     AuthFactor:
       title: AuthFactor
       x-stoplight:
@@ -1597,20 +1572,41 @@ components:
           type: string
           description: Name of the authentication method
           enum:
-            - otp
-            - pin
-            - pwd
-            - face
-            - iris
-            - finger
+            - PIN
+            - OTP
+            - L1-bio-device
+            - Wallet
         count:
-          type: string
+          type: integer
           description: 'Applicable for biometric based authentication, number of bio segments to be captured for authentication.'
         bioSubTypes:
           type: array
-          description: Applicable for biometric based authentication. Can be mmore specific about which bio segments should be captured.
+          description: Applicable for biometric based authentication. Can be more specific about which bio segments should be captured.
           items:
             type: string
       required:
         - type
-  securitySchemes: {}
+  securitySchemes:
+    Authorization-add_oidc_client:
+      type: http
+      scheme: bearer
+      description: Valid JWT issued by a trusted IAM system with "**add_oidc_client**" scope.
+    Authorization-update_oidc_client:
+      type: http
+      scheme: bearer
+      description: Valid JWT issued by a trusted IAM system including "**update_oidc_client**" scope.
+    Authorization-access_token:
+      type: http
+      scheme: bearer
+      description: Access token received from /token endpoint
+    Authorization-wallet_binding:
+      type: http
+      scheme: bearer
+      description: Valid JWT issued by a trusted IAM system with "**wallet_binding**" scope.
+tags:
+  - name: Client Management
+    description: Endpoints for creation and updation of OIDC client details.
+  - name: OIDC
+    description: All OIDC compliant endpoints for performing the Open ID Connect flows.
+  - name: Wallet - QR Code
+    description: All endpoints used by the Wallet binding and Wallet - QR code based authentication.
