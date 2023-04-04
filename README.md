@@ -56,3 +56,46 @@ I changed the version in verification.json to 3.0.0 then was able to generate th
 ```
 $ openapi-generator generate --skip-validate-spec  -g typescript-node -i ~/fabrik/BuildingBlockAPI/IDV/verification.json
 ```
+
+## Run Cucumber tests
+
+Cucumber-js is used to execute test harness to check compability of application
+api with BB test definitions.
+
+### Mock server
+
+Launch the mock server from examples/mock folder. The instruction is located in
+'examples/mock' folder in file README.md
+
+### Cucumber tests
+
+To install project's dependencies, navigate to folder 'test' and execute the
+following command:
+
+```
+yarn install
+```
+
+Then to execute all tests scenarios use the following command:
+
+```
+yarn test
+```
+
+or
+
+```
+npx cucumber-js
+```
+
+To execute specific test scenario use the following command:
+
+```
+npx cucumber-js features/<file_name>
+```
+
+example:
+
+```
+npx cucumber-js features/data_update_or_create.feature
+```
