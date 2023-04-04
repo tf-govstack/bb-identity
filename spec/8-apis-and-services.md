@@ -23,38 +23,71 @@ In common for all services of the Identity Building Block, the API expects the c
 
 #### Service Group: Client Management
 
-| Endpoint                      | Inputs                              | Returns                                                                     | Description                                                                                                                     |
-| ----------------------------- | ----------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| POST:/client-mgmt/oidc-client | \[Client Details]                   | Error code details or success response with unique ID of registered client  | <p>Add new open ID connect (OIDC) clients to IDBB. </p><p>Each relying party can associate to one or multiple OIDC clients.</p> |
-| PUT:/client-mgmt/oidc-client  | \[Client ID, Client update details] | Error code details or success response with unique ID of updated client     | Update allowed details on existing Open ID Connect (OIDC) clients                                                               |
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml" path="/client-mgmt/oidc-client" method="post" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml)
+{% endswagger %}
+
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml" path="/client-mgmt/oidc-client/{client_id}" method="put" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml)
+{% endswagger %}
 
 #### Service Group: OIDC (OpenID Connect)
 
-| Endpoint                              | Inputs                                          | Returns                                                                  | Description                                                                                                                                                        |
-| ------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| GET:/authorize                        | \[Authorization   Details]                      | No return data since this is a browser redirection                       | Redirects the user to UI of the IDBB, completes the authentication and takes permissions for sharing data and redirects back the user to relying party application |
-| POST:/oauth/token                     | \[Authorization code, Client Assertion Details] | ID Token and Access Token with expire information                        | Authenticated endpoint that allows exchange of authorization code to relvant ID and Access Tokens                                                                  |
-| GET:/oidc/userinfo                    | \[Access Token]                                 | End-user claims in JWT or JWE format                                     | Enables exchange of Access token to receive the verified end-user  information                                                                                     |
-| GET:/.well-known/jwks.json            | \[]                                             | Public key set in JWKS format                                            | Endpoint to fetch all the public keys of the IDBB that can be used for signature verification and other crypto operations.                                         |
-| GET:/.well-known/openid-configuration | \[]                                             | All IDBB details required for the relying party application to integrate | Endpoint to provide all the details of IDBB in a standard format.                                                                                                  |
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml" path="/authorize" method="get" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml)
+{% endswagger %}
+
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml" path="/oauth/token" method="post" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml)
+{% endswagger %}
+
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml" path="/oidc/userinfo" method="get" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml)
+{% endswagger %}
+
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml" path="/.well-known/jwks.json" method="get" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml)
+{% endswagger %}
+
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml" path="/.well-known/openid-configuration" method="get" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml)
+{% endswagger %}
 
 #### Service Group: Wallet - QR Code
 
 IDBB implementation that supports mobile wallet integration, the following API spec should also be implemented.
 
-| Endpoint                                     | Inputs                                                                         | Returns                                                                                                               | Description                                                                                                                        |
-| -------------------------------------------- | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| POST:/linked-authorization/link-code         | \[Transaction Id]                                                              | Error code or Newly generated link code with expiry details                                                           | Generates and returns a random link code that is connected to the given transaction id                                             |
-| POST:/linked-authorization/link-status       | \[Transaction Id, Link Code ]                                                  | Error code or link status with date time when the linking was done                                                    | A long polling request which responds once the link transaction endpoint is called for this link code from wallet app              |
-| POST:/linked-authorization/link-auth-code    | \[Transaction Id, Link Code ]                                                  | Error code or Authorization code along with redirect URI and state details                                            | A long polling request which responds once the consent / permission endpoint is invoked from wallet app for the linked transaction |
-| POST: /linked-authorization/link-transaction | \[Link Code]                                                                   | Error code or Linked transaction ID, relying party details, requested user claims and authentication factor details   | Generates a linked transaction using the link code and responds with all the transaction details                                   |
-| POST:/linked-authorization/authenticate      | \[Link Transaction Id, individual Id, list of authentication challenges]       | Error code or linked transaction ID                                                                                   | Endpoint to authenticate the end-user based on the provided authentication challenges                                              |
-| POST:/linked-authorization/consent           | \[Linked Transaction Id, permitted authorize scopes, accepted claims]          | Error code or linked transaction ID                                                                                   | Endpoint to submit the user accepted claims so the original transaction can redirect back to relying party                         |
-| POST:/wallet-binding (DRAFT)                 | \[Individual Id, auth factor details, authentication challenges, public key  ] | Error code or wallet user Id, certificate along with expiry details                                                   | Binds a key generated in a wallet application to a user in IDBB. This enables wallet to be used as an authentication factor.       |
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml" path="/linked-authorization/link-code" method="post" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml)
+{% endswagger %}
+
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml" path="/linked-authorization/link-status" method="post" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml)
+{% endswagger %}
+
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml" path="/linked-authorization/link-auth-code" method="post" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml)
+{% endswagger %}
+
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml" path="/linked-authorization/link-transaction" method="post" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml)
+{% endswagger %}
+
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml" path="/linked-authorization/authenticate" method="post" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml)
+{% endswagger %}
+
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml" path="/linked-authorization/consent" method="post" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml)
+{% endswagger %}
+
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml" path="/wallet-binding" method="post" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml)
+{% endswagger %}
 
 Detailed API schemas written in YAML that define REST API endpoints for each of the services mentioned above are available on GitHub located at
 
-[https://github.com/GovStackWorkingGroup/bb-identity/blob/ac109f7f2b604c0c5538720acc130f25d4212374/api/Identity-Provider.yaml](https://github.com/GovStackWorkingGroup/bb-identity/blob/ac109f7f2b604c0c5538720acc130f25d4212374/api/Identity-Provider.yaml)
+[https://github.com/GovStackWorkingGroup/bb-identity/blob/main/api/Identity-Provider.yaml](../api/Identity-Provider.yaml)
 
 The [GovStack non-functional requirements document](https://govstack.gitbook.io/specification/architecture-and-nonfunctional-requirements/6-onboarding) provides additional information on how 'adaptors' may be used to translate an existing API to the patterns described here.
 

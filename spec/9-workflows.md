@@ -21,4 +21,36 @@ Those workflows will be described in a later version.
 
 The below workflow details the steps involved in relying party application enabling the end user to login using their National ID. Once the login process is completed, IDBB also allows the relying party to get verified user claims based on explict permission from the end user.
 
-<figure><img src=".gitbook/assets/mermaid-diagram-20230330001442.svg" alt=""><figcaption></figcaption></figure>
+The steps are&#x20;
+
+* The relying party wants to authenticate the user to the Identity Building Block
+* The relying party redirects the user to the identity building block UI
+* The user will authenticate on the Identity Build block
+* The Identity Build Block will ask the user a permission for sharing his/her personal data
+* The User selected the attributes he/she accepts to share
+* A code is generated and returned by the identity building block to the relying party
+* The relying part uses the code and receive an ID token and an access token
+* The relying party then use the access token to receive the user information
+* The user can pursue its application within the relying party UI
+
+```mermaid
+sequenceDiagram
+    User->>+Relying Party UI: Click on "Login with <br>National ID" button
+    Relying Party UI-->>+IDBB UI: Browser redirects <br>to /authorize
+    IDBB UI->>+IDBB Backend: Passes the request <br>details for validation
+    IDBB Backend->>+IDBB UI: On success validation<br> returns session / <br>transaction ID
+    IDBB UI->>+User: Shows login page
+    User->>+IDBB UI: Provides the <br>authentication <br>challenges
+    IDBB UI->>+IDBB Backend: Forwards the authentication challenges <br> for verification
+    IDBB Backend->>+IDBB UI: On successful verification, returns success
+    IDBB UI->>+User: Shows the permissions <br>/ consent page
+    User->>+IDBB UI: Approves the user claims <br>that can shared to relying party
+    IDBB UI->>+IDBB Backend: Forwards the approved user claims
+    IDBB Backend->>+IDBB UI: Stores the claims in database and responds <br> with randomly generated authorization code
+    IDBB UI-->>+Relying Party UI: Browser redirects back along <br>with authorization code
+    Relying Party UI->>+Relying Party Backend: Forwards the <br>authorization code<br> along with state details
+    Relying Party Backend->>+IDBB Backend: Invokes /token endpoint passing<br> the authorization code <br>along with client assertion
+    IDBB Backend->>+Relying Party Backend: On successful validation,<br> returns the ID Token <br>and Access Token
+    Relying Party Backend->>+IDBB Backend: Invokes /userinfo endpoint <br>passing the Access token<br> as bearer token
+    IDBB Backend->>+Relying Party Backend: On successful validation, <br>responds with user claims<br> in JWT/JWE format
+```
