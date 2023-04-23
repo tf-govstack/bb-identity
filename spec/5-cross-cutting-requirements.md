@@ -6,14 +6,14 @@ description: >-
 
 # 5 Cross-Cutting Requirements
 
-The Cross-cutting requirements described in this section are an extension of the cross-cutting requirements defined in the [Security requirements](../security-requirements/). They can be found in section 3.5 Digital ID/Certificate Functional Requirements:
+The Cross-cutting requirements described in this section are an extension of the cross-cutting requirements defined in the [Security Requirements](https://govstack.gitbook.io/specification/v/1.0/security-requirements).
 
 ## 5.1 Enrollment Services (REQUIRED)
 
 Enrollment services for a digital ID in the form of a certificate using the physical credentials of the enrollee (a human citizen subject) and the process of the Identity Building Block (see the functional requirements for Identity in the Identity Building Block Definition). A feature for invalidating, locking or disenrollment/revocation of the digital ID shall also be provided as a response measure to both human citizen subjects leaving the system and responding to security breaches encountered. Digital certificate enrollment must be provided by the solution but is not required for every human citizen subject (see below). Notes:
 
 * It is anticipated that the Identity Building Block will call this feature either directly via API or indirectly via the IAM features of the Security Building Block for users electing to use an electronic ID consisting of certificates as a part of the account provisioning process. The digital ID will then be stored with the physical ID records in the identity Building Block and sent to the new user via secure means (probably installed on their device).
-* Simple numerical digital IDs will also be supported for human citizen subjects as an option where users are unable to leverage certificates based digital IDs. The requirements governing this are to be stipulated by the Identity Building Block (see the Identity Building Block Definition).
+* Simple numerical digital IDs will also be supported for human citizen subjects as an option where users are unable to leverage certificates-based digital IDs. The requirements governing this are to be stipulated by the Identity Building Block (see the Identity Building Block Definition).
 * Third-party organizations and internal subjects (both human and non-human) must be issued valid signed digital certificates in order to establish and maintain secure inter-organization and internal communications.
 
 ## 5.2 Multi-Factor Authentication (REQUIRED)

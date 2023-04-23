@@ -77,7 +77,7 @@ For Identity Building Block implementations that support mobile wallet integrati
 
 Detailed API schemas written in YAML that define REST API endpoints for each of the services mentioned above are available on GitHub located at the [Identity-Provider YAML](../api/Identity-Provider.yaml).
 
-The [GovStack non-functional requirements document](https://govstack.gitbook.io/specification/architecture-and-nonfunctional-requirements/6-onboarding) provides additional information on how 'adaptors' may be used to translate an existing API to the patterns described here.
+The [GovStack non-functional requirements document](https://govstack.gitbook.io/specification/v/1.0/architecture-and-nonfunctional-requirements/6-onboarding) provides additional information on how 'adaptors' may be used to translate an existing API to the patterns described here.
 
 ## 8.2 Identity Management
 
