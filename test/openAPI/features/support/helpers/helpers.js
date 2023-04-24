@@ -118,4 +118,45 @@ module.exports = {
       },
     },
   },
+  // client_create
+  clientCreateEndpoint: 'client-mgmt/oidc-client',
+  //shares
+  clientResponseSchema: {
+    type: 'object',
+    properties: {
+      responseTime: { type: 'string' },
+      response: {
+        type: 'object',
+        properties: { clientId: { type: 'string' } },
+        errors: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              errorCode: {
+                type: 'string',
+                enum: this.clientCreateErrorCodeEnum,
+              },
+              errorMessage: { type: 'string' },
+            },
+            additionalProperties: false,
+          },
+        },
+      },
+    },
+  },
+  clientCreateErrorCodeEnum: [
+    'duplicate_client_id',
+    'invalid_public_key',
+    'invalid_input',
+    'invalid_client_id',
+    'invalid_client_name',
+    'invalid_rp_id',
+    'invalid_claim',
+    'invalid_acr',
+    'invalid_uri',
+    'invalid_redirect_uri',
+    'invalid_grant_type',
+    'invalid_client_auth',
+  ],
 };
