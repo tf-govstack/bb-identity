@@ -1,6 +1,9 @@
 module.exports = {
   localhost: 'http://localhost:3333/',
-  statusCode200: 200,
+  contentTypeHeader: {
+    key: 'content-type',
+    value: 'application/json; charset=utf-8',
+  },
   defaultResponseTime: 15000,
   oidcWellKnownJWKSEndpoint: '.well-known/jwks.json',
   oidcWellKnownJWKSResponseSchema: {
@@ -13,10 +16,6 @@ module.exports = {
             type: 'object',
             properties: {
               kid: { type: 'string' },
-              alg: {
-                type: 'string',
-                enum: ['RS256'],
-              },
               use: {
                 type: 'string',
                 enum: ['sig'],
@@ -27,13 +26,11 @@ module.exports = {
               },
               e: { type: 'string' },
               n: { type: 'string' },
-              status: {
-                type: 'string',
-                enum: ['ACTIVE', 'EXPIRED', 'NEXT'],
-              },
+              'x5t#S256': { type: 'string' },
               x5c: { type: 'string' },
+              exp: { type: 'string' },
             },
-            required: ['kid', 'alg', 'use', 'kty', 'e', 'n'],
+            required: ['kid', 'use', 'kty', 'e', 'n', 'x5t#S256', 'x5c', 'exp'],
           },
         ],
       },
