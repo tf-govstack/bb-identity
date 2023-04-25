@@ -562,7 +562,8 @@
         }
       ],
       "enabled": true,
-      "responseMode": null
+      "responseMode": null,
+      "type": "http"
     },
     {
       "uuid": "8f51c09f-816b-4137-a8aa-8e30bd56a2f7",
@@ -594,7 +595,8 @@
         }
       ],
       "enabled": true,
-      "responseMode": null
+      "responseMode": null,
+      "type": "http"
     }
   ],
   "proxyMode": false,

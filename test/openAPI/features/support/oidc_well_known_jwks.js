@@ -7,7 +7,7 @@ const {
   defaultResponseTime,
   oidcWellKnownJWKSEndpoint,
   oidcWellKnownJWKSResponseSchema,
-} = require('./helpers/helpers');
+} = require('../support/helpers/helpers');
 
 chai.use(require('chai-json-schema'));
 
@@ -31,7 +31,7 @@ When('GET request to retrieve all the public keys of the IdP server is sent', ()
 
 Then('The response is received', async () => await specJWKS.toss());
 
-Then('The response should be returned in a timely manner', () =>
+Then('The response should be returned in a timely manner 15000ms', () =>
   specJWKS.response().to.have.responseTimeLessThan(defaultResponseTime)
 );
 
