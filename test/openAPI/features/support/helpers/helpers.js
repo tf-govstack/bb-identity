@@ -127,10 +127,6 @@ module.exports = {
             type: 'object',
             properties: {
               kid: { type: 'string' },
-              alg: {
-                type: 'string',
-                enum: ['RS256'],
-              },
               use: {
                 type: 'string',
                 enum: ['sig'],
@@ -141,13 +137,11 @@ module.exports = {
               },
               e: { type: 'string' },
               n: { type: 'string' },
-              status: {
-                type: 'string',
-                enum: ['ACTIVE', 'EXPIRED', 'NEXT'],
-              },
+              'x5t#S256': { type: 'string' },
               x5c: { type: 'string' },
+              exp: { type: 'string' },
             },
-            required: ['kid', 'alg', 'use', 'kty', 'e', 'n'],
+            required: ['kid', 'use', 'kty', 'e', 'n', 'x5t#S256', 'x5c', 'exp'],
           },
         ],
       },

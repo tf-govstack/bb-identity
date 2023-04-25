@@ -573,16 +573,11 @@
       "responses": [
         {
           "uuid": "a30c589f-e696-4472-96fa-0050decf17c7",
-          "body": "{\n  \"keys\": [\n    {\n      \"kid\": \"string\",\n      \"alg\": \"RS256\",\n      \"use\": \"sig\",\n      \"kty\": \"RSA\",\n      \"e\": \"string\",\n      \"n\": \"string\",\n      \"status\": \"ACTIVE\",\n      \"x5c\": \"string\"\n    },\n    {\n      \"kid\": \"string\",\n      \"alg\": \"RS256\",\n      \"use\": \"sig\",\n      \"kty\": \"RSA\",\n      \"e\": \"string\",\n      \"n\": \"string\",\n      \"status\": \"NEXT\",\n      \"x5c\": \"string\"\n    }\n  ]\n}",
+          "body": "{\n  \"keys\": [\n    {{#repeat 4}}\n    {\n      \"kid\": \"{{faker 'random.alpha' 5}}\",\n      \"use\": \"sig\",\n      \"kty\": \"RSA\",\n      \"e\": \"string\",\n      \"n\": \"string\",\n      \"x5t#S256\": \"string\",\n      \"x5c\": \"string\",\n      \"exp\": \"string\"\n    }\n    {{/repeat}}\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Retrieved public key set in the JWKS format",
-          "headers": [
-            {
-              "key": "Content-Type",
-              "value": "application/json"
-            }
-          ],
+          "headers": [],
           "bodyType": "INLINE",
           "filePath": "",
           "databucketID": "",
