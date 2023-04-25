@@ -377,6 +377,8 @@
       "enabled": true,
       "responseMode": null,
       "type": "http"
+      "responseMode": null,
+      "type": "http"
     },
     {
       "uuid": "45bd6c8d-c23c-42dd-9a73-51e98c7d7588",
@@ -492,17 +494,12 @@
           "default": true
         },
         {
-          "uuid": "03b23315-afa8-48cc-87a1-6d8630c0cea8",
-          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"clientId\": \"{{bodyRaw 'request.clientId'}}\"\n  },\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_public_key\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
+          "uuid": "9428a1aa-4c76-4fdb-81c6-f62075acaaa7",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"clientId\": \"{{bodyRaw 'request.clientId'}}\"\n  },\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_client_id\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
           "latency": 0,
-          "statusCode": 200,
-          "label": "Invalid publicKey",
-          "headers": [
-            {
-              "key": "Content-Type",
-              "value": "application/json"
-            }
-          ],
+          "statusCode": 400,
+          "label": "Invalid request.",
+          "headers": [],
           "bodyType": "INLINE",
           "filePath": "",
           "databucketID": "",
@@ -1010,7 +1007,7 @@
   "data": [],
   "folders": [],
   "rootChildren": [
-    {
+     {
       "type": "route",
       "uuid": "45bd6c8d-c23c-42dd-9a73-51e98c7d7588"
     },
@@ -1030,5 +1027,6 @@
       "type": "route",
       "uuid": "8f51c09f-816b-4137-a8aa-8e30bd56a2f7"
     }
-  ]
+  ],
+
 }
