@@ -94,7 +94,7 @@ This Services APIs is not yet specified, but it should be the purpose of a next 
 
 ## **8.3 Credential Management**
 
-This Services APIs is not yet specified, but it should be the purpose of a next iteration of the Identity Building Block Specification
+This Services APIs is not yet specified, but it should be the purpose of a next iteration of the Identity Building Block Specification.
 
 ## **8.4 Subscription Management**
 
