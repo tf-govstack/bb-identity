@@ -1,11 +1,11 @@
 {
   "uuid": "256918d8-70c9-4e45-ad37-a6cb1a3f39f7",
-  "lastMigration": 24,
+  "lastMigration": 27,
   "name": "Mockoon bbidentity",
   "endpointPrefix": "",
   "latency": 0,
   "port": 3001,
-  "hostname": "0.0.0.0",
+  "hostname": "",
   "routes": [
     {
       "uuid": "f90e90b4-866f-478f-b34c-a358d8196f01",
@@ -272,7 +272,8 @@
         }
       ],
       "enabled": true,
-      "responseMode": null
+      "responseMode": null,
+      "type": "http"
     },
     {
       "uuid": "91963d01-81ab-4fdd-8b43-9a08652e6173",
@@ -374,16 +375,17 @@
         }
       ],
       "enabled": true,
-      "responseMode": null
+      "responseMode": null,
+      "type": "http"
     },
     {
-      "uuid": "f90e90b4-866f-478f-b34c-a358d8196f01",
+      "uuid": "aae71439-4c3b-4f87-8f13-8341734a0c99",
       "documentation": "API to add new open ID connect (OIDC) clients,",
       "method": "post",
       "endpoint": "client-mgmt/oidc-client",
       "responses": [
         {
-          "uuid": "bf45f01a-d052-430c-8a88-ea4524b29f69",
+          "uuid": "ff20e6cc-6de3-413c-8c08-e743a6e2c3e2",
           "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"clientId\": \"string\"\n  },\n  \"errors\": []\n}",
           "latency": 0,
           "statusCode": 200,
@@ -560,6 +562,35 @@
         }
       ],
       "enabled": true,
+      "responseMode": null,
+      "type": "http"
+    },
+    {
+      "uuid": "5674c6e6-5e80-4f0b-9bcb-30416f76d9a7",
+      "type": "http",
+      "documentation": "This endpoint is only for facilitating the OIDC provider details in a standard way.",
+      "method": "get",
+      "endpoint": ".well-known/openid-configuration",
+      "responses": [
+        {
+          "uuid": "ca26fe7c-4914-4670-8881-365692a23410",
+          "body": "{\n  \"issuer\": \"string\",\n  \"authorization_endpoint\": \"string\",\n  \"token_endpoint\": \"string\",\n  \"userinfo_endpoint\": \"string\",\n  \"jwks_uri\": \"string\",\n  \"registration_endpoint\": \"string\",\n  \"scopes_supported\": [\n    \"openid\"\n  ],\n  \"response_types_supported\": [\n    \"code\"\n  ],\n  \"acr_values_supported\": [\n    \"string\"\n  ],\n  \"userinfo_signing_alg_values_supported\": [\n    \"string\"\n  ],\n  \"userinfo_encryption_alg_values_supported\": [\n    \"string\"\n  ],\n  \"userinfo_encryption_enc_values_supported\": [\n    \"string\"\n  ],\n  \"token_endpoint_auth_methods_supported\": [\n    \"private_key_jwt\"\n  ],\n  \"display_values_supported\": [\n    \"string\"\n  ],\n  \"claim_types_supported\": [\n    \"normal\"\n  ],\n  \"claims_supported\": [\n    \"string\"\n  ],\n  \"claims_locales_supported\": [\n    \"string\"\n  ],\n  \"ui_locales_supported\": [\n    \"string\"\n  ],\n  \"response_modes_supported\": [\n    \"query\"\n  ],\n  \"token_endpoint_auth_signing_alg_values_supported\": [\n    \"RS256\"\n  ],\n  \"id_token_signing_alg_values_supported\": [\n    \"RS256\"\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Successfully faciliated the OIDC provider detais",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
       "responseMode": null
     }
   ],
@@ -594,5 +625,24 @@
       "value": ""
     }
   ],
-  "data": []
+  "data": [],
+  "folders": [],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "aae71439-4c3b-4f87-8f13-8341734a0c99"
+    },
+    {
+      "type": "route",
+      "uuid": "91963d01-81ab-4fdd-8b43-9a08652e6173"
+    },
+    {
+      "type": "route",
+      "uuid": "f90e90b4-866f-478f-b34c-a358d8196f01"
+    },
+    {
+      "type": "route",
+      "uuid": "5674c6e6-5e80-4f0b-9bcb-30416f76d9a7"
+    }
+  ]
 }
