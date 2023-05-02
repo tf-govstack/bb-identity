@@ -154,11 +154,23 @@ When(
 );
 
 Then(
-  'The POST \\/client-mgmt\\/oidc-client endpoint response should match json schema with error code and error message',
+  'The POST \\/client-mgmt\\/oidc-client endpoint response should match json schema with error',
   () =>
     chai
       .expect(specClientCreate._response.json)
       .to.be.jsonSchema(clientResponseSchema)
+);
+
+Then(
+  'The POST \\/client-mgmt\\/oidc-client endpoint response should match with error code {string}',
+  (errorCode) =>
+    chai
+      .expect(
+        specClientCreate._response.json.errors
+          .map((error) => error.errorCode)
+          .toString()
+      )
+      .to.be.equals(errorCode)
 );
 
 // Scenario: Not able to add the new client to the Open ID Connect (OIDC) because of invalid authContextRefs
