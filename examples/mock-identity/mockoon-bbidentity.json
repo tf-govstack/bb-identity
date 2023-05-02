@@ -15,7 +15,7 @@
       "responses": [
         {
           "uuid": "bf45f01a-d052-430c-8a88-ea4524b29f69",
-          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"clientId\": \"string\"\n  },\n  \"errors\": []\n}",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"clientId\": \"{{routeParamsRaw 'client_id'}}\"\n  },\n  \"errors\": []\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Successfully updated the client.",
@@ -28,9 +28,9 @@
             {
               "target": "params",
               "modifier": "client_id",
-              "value": "785b806d0e594657b05aabdb30fff8a4",
+              "value": "^.{1,50}$",
               "invert": false,
-              "operator": "equals"
+              "operator": "regex"
             },
             {
               "target": "body",
@@ -70,14 +70,14 @@
             {
               "target": "body",
               "modifier": "request.authContextRefs",
-              "value": "^mosip:idp:acr:static-code$|^mosip:idp:acr:generated-code$|^mosip:idp:acr:linked-wallet$|^mosip:idp:acr:biometrics$",
+              "value": "^idbb:acr:static-code$|^idbb:acr:generated-code$|^idbb:acr:linked-wallet$|^idbb:acr:biometrics$|^idbb:acr:biometrics-generated-code$|^idbb:acr:linked-wallet-static-code$",
               "invert": false,
               "operator": "regex"
             },
             {
               "target": "body",
               "modifier": "request.userClaims",
-              "value": "^.{1,}$",
+              "value": "^name$|^given_name$|^middle_name$|^preferred_username$|^nickname$|^gender$|^birthdate$|^email$|^email_verified$|^phone_number$|^phone_number_verified$|^picture$|^address$|^family_name$|^locale$|^zoneinfo$",
               "invert": false,
               "operator": "regex"
             },
@@ -151,14 +151,14 @@
             {
               "target": "body",
               "modifier": "request.authContextRefs",
-              "value": "^mosip:idp:acr:static-code$|^mosip:idp:acr:generated-code$|^mosip:idp:acr:linked-wallet$|^mosip:idp:acr:biometrics$",
+              "value": "^idbb:acr:static-code$|^idbb:acr:generated-code$|^idbb:acr:linked-wallet$|^idbb:acr:biometrics$|^idbb:acr:biometrics-generated-code$|^idbb:acr:linked-wallet-static-code$",
               "invert": true,
               "operator": "regex"
             },
             {
               "target": "body",
               "modifier": "request.userClaims",
-              "value": "^.{1,}$",
+              "value": "^name$|^given_name$|^middle_name$|^preferred_username$|^nickname$|^gender$|^birthdate$|^email$|^email_verified$|^phone_number$|^phone_number_verified$|^picture$|^address$|^family_name$|^locale$|^zoneinfo$",
               "invert": true,
               "operator": "regex"
             },
@@ -239,14 +239,14 @@
             {
               "target": "body",
               "modifier": "request.authContextRefs",
-              "value": "(mosip:idp:acr:static-code|mosip:idp:acr:generated-code|mosip:idp:acr:linked-wallet|mosip:idp:acr:biometrics)",
+              "value": "^idbb:acr:static-code$|^idbb:acr:generated-code$|^idbb:acr:linked-wallet$|^idbb:acr:biometrics$|^idbb:acr:biometrics-generated-code$|^idbb:acr:linked-wallet-static-code$",
               "invert": false,
               "operator": "regex"
             },
             {
               "target": "body",
               "modifier": "request.userClaims",
-              "value": "^.{1,}$",
+              "value": "^name$|^given_name$|^middle_name$|^preferred_username$|^nickname$|^gender$|^birthdate$|^email$|^email_verified$|^phone_number$|^phone_number_verified$|^picture$|^address$|^family_name$|^locale$|^zoneinfo$",
               "invert": false,
               "operator": "regex"
             },
