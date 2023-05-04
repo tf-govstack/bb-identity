@@ -12,7 +12,6 @@ const {
 
 chai.use(require('chai-json-schema'));
 
-let requestPayload;
 let specClientCreate;
 let specClientUpdate;
 let clientId;
@@ -20,38 +19,10 @@ let clientId;
 const baseUrl = localhost + clientUpdateEndpoint;
 const endpointTag = { tags: `@endpoint=/${clientUpdateEndpoint}` };
 
-// const requestFunction = (clientId) =>
-//   specClientUpdate
-//     .put(baseUrl)
-//     .withPathParams('client_id', clientId)
-//     .withBody(requestPayload);
-
 Before(endpointTag, () => {
   specClientCreate = spec();
   specClientUpdate = spec();
 });
-
-// Background:
-// Given(
-//   'The user wants to update the client profile in the Open ID Connect \\(OIDC)',
-//   () => {
-//     requestPayload = {
-//       requestTime: '2022-09-22T08:03:45.000Z',
-//       request: {
-//         clientName: 'Health Service',
-//         status: 'active',
-//         logoUri: 'http://example.com',
-//         redirectUris: ['http://example.com'],
-//         userClaims: ['name'],
-//         authContextRefs: ['mosip:idp:acr:static-code'],
-//         grantTypes: ['authorization_code'],
-//         clientAuthMethods: ['private_key_jwt'],
-//       },
-//     };
-
-//     return requestPayload;
-//   }
-// );
 
 // Scenario: The client profile is successfully updated in the Open ID Connect (OIDC) smoke type test
 Given(
@@ -99,7 +70,7 @@ When(
     specClientUpdate
       .put(baseUrl)
       .withPathParams('client_id', client_id)
-      .withBody({
+      .withJson({
         requestTime: requestTime,
         request: {
           clientName: clientName,
@@ -154,8 +125,212 @@ Then(
   'The PUT \\/client-mgmt\\/oidc-client\\/\\{client_id} endpoint response should contain {string} as clientId',
   (clientId) =>
     chai
-      .expect(specClientCreate._response.json.response.clientId)
+      .expect(specClientUpdate._response.json.response.clientId)
       .to.be.equal(clientId)
+);
+
+// Scenario: Not able to update the client because of invalid clientAuthMethods
+// Given, Then for this scenario are written in the aforementioned example
+When(
+  'User sends PUT request with given {string} as invalid clientAuthMethods',
+  (clientAuthMethods) =>
+    specClientUpdate
+      .put(baseUrl)
+      .withPathParams('client_id', clientId)
+      .withJson({
+        requestTime: '2022-09-22T08:03:45.000Z',
+        request: {
+          clientName: 'Health Service',
+          status: 'active',
+          logoUri: 'http://example.com',
+          redirectUris: ['http://example-redirect.com'],
+          userClaims: ['name'],
+          authContextRefs: ['idbb:acr:generated-code'],
+          grantTypes: ['authorization_code'],
+          clientAuthMethods: [clientAuthMethods],
+        },
+      })
+);
+
+Then(
+  'The PUT \\/client-mgmt\\/oidc-client\\/\\{client_id} endpoint response should match json schema with error',
+  () =>
+    chai
+      .expect(specClientUpdate._response.json)
+      .to.be.jsonSchema(clientResponseSchema)
+);
+
+Then(
+  'The PUT \\/client-mgmt\\/oidc-client\\/\\{client_id} endpoint response should match with error code {string}',
+  (errorCode) =>
+    chai
+      .expect(
+        specClientUpdate._response.json.errors
+          .map((error) => error.errorCode)
+          .toString()
+      )
+      .to.be.equals(errorCode)
+);
+
+// Scenario: Not able to update the client because of invalid grantTypes
+// Given, Then for this scenario are written in the aforementioned example
+When(
+  'User sends PUT request with given {string} as invalid grantTypes',
+  (grantTypes) =>
+    specClientUpdate
+      .put(baseUrl)
+      .withPathParams('client_id', clientId)
+      .withJson({
+        requestTime: '2022-09-22T08:03:45.000Z',
+        request: {
+          clientName: 'Health Service',
+          status: 'active',
+          logoUri: 'http://example.com',
+          redirectUris: ['http://example-redirect.com'],
+          userClaims: ['name'],
+          authContextRefs: ['idbb:acr:generated-code'],
+          grantTypes: [grantTypes],
+          clientAuthMethods: ['private_key_jwt'],
+        },
+      })
+);
+
+// Scenario: Not able to update the client because of invalid userClaims
+// Given, Then for this scenario are written in the aforementioned example
+When(
+  'User sends PUT request with given {string} as invalid userClaims',
+  (userClaims) =>
+    specClientUpdate
+      .put(baseUrl)
+      .withPathParams('client_id', clientId)
+      .withJson({
+        requestTime: '2022-09-22T08:03:45.000Z',
+        request: {
+          clientName: 'Health Service',
+          status: 'active',
+          logoUri: 'http://example.com',
+          redirectUris: ['http://example-redirect.com'],
+          userClaims: [userClaims],
+          authContextRefs: ['idbb:acr:generated-code'],
+          grantTypes: ['authorization_code'],
+          clientAuthMethods: ['private_key_jwt'],
+        },
+      })
+);
+
+// Scenario: Not able to update the client because of invalid authContextRefs
+// Given, Then for this scenario are written in the aforementioned example
+When(
+  'User sends PUT request with given {string} as invalid authContextRefs',
+  (authContextRefs) =>
+    specClientUpdate
+      .put(baseUrl)
+      .withPathParams('client_id', clientId)
+      .withJson({
+        requestTime: '2022-09-22T08:03:45.000Z',
+        request: {
+          clientName: 'Health Service',
+          status: 'active',
+          logoUri: 'http://example.com',
+          redirectUris: ['http://example-redirect.com'],
+          userClaims: ['name'],
+          authContextRefs: [authContextRefs],
+          grantTypes: ['authorization_code'],
+          clientAuthMethods: ['private_key_jwt'],
+        },
+      })
+);
+
+// Scenario: Not able to update the client because of invalid redirectUri
+// Given, Then for this scenario are written in the aforementioned example
+When(
+  'User sends PUT request with given {string} as invalid redirectUri',
+  (redirectUri) =>
+    specClientUpdate
+      .put(baseUrl)
+      .withPathParams('client_id', clientId)
+      .withJson({
+        requestTime: '2022-09-22T08:03:45.000Z',
+        request: {
+          clientName: 'Health Service',
+          status: 'active',
+          logoUri: 'http://example.com',
+          redirectUris: [redirectUri],
+          userClaims: ['name'],
+          authContextRefs: ['idbb:acr:generated-code'],
+          grantTypes: ['authorization_code'],
+          clientAuthMethods: ['private_key_jwt'],
+        },
+      })
+);
+
+// Scenario: Not able to update the client because of invalid logoUri
+// Given, Then for this scenario are written in the aforementioned example
+When(
+  'User sends PUT request with given {string} as invalid logoUri',
+  (logoUri) =>
+    specClientUpdate
+      .put(baseUrl)
+      .withPathParams('client_id', clientId)
+      .withJson({
+        requestTime: '2022-09-22T08:03:45.000Z',
+        request: {
+          clientName: 'Health Service',
+          status: 'active',
+          logoUri: logoUri,
+          redirectUris: ['http://example-redirect.com'],
+          userClaims: ['name'],
+          authContextRefs: ['idbb:acr:generated-code'],
+          grantTypes: ['authorization_code'],
+          clientAuthMethods: ['private_key_jwt'],
+        },
+      })
+);
+
+// Scenario: Not able to update the client because of invalid clientName
+// Given, Then for this scenario are written in the aforementioned example
+When(
+  'User sends PUT request with given {string} as invalid clientName',
+  (clientName) =>
+    specClientUpdate
+      .put(baseUrl)
+      .withPathParams('client_id', clientId)
+      .withJson({
+        requestTime: '2022-09-22T08:03:45.000Z',
+        request: {
+          clientName: clientName,
+          status: 'active',
+          logoUri: 'http://example.com',
+          redirectUris: ['http://example-redirect.com'],
+          userClaims: ['name'],
+          authContextRefs: ['idbb:acr:generated-code'],
+          grantTypes: ['authorization_code'],
+          clientAuthMethods: ['private_key_jwt'],
+        },
+      })
+);
+
+// Scenario: Not able to update the client because of invalid client_id
+// Given, Then for this scenario are written in the aforementioned example
+When(
+  'User sends PUT request with given {string} as invalid client_id',
+  (client_id) =>
+    specClientUpdate
+      .put(baseUrl)
+      .withPathParams('client_id', client_id)
+      .withJson({
+        requestTime: '2022-09-22T08:03:45.000Z',
+        request: {
+          clientName: 'Health Service',
+          status: 'active',
+          logoUri: 'http://example.com',
+          redirectUris: ['http://example-redirect.com'],
+          userClaims: ['name'],
+          authContextRefs: ['idbb:acr:generated-code'],
+          grantTypes: ['authorization_code'],
+          clientAuthMethods: ['private_key_jwt'],
+        },
+      })
 );
 
 After(endpointTag, () => {
