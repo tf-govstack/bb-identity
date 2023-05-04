@@ -140,7 +140,7 @@ When(
     specClientCreate.post(baseUrl).withJson({
       requestTime: requestTime,
       request: {
-        clientId: 'e-health-service',
+        clientId: 'e-health-service-1',
         clientName: 'Health Service',
         relyingPartyId: 'bharath-gov',
         logoUri: 'http://example.com',
@@ -181,7 +181,7 @@ When(
     specClientCreate.post(baseUrl).withJson({
       requestTime: '2011-10-05T14:48:00.000Z',
       request: {
-        clientId: 'e-health-service',
+        clientId: 'e-health-service-2',
         clientName: 'Health Service',
         relyingPartyId: 'bharath-gov',
         logoUri: 'http://example.com',
@@ -202,7 +202,7 @@ When(
     specClientCreate.post(baseUrl).withJson({
       requestTime: '2011-10-05T14:48:00.000Z',
       request: {
-        clientId: 'e-health-service',
+        clientId: 'e-health-service-3',
         clientName: 'Health Service',
         relyingPartyId: 'bharath-gov',
         logoUri: 'http://example.com',
@@ -223,7 +223,7 @@ When(
     specClientCreate.post(baseUrl).withJson({
       requestTime: '2011-10-05T14:48:00.000Z',
       request: {
-        clientId: 'e-health-service',
+        clientId: 'e-health-service-4',
         clientName: 'Health Service',
         relyingPartyId: 'bharath-gov',
         logoUri: 'http://example.com',
@@ -244,7 +244,7 @@ When(
     specClientCreate.post(baseUrl).withJson({
       requestTime: '2011-10-05T14:48:00.000Z',
       request: {
-        clientId: 'e-health-service',
+        clientId: 'e-health-service-5',
         clientName: 'Health Service',
         relyingPartyId: 'bharath-gov',
         logoUri: 'http://example.com',
@@ -265,7 +265,7 @@ When(
     specClientCreate.post(baseUrl).withJson({
       requestTime: '2011-10-05T14:48:00.000Z',
       request: {
-        clientId: 'e-health-service',
+        clientId: 'e-health-service-6',
         clientName: clientName,
         relyingPartyId: 'bharath-gov',
         logoUri: 'http://example.com',
@@ -286,7 +286,7 @@ When(
     specClientCreate.post(baseUrl).withJson({
       requestTime: '2011-10-05T14:48:00.000Z',
       request: {
-        clientId: 'e-health-service',
+        clientId: 'e-health-service-7',
         clientName: 'e-health-service',
         relyingPartyId: relyingPartyId,
         logoUri: 'http://example.com',
@@ -307,7 +307,7 @@ When(
     specClientCreate.post(baseUrl).withJson({
       requestTime: '2011-10-05T14:48:00.000Z',
       request: {
-        clientId: 'e-health-service',
+        clientId: 'e-health-service-8',
         clientName: 'e-health-service',
         relyingPartyId: 'bharath-gov',
         logoUri: logoUri,
