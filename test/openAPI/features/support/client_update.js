@@ -14,7 +14,7 @@ chai.use(require('chai-json-schema'));
 
 let specClientCreate;
 let specClientUpdate;
-let clientId;
+let createdClientId;
 
 const baseUrl = localhost + clientUpdateEndpoint;
 const endpointTag = { tags: `@endpoint=/${clientUpdateEndpoint}` };
@@ -49,7 +49,7 @@ Given(
       },
     });
     await specClientCreate.toss();
-    return (clientId = specClientCreate._response.json.response.clientId);
+    createdClientId = specClientCreate._response.json.response.clientId;
   }
 );
 
@@ -136,7 +136,7 @@ When(
   (clientAuthMethods) =>
     specClientUpdate
       .put(baseUrl)
-      .withPathParams('client_id', clientId)
+      .withPathParams('client_id', createdClientId)
       .withJson({
         requestTime: '2022-09-22T08:03:45.000Z',
         request: {
@@ -179,7 +179,7 @@ When(
   (grantTypes) =>
     specClientUpdate
       .put(baseUrl)
-      .withPathParams('client_id', clientId)
+      .withPathParams('client_id', createdClientId)
       .withJson({
         requestTime: '2022-09-22T08:03:45.000Z',
         request: {
@@ -202,7 +202,7 @@ When(
   (userClaims) =>
     specClientUpdate
       .put(baseUrl)
-      .withPathParams('client_id', clientId)
+      .withPathParams('client_id', createdClientId)
       .withJson({
         requestTime: '2022-09-22T08:03:45.000Z',
         request: {
@@ -225,7 +225,7 @@ When(
   (authContextRefs) =>
     specClientUpdate
       .put(baseUrl)
-      .withPathParams('client_id', clientId)
+      .withPathParams('client_id', createdClientId)
       .withJson({
         requestTime: '2022-09-22T08:03:45.000Z',
         request: {
@@ -248,7 +248,7 @@ When(
   (redirectUri) =>
     specClientUpdate
       .put(baseUrl)
-      .withPathParams('client_id', clientId)
+      .withPathParams('client_id', createdClientId)
       .withJson({
         requestTime: '2022-09-22T08:03:45.000Z',
         request: {
@@ -271,7 +271,7 @@ When(
   (logoUri) =>
     specClientUpdate
       .put(baseUrl)
-      .withPathParams('client_id', clientId)
+      .withPathParams('client_id', createdClientId)
       .withJson({
         requestTime: '2022-09-22T08:03:45.000Z',
         request: {
@@ -294,7 +294,7 @@ When(
   (clientName) =>
     specClientUpdate
       .put(baseUrl)
-      .withPathParams('client_id', clientId)
+      .withPathParams('client_id', createdClientId)
       .withJson({
         requestTime: '2022-09-22T08:03:45.000Z',
         request: {

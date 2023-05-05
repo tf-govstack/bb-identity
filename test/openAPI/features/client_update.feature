@@ -16,7 +16,7 @@ Feature: API to update existing Open ID Connect (OIDC) client.
   @unit @negative
   Scenario: Not able to update the client because of invalid clientAuthMethods
     Given The user wants to add the new client to the Open ID Connect (OIDC)
-    And The client profile with "e-health-service" as clientId is created
+    And The client profile with "e-health-service-01" as clientId is created
     When User sends PUT request with given "invalid_auth_method" as invalid clientAuthMethods
     Then User receives a response from the PUT /client-mgmt/oidc-client/{client_id} endpoint
     And The PUT /client-mgmt/oidc-client/{client_id} endpoint response should be returned in a timely manner 15000ms
@@ -28,7 +28,7 @@ Feature: API to update existing Open ID Connect (OIDC) client.
   @unit @negative
   Scenario: Not able to update the client because of invalid grantTypes
     Given The user wants to add the new client to the Open ID Connect (OIDC)
-    And The client profile with "e-health-service" as clientId is created
+    And The client profile with "e-health-service-02" as clientId is created
     When User sends PUT request with given "invalid_code" as invalid grantTypes
     Then User receives a response from the PUT /client-mgmt/oidc-client/{client_id} endpoint
     And The PUT /client-mgmt/oidc-client/{client_id} endpoint response should be returned in a timely manner 15000ms
@@ -40,7 +40,7 @@ Feature: API to update existing Open ID Connect (OIDC) client.
   @unit @negative
   Scenario: Not able to update the client because of invalid userClaims
     Given The user wants to add the new client to the Open ID Connect (OIDC)
-    And The client profile with "e-health-service" as clientId is created
+    And The client profile with "e-health-service-03" as clientId is created
     When User sends PUT request with given "invalid_claims" as invalid userClaims
     Then User receives a response from the PUT /client-mgmt/oidc-client/{client_id} endpoint
     And The PUT /client-mgmt/oidc-client/{client_id} endpoint response should be returned in a timely manner 15000ms
@@ -52,7 +52,7 @@ Feature: API to update existing Open ID Connect (OIDC) client.
   @unit @negative
   Scenario: Not able to update the client because of invalid authContextRefs
     Given The user wants to add the new client to the Open ID Connect (OIDC)
-    And The client profile with "e-health-service" as clientId is created
+    And The client profile with "e-health-service-04" as clientId is created
     When User sends PUT request with given "idbb:acr:invalid" as invalid authContextRefs
     Then User receives a response from the PUT /client-mgmt/oidc-client/{client_id} endpoint
     And The PUT /client-mgmt/oidc-client/{client_id} endpoint response should be returned in a timely manner 15000ms
@@ -64,7 +64,7 @@ Feature: API to update existing Open ID Connect (OIDC) client.
   @unit @negative
   Scenario: Not able to update the client because of invalid redirectUri
     Given The user wants to add the new client to the Open ID Connect (OIDC)
-    And The client profile with "e-health-service" as clientId is created
+    And The client profile with "e-health-service-05" as clientId is created
     When User sends PUT request with given "" as invalid redirectUri
     Then User receives a response from the PUT /client-mgmt/oidc-client/{client_id} endpoint
     And The PUT /client-mgmt/oidc-client/{client_id} endpoint response should be returned in a timely manner 15000ms
@@ -76,7 +76,7 @@ Feature: API to update existing Open ID Connect (OIDC) client.
   @unit @negative
   Scenario: Not able to update the client because of invalid logoUri
     Given The user wants to add the new client to the Open ID Connect (OIDC)
-    And The client profile with "e-health-service" as clientId is created
+    And The client profile with "e-health-service-06" as clientId is created
     When User sends PUT request with given "" as invalid logoUri
     Then User receives a response from the PUT /client-mgmt/oidc-client/{client_id} endpoint
     And The PUT /client-mgmt/oidc-client/{client_id} endpoint response should be returned in a timely manner 15000ms
@@ -88,7 +88,7 @@ Feature: API to update existing Open ID Connect (OIDC) client.
   @unit @negative
   Scenario: Not able to update the client because of invalid clientName
     Given The user wants to add the new client to the Open ID Connect (OIDC)
-    And The client profile with "e-health-service" as clientId is created
+    And The client profile with "e-health-service-07" as clientId is created
     When User sends PUT request with given "" as invalid clientName
     Then User receives a response from the PUT /client-mgmt/oidc-client/{client_id} endpoint
     And The PUT /client-mgmt/oidc-client/{client_id} endpoint response should be returned in a timely manner 15000ms
@@ -100,7 +100,7 @@ Feature: API to update existing Open ID Connect (OIDC) client.
   @unit @negative
   Scenario: Not able to update the client because of invalid client_id
     Given The user wants to add the new client to the Open ID Connect (OIDC)
-    And The client profile with "e-health-service" as clientId is created
+    And The client profile with "e-health-service-08" as clientId is created
     When User sends PUT request with given "e-service" as invalid client_id
     Then User receives a response from the PUT /client-mgmt/oidc-client/{client_id} endpoint
     And The PUT /client-mgmt/oidc-client/{client_id} endpoint response should be returned in a timely manner 15000ms
