@@ -122,6 +122,8 @@ module.exports = {
   clientCreateEndpoint: 'client-mgmt/oidc-client',
   // client_update
   clientUpdateEndpoint: 'client-mgmt/oidc-client/{client_id}',
+  // oidc_authorize
+  oidcAuthorizeEndpoint: 'authorize',
   //shares
   clientResponseSchema: {
     type: 'object',

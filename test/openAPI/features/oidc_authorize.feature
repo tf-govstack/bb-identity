@@ -1,36 +1,28 @@
+@method=GET @endpoint=/authorize
 Feature: The authorized endpoint of Open ID Connect (OIDC).
 
   This is the authorized endpoint of Open ID Connect (OIDC), the relying party applications will do a browser redirect
   to this endpoint with all required details passed as query parameters.
 
-  Request endpoint: GET /authorize
+  @smoke
+  Scenario: Successfully validates the provided query parameters using the OAuth-details endpoint smoke type test
+    Given The user wants to validates the provided query parameters using the OAuth-details endpoint
+    When User sends GET request with given "openid profile" as scope, "code" as response_type, "e-health-service" as client_id, "http://example-redirect.com" as redirect_uri 
+    Then User receives a response from the GET /authorize
+    And The GET /authorize endpoint response should be returned in a timely manner 15000ms
+    And The GET /authorize endpoint response should have status 200
 
-  Scenario: Successfully loads the JS application and validates the provided query parameters using the OAuth-details endpoint
-    Given The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint
-    When The user triggers an action with every required parameter
-    Then The user successfully loads the JS application and validates the provided query parameters using the OAuth-details endpoint
+  @unit @positive
+  Scenario Outline: Successfully validates the provided query parameters using the OAuth-details endpoint
+    Given The user wants to validates the provided query parameters using the OAuth-details endpoint
+    When User sends GET request with given "<scope>" as scope, "<response_type>" as response_type, "<client_id>" as client_id, "<redirect_uri>" as redirect_uri, "<state>" as state, "<nonce>" as nonce, "<display>" as display, "<prompt>" as prompt, "<max_age>" as max_age, "<ui_locales>" as ui_locales, "<acr_values>" as acr_values, "<claims_locales>" as claims_locales, "<claims>" as claims
+    Then User receives a response from the GET /authorize
+    And The GET /authorize endpoint response should be returned in a timely manner 15000ms
+    And The GET /authorize endpoint response should have status 200
 
-  Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint, because of an invalid scope provided
-    Given The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint with an invalid scope parameter
-    When The user triggers an action with an invalid scope parameter
-    Then The result of an operation returns an error because of an invalid scope provided
-
-  Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint, because of an invalid response_type provided
-    Given The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint with an invalid response_type parameter
-    When The user triggers an action with an invalid response_type parameter
-    Then The result of an operation returns an error, because of an invalid response_type provided
-
-  Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint, because of an invalid client_id provided
-    Given The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint with an invalid client_id parameter
-    When The user triggers an action with an invalid client_id parameter
-    Then The result of an operation returns an error, because of an invalid client_id provided
-
-  Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint, because of an invalid redirect_uri provided
-    Given The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint with an invalid redirect_uri parameter
-    When The user triggers an action with an invalid redirect_uri parameter
-    Then The result of an operation returns an error, because of an invalid redirect_uri provided
-
-  Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint because none parameters provided
-    Given The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint without parameters
-    When The user triggers an action without parameters
-    Then The result of an operation returns an error because none parameters provided
+  Examples: Valid data
+  | scope          | response_type | client_id       | redirect_uri                 | state | nonce | display | prompt         | max_age | ui_locales | acr_values              | claims_locales | claims |  
+  | openid         | code          | payment-service | http://example-redirect1.com | state | nonce | page    | none           | 10      | en         | idbb:acr:static-code    | en-GB          | name   |
+  | profile        | code          | e-bank-service  | http://example-redirect2.com | state | nonce | popup   | login          | 15      | fr         | idbb:acr:generated-code | fr-FR          | name   |
+  | email          | code          | e-bank-service  | http://example-redirect3.com | state | nonce | touch   | consent        | 20      | en         | idbb:acr:linked-wallet  | en-GB          | name   |
+  | offline_access | code          | health-service  | http://example-redirect4.com | state | nonce | wap     | select_account | 5       | fr         | idbb:acr:biometrics     | fr-FR          | name   |

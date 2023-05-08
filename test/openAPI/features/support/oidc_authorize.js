@@ -1,185 +1,90 @@
-const pactum = require("pactum");
-const { Given, When, Then, Before, After } = require("@cucumber/cucumber");
-const { localhost } = require("./helpers/helpers");
+const { spec } = require('pactum');
+const { Given, When, Then, Before, After } = require('@cucumber/cucumber');
+const {
+  localhost,
+  oidcAuthorizeEndpoint,
+  defaultExpectedResponseTime,
+} = require('./helpers/helpers');
 
 let specOIDCAuthorize;
-let invalidScope;
-let invalidResponseType;
-let invalidClientId;
-let invalidRedirectUri;
 
-const baseUrl = `${localhost}authorize`;
+const baseUrl = localhost + oidcAuthorizeEndpoint;
+const endpointTag = { tags: `@endpoint=/${oidcAuthorizeEndpoint}` };
 
-const validScope = "openid profile";
-const validResponseType = "code";
-const validClientId = "1245435";
-const validRedirect_uri = "http://example.com";
-
-const requestFunction = (scope, responseType, clientId, redirectUri) =>
-  specOIDCAuthorize
-    .get(baseUrl)
-    .withQueryParams("scope", scope)
-    .withQueryParams("response_type", responseType)
-    .withQueryParams("client_id", clientId)
-    .withQueryParams("redirect_uri", redirectUri);
-
-const errorResultFunction = async () => {
-  await specOIDCAuthorize.toss();
-  specOIDCAuthorize.response().should.have.status(400);
-};
-
-Before(() => {
-  specOIDCAuthorize = pactum.spec();
+Before(endpointTag, () => {
+  specOIDCAuthorize = spec();
 });
 
-// Scenario: Successfully loads the JS application and validates the provided query parameters using the OAuth-details endpoint
+// Scenario: Successfully validates the provided query parameters using the OAuth-details endpoint smoke type test
 Given(
-  "The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint",
-  () => {
-    return "Every provided query parameters are valid";
-  }
-);
-
-When("The user triggers an action with every required parameter", () => {
-  requestFunction(
-    validScope,
-    validResponseType,
-    validClientId,
-    validRedirect_uri
-  );
-});
-
-Then(
-  "The user successfully loads the JS application and validates the provided query parameters using the OAuth-details endpoint",
-  async () => {
-    await specOIDCAuthorize.toss();
-    specOIDCAuthorize.response().should.have.status(200);
-  }
-);
-
-// Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint, because of an invalid scope provided
-Given(
-  "The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint with an invalid scope parameter",
-  () => {
-    invalidScope = "Invalid Scope";
-
-    return invalidScope;
-  }
-);
-
-When("The user triggers an action with an invalid scope parameter", () =>
-  requestFunction(
-    invalidScope,
-    validResponseType,
-    validClientId,
-    validRedirect_uri
-  )
-);
-
-Then(
-  "The result of an operation returns an error because of an invalid scope provided",
-  async () => {
-    await errorResultFunction();
-  }
-);
-
-// Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint, because of an invalid scope provided
-Given(
-  "The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint with an invalid response_type parameter",
-  () => {
-    invalidResponseType = "Not a code";
-  }
-);
-
-When(
-  "The user triggers an action with an invalid response_type parameter",
+  'The user wants to validates the provided query parameters using the OAuth-details endpoint',
   () =>
-    requestFunction(
-      validScope,
-      invalidResponseType,
-      validClientId,
-      validRedirect_uri
-    )
-);
-
-Then(
-  "The result of an operation returns an error, because of an invalid response_type provided",
-  async () => {
-    await errorResultFunction();
-  }
-);
-
-// Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint, because of an invalid client_id provided
-Given(
-  "The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint with an invalid client_id parameter",
-  () => {
-    invalidClientId = "";
-    return invalidClientId;
-  }
-);
-
-When("The user triggers an action with an invalid client_id parameter", () =>
-  requestFunction(
-    validScope,
-    validResponseType,
-    invalidClientId,
-    validRedirect_uri
-  )
-);
-
-Then(
-  "The result of an operation returns an error, because of an invalid client_id provided",
-  async () => {
-    await errorResultFunction();
-  }
-);
-// Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint, because of an invalid redirect_uri provided
-Given(
-  "The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint with an invalid redirect_uri parameter",
-  () => {
-    invalidRedirectUri = "";
-    return invalidRedirectUri;
-  }
+    'The user wants to validates the provided query parameters using the OAuth-details endpoint'
 );
 
 When(
-  "The user triggers an action with an invalid redirect_uri parameter",
-  () => {
-    requestFunction(
-      validScope,
-      validResponseType,
-      validClientId,
-      invalidRedirectUri
-    );
-  }
+  'User sends GET request with given {string} as scope, {string} as response_type, {string} as client_id, {string} as redirect_uri',
+  (scope, responseType, clientId, redirectUri) =>
+    specOIDCAuthorize.get(baseUrl).withQueryParams({
+      scope: scope,
+      response_type: responseType,
+      client_id: clientId,
+      redirect_uri: redirectUri,
+    })
 );
+
+Then('User receives a response from the GET \\/authorize', async () => {
+  await specOIDCAuthorize.toss();
+});
 
 Then(
-  "The result of an operation returns an error, because of an invalid redirect_uri provided",
-  async () => {
-    await errorResultFunction();
-  }
+  'The GET \\/authorize endpoint response should be returned in a timely manner 15000ms',
+  () =>
+    specOIDCAuthorize
+      .response()
+      .to.have.responseTimeLessThan(defaultExpectedResponseTime)
 );
 
-// Scenario: The user is not able to load the JS application and validates the provided query parameters using the OAuth-details endpoint because none parameters provided
-Given(
-  "The user wants to load the JS application and validates the provided query parameters using the OAuth-details endpoint without parameters",
-  () => {
-    return "None parameters provided";
-  }
+Then('The GET \\/authorize endpoint response should have status 200', () =>
+  specOIDCAuthorize.response().to.have.status(200)
 );
 
-When("The user triggers an action without parameters", () =>
-  specOIDCAuthorize.get(baseUrl)
+// Scenario Outline: Successfully validates the provided query parameters using the OAuth-details endpoint
+// Given, Then for this scenario are written in the aforementioned example
+When(
+  'User sends GET request with given {string} as scope, {string} as response_type, {string} as client_id, {string} as redirect_uri, {string} as state, {string} as nonce, {string} as display, {string} as prompt, {string} as max_age, {string} as ui_locales, {string} as acr_values, {string} as claims_locales, {string} as claims',
+  (
+    scope,
+    responseType,
+    clientId,
+    redirectUri,
+    state,
+    nonce,
+    display,
+    prompt,
+    maxAge,
+    uiLocales,
+    acrValues,
+    claimsLocales,
+    claims
+  ) =>
+    specOIDCAuthorize.get(baseUrl).withQueryParams({
+      scope: scope,
+      response_type: responseType,
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      state: state,
+      nonce: nonce,
+      display: display,
+      prompt: prompt,
+      max_age: maxAge,
+      ui_locales: uiLocales,
+      acr_values: acrValues,
+      claims_locales: claimsLocales,
+      claims: claims,
+    })
 );
 
-Then(
-  "The result of an operation returns an error because none parameters provided",
-  async () => {
-    await errorResultFunction();
-  }
-);
-
-After(() => {
+After(endpointTag, () => {
   specOIDCAuthorize.end();
 });
