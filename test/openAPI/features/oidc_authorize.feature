@@ -6,17 +6,17 @@ Feature: The authorized endpoint of Open ID Connect (OIDC).
 
   @smoke
   Scenario: Successfully validates the provided query parameters using the OAuth-details endpoint smoke type test
-    Given The user wants to validates the provided query parameters using the OAuth-details endpoint
-    When User sends GET request with given "openid profile" as scope, "code" as response_type, "e-health-service" as client_id, "http://example-redirect.com" as redirect_uri 
-    Then User receives a response from the GET /authorize
+    Given Wants to validate the provided query parameters using the OAuth-details endpoint
+    When Sends GET request with given "openid profile" as scope, "code" as response_type, "e-health-service" as client_id, "http://example-redirect.com" as redirect_uri 
+    Then Receives a response from the GET /authorize
     And The GET /authorize endpoint response should be returned in a timely manner 15000ms
     And The GET /authorize endpoint response should have status 200
 
   @unit @positive
   Scenario Outline: Successfully validates the provided query parameters using the OAuth-details endpoint
-    Given The user wants to validates the provided query parameters using the OAuth-details endpoint
-    When User sends GET request with given "<scope>" as scope, "<response_type>" as response_type, "<client_id>" as client_id, "<redirect_uri>" as redirect_uri, "<state>" as state, "<nonce>" as nonce, "<display>" as display, "<prompt>" as prompt, "<max_age>" as max_age, "<ui_locales>" as ui_locales, "<acr_values>" as acr_values, "<claims_locales>" as claims_locales, "<claims>" as claims
-    Then User receives a response from the GET /authorize
+    Given Wants to validate the provided query parameters using the OAuth-details endpoint
+    When Sends GET request with given "<scope>" as scope, "<response_type>" as response_type, "<client_id>" as client_id, "<redirect_uri>" as redirect_uri, "<state>" as state, "<nonce>" as nonce, "<display>" as display, "<prompt>" as prompt, "<max_age>" as max_age, "<ui_locales>" as ui_locales, "<acr_values>" as acr_values, "<claims_locales>" as claims_locales, "<claims>" as claims
+    Then Receives a response from the GET /authorize
     And The GET /authorize endpoint response should be returned in a timely manner 15000ms
     And The GET /authorize endpoint response should have status 200
 

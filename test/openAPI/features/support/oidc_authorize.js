@@ -17,13 +17,13 @@ Before(endpointTag, () => {
 
 // Scenario: Successfully validates the provided query parameters using the OAuth-details endpoint smoke type test
 Given(
-  'The user wants to validates the provided query parameters using the OAuth-details endpoint',
+  'Wants to validate the provided query parameters using the OAuth-details endpoint',
   () =>
-    'The user wants to validates the provided query parameters using the OAuth-details endpoint'
+    'Wants to validates the provided query parameters using the OAuth-details endpoint'
 );
 
 When(
-  'User sends GET request with given {string} as scope, {string} as response_type, {string} as client_id, {string} as redirect_uri',
+  'Sends GET request with given {string} as scope, {string} as response_type, {string} as client_id, {string} as redirect_uri',
   (scope, responseType, clientId, redirectUri) =>
     specOIDCAuthorize.get(baseUrl).withQueryParams({
       scope: scope,
@@ -33,7 +33,7 @@ When(
     })
 );
 
-Then('User receives a response from the GET \\/authorize', async () => {
+Then('Receives a response from the GET \\/authorize', async () => {
   await specOIDCAuthorize.toss();
 });
 
@@ -52,7 +52,7 @@ Then('The GET \\/authorize endpoint response should have status 200', () =>
 // Scenario Outline: Successfully validates the provided query parameters using the OAuth-details endpoint
 // Given, Then for this scenario are written in the aforementioned example
 When(
-  'User sends GET request with given {string} as scope, {string} as response_type, {string} as client_id, {string} as redirect_uri, {string} as state, {string} as nonce, {string} as display, {string} as prompt, {string} as max_age, {string} as ui_locales, {string} as acr_values, {string} as claims_locales, {string} as claims',
+  'Sends GET request with given {string} as scope, {string} as response_type, {string} as client_id, {string} as redirect_uri, {string} as state, {string} as nonce, {string} as display, {string} as prompt, {string} as max_age, {string} as ui_locales, {string} as acr_values, {string} as claims_locales, {string} as claims',
   (
     scope,
     responseType,
