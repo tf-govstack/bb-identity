@@ -1266,8 +1266,7 @@
         }
       ],
       "enabled": true,
-      "responseMode": null,
-      "type": "http"
+      "responseMode": null
     },
     {
       "uuid": "cac1d80a-b7ea-4c5a-bb33-4c7c9e2d16e7",
@@ -2788,7 +2787,7 @@
       "responses": [
         {
           "uuid": "5c2cd23e-bb5e-4d43-9c2d-cf5eaf68fbaa",
-          "body": "{\n  \"id_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdHJpbmciLCJzdWIgLSAoUFNVVCkiOiJzdHJpbmciLCJhdWQiOiJzdHJpbmciLCJleHAiOiJzdHJpbmciLCJpYXQiOiJzdHJpbmciLCJhdXRoX3RpbWUiOiJzdHJpbmciLCJub25jZSI6InN0cmluZyIsImFjciI6InN0cmluZyIsImF0X2hhc2giOiJzdHJpbmciLCJyYW5kb21fcHJvcGVydHkiOiJzdHJpbmcifQ.75A8cO_8SY63cOv1vCoBcDUjNQzlJwC86TLwOOS8_Lc\",\n  \"access_token\": \"string.string.string\",\n  \"token_type\": \"Bearer\",\n  \"expires_in\": 0\n}",
+          "body": "{\n  \"id_token\": \"id_token\",\n  \"access_token\": \"string.string.string\",\n  \"token_type\": \"Bearer\",\n  \"expires_in\": 0\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Succesfully recieves the ID and access token",
@@ -2842,16 +2841,16 @@
             {
               "target": "body",
               "modifier": "client_assertion",
-              "value": "^([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_\\-\\+\\/=]+)",
-              "invert": false,
-              "operator": "regex"
+              "value": "",
+              "invert": true,
+              "operator": "null"
             },
             {
               "target": "body",
               "modifier": "redirect_uri",
               "value": "http://example.com",
-              "invert": false,
-              "operator": "equals"
+              "invert": true,
+              "operator": "null"
             }
           ],
           "rulesOperator": "AND",
@@ -2880,15 +2879,15 @@
               "target": "body",
               "modifier": "client_assertion",
               "value": "^([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_=]+)\\.([a-zA-Z0-9_\\-\\+\\/=]*)",
-              "invert": true,
-              "operator": "regex"
+              "invert": false,
+              "operator": "null"
             },
             {
               "target": "body",
-              "modifier": "client_assertion",
-              "value": "^.{1,}$",
-              "invert": false,
-              "operator": "regex"
+              "modifier": "redirect_uri",
+              "value": "",
+              "invert": true,
+              "operator": "null"
             }
           ],
           "rulesOperator": "AND",
@@ -2917,15 +2916,15 @@
               "target": "body",
               "modifier": "client_assertion_type",
               "value": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
-              "invert": true,
-              "operator": "equals"
+              "invert": false,
+              "operator": "null"
             },
             {
               "target": "body",
-              "modifier": "client_assertion_type",
-              "value": "^.{1,}$",
-              "invert": false,
-              "operator": "regex"
+              "modifier": "redirect_uri",
+              "value": "",
+              "invert": true,
+              "operator": "null"
             }
           ],
           "rulesOperator": "AND",
@@ -2934,11 +2933,56 @@
           "default": false
         },
         {
-          "uuid": "6ec82b37-0708-4071-ba89-e526d35603d2",
+          "uuid": "de6728ab-0e67-4747-9974-613bf9c625ad",
           "body": "{\n  \"error\": \"invalid_redirect_uri\",\n  \"error_description\": \"string\"\n}",
           "latency": 0,
           "statusCode": 400,
           "label": "invalid_redirect_uri",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-store"
+            },
+            {
+              "key": "Pragma",
+              "value": "no-cache"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "client_assertion",
+              "value": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "redirect_uri",
+              "value": "http://example.com",
+              "invert": false,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "b4ed8616-a68a-4559-ae00-67fb92a0157b",
+          "body": "{\n  \"error\": \"invalid_payload\",\n  \"error_description\": \"string\"\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Invalid payload",
           "headers": [
             {
               "key": "Content-Type",
@@ -2952,23 +2996,51 @@
           "rules": [
             {
               "target": "body",
-              "modifier": "redirect_uri",
-              "value": "http://example.com",
-              "invert": true,
-              "operator": "equals"
+              "modifier": "grant_type",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "code",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "client_id",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "client_assertion_type",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "client_assertion",
+              "value": "",
+              "invert": false,
+              "operator": "null"
             },
             {
               "target": "body",
               "modifier": "redirect_uri",
-              "value": "^.{1,}$",
+              "value": "",
               "invert": false,
-              "operator": "regex"
+              "operator": "null"
             }
           ],
-          "rulesOperator": "AND",
+          "rulesOperator": "OR",
           "disableTemplating": false,
           "fallbackTo404": false,
-          "default": false
+          "default": true
         },
         {
           "uuid": "b4c73209-405e-4410-a31f-3ae44d8b8e20",
@@ -3034,75 +3106,11 @@
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": false
-        },
-        {
-          "uuid": "b4ed8616-a68a-4559-ae00-67fb92a0157b",
-          "body": "{\n  \"error\": \"invalid_request\",\n  \"error_description\": \"string\"\n}",
-          "latency": 0,
-          "statusCode": 400,
-          "label": "Invalid request",
-          "headers": [
-            {
-              "key": "Content-Type",
-              "value": "application/json"
-            }
-          ],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [
-            {
-              "target": "body",
-              "modifier": "grant_type",
-              "value": "",
-              "invert": false,
-              "operator": "null"
-            },
-            {
-              "target": "body",
-              "modifier": "code",
-              "value": "",
-              "invert": false,
-              "operator": "null"
-            },
-            {
-              "target": "body",
-              "modifier": "client_id",
-              "value": "",
-              "invert": false,
-              "operator": "null"
-            },
-            {
-              "target": "body",
-              "modifier": "client_assertion_type",
-              "value": "",
-              "invert": false,
-              "operator": "null"
-            },
-            {
-              "target": "body",
-              "modifier": "client_assertion",
-              "value": "",
-              "invert": false,
-              "operator": "null"
-            },
-            {
-              "target": "body",
-              "modifier": "redirect_uri",
-              "value": "",
-              "invert": false,
-              "operator": "null"
-            }
-          ],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": true
         }
       ],
       "enabled": true,
-      "responseMode": null
+      "responseMode": null,
+      "type": "http"
     }
   ],
   "proxyMode": false,
