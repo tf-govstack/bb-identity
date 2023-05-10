@@ -303,7 +303,7 @@ module.exports = {
       },
     },
   },
-
+  oauthTokenEndpoint: 'oauth/token',
   //shares
   clientResponseSchema: {
     type: 'object',
