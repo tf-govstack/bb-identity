@@ -162,6 +162,39 @@ module.exports = {
       },
     },
   },
+  // wallet_generate_link_code
+  walletGenerateLinkCodeEndpoint: 'linked-authorization/link-code',
+  walletGenerateLinkCodeResponseSchema: {
+    type: 'object',
+    properties: {
+      responseTime: { type: 'string' },
+      response: {
+        type: 'object',
+        properties: {
+          transactionId: { type: 'string' },
+          linkCode: { type: 'string' },
+          expireDateTime: { type: 'string' },
+        },
+      },
+      errors: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            errorCode: {
+              type: 'string',
+              enum: [
+                'invalid_transaction_id',
+                'link_code_gen_failed',
+                'invalid_transaction',
+              ],
+              errorMessage: { type: 'string' },
+            },
+          },
+        },
+      },
+    },
+  },
   //shares
   clientResponseSchema: {
     type: 'object',
