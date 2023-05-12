@@ -1,10 +1,12 @@
 {
   "uuid": "256918d8-70c9-4e45-ad37-a6cb1a3f39f7",
   "lastMigration": 27,
+  "lastMigration": 27,
   "name": "BB-Identity",
   "endpointPrefix": "",
   "latency": 0,
   "port": 3001,
+  "hostname": "",
   "hostname": "",
   "routes": [
     {
@@ -1494,10 +1496,6 @@
     {
       "type": "route",
       "uuid": "f90e90b4-866f-478f-b34c-a358d8196f01"
-    },
-    {
-      "type": "route",
-      "uuid": "5674c6e6-5e80-4f0b-9bcb-30416f76d9a7"
     },
     {
       "type": "route",
