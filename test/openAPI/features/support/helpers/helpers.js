@@ -273,30 +273,22 @@ module.exports = {
   // oauth_token
   oauthTokenEndpoint: 'oauth/token',
   oauthTokenResponse: {
-    type: "object",
+    type: 'object',
     properties: {
-      id_token: { type: "string" },
-      access_token: { type: "string" },
-      token_type: { type: "string" },
-      expires_in: { type: "number" }
+      id_token: { type: 'string' },
+      access_token: { type: 'string' },
+      token_type: { type: 'string' },
+      expires_in: { type: 'number' },
     },
-    required: [
-      "id_token",
-      "access_token",
-      "token_type",
-      "expires_in"
-    ]
+    required: ['id_token', 'access_token', 'token_type', 'expires_in'],
   },
   oauthTokenErrorResponse: {
-    type: "object",
+    type: 'object',
     properties: {
-      error: { type: "string" },
-      error_description: { type: "string" }
+      error: { type: 'string' },
+      error_description: { type: 'string' },
     },
-    required: [
-      "error",
-      "error_description"
-    ]
+    required: ['error', 'error_description'],
   },
   //shares
   clientResponseSchema: {
@@ -340,23 +332,18 @@ module.exports = {
   //wallet_generate_link_auth_code
   walletGenerateLinkAuthCodeEndpoint: 'linked-authorization/link-auth-code',
   walletGenerateLinkAuthCodeResponseSchema: {
-    type: "object",
+    type: 'object',
     properties: {
-      responseTime: { type: "string" },
+      responseTime: { type: 'string' },
       response: {
-        type: "object",
+        type: 'object',
         properties: {
-          code: { type: "string" },
-          redirectUri: { type: "string"},
-          state: { type: "string"},
-          nonce: { type: "string" }
+          code: { type: 'string' },
+          redirectUri: { type: 'string' },
+          state: { type: 'string' },
+          nonce: { type: 'string' },
         },
-        required: [
-          "code",
-          "redirectUri",
-          "state",
-          "nonce"
-        ]
+        required: ['code', 'redirectUri', 'state', 'nonce'],
       },
       errors: {
         type: 'array',
@@ -370,13 +357,13 @@ module.exports = {
                 'invalid_transaction_id',
                 'invalid_link_code',
                 'response_timeout',
-                'unknown_error'
+                'unknown_error',
               ],
               errorMessage: { type: 'string' },
             },
           },
         },
-      }
-    }
-  }
+      },
+    },
+  },
 };
