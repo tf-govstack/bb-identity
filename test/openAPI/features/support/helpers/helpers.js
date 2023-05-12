@@ -365,38 +365,38 @@ module.exports = {
   // wallet_binding
   walletBindingEndpoint: 'wallet-binding',
   walletBindingResponseSchema: {
-    type: "object",
+    type: 'object',
     properties: {
-      responseTime: { type: "string"  },
+      responseTime: { type: 'string' },
       response: {
-        type: "object",
+        type: 'object',
         properties: {
-          walletUserId: { type: "string" },
-          certificate: { type: "string" },
-          expireDateTime: { type: "string" },
+          walletUserId: { type: 'string' },
+          certificate: { type: 'string' },
+          expireDateTime: { type: 'string' },
         },
         errors: {
-          type: "array",
+          type: 'array',
           items: {
-            type: "object",
+            type: 'object',
             properties: {
               errorCode: {
-                type: "string",
+                type: 'string',
                 enum: [
-                  "unsupported_challenge_format",
-                  "key_binding_failed",
-                  "invalid_public_key",
-                  "invalid_auth_challenge",
-                  "duplicate_public_key"
+                  'unsupported_challenge_format',
+                  'key_binding_failed',
+                  'invalid_public_key',
+                  'invalid_auth_challenge',
+                  'duplicate_public_key',
                 ],
               },
-              errorMessage: { type: "string" }
-            }
-          }
-        }
-      }
+              errorMessage: { type: 'string' },
+            },
+          },
+        },
+      },
     },
-    required: ["responseTime"]
+    required: ['responseTime'],
   },
   //shares
   clientResponseSchema: {
