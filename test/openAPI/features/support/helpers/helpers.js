@@ -195,6 +195,43 @@ module.exports = {
       },
     },
   },
+  // wallet_link_status
+  walletLinkStatusEndpoint: 'linked-authorization/link-status',
+  walletLiskStatusResponseSchema: {
+    type: 'object',
+    properties: {
+      responseTIme: { type: 'string' },
+      response: {
+        type: 'object',
+        properties: {
+          transactionId: { type: 'string' },
+          linkStatus: {
+            type: 'string',
+            enum: ['LINKED'],
+          },
+          linkedDateTime: { type: 'string' },
+          errors: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                errorCode: {
+                  type: 'string',
+                  enum: [
+                    'invalid_transaction_id',
+                    'invalid_link_code',
+                    'response_timeout',
+                    'unknown_error',
+                  ],
+                  errorMessage: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
   //shares
   clientResponseSchema: {
     type: 'object',
