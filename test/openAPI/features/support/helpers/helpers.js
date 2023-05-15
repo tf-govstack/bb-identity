@@ -6,7 +6,10 @@ module.exports = {
   },
   defaultExpectedResponseTime: 15000,
   transactionId: 'transactionId01',
-  X_XSRF_TOKEN: 'X-XSRF-TOKEN',
+  X_XSRF_TOKEN: {
+    key: 'X-XSRF-TOKEN',
+    value: 'X-XSRF-TOKEN',
+  },
   oidcWellKnownOpenidConfigurationEndpoint: '.well-known/openid-configuration',
   oidcWellKnownOpenidConfigurationSchema: {
     type: 'object',
