@@ -567,7 +567,7 @@
     },
     {
       "uuid": "8f51c09f-816b-4137-a8aa-8e30bd56a2f7",
-      "documentation": "Endpoint to fetch all the public keys of the IdP server. Returns public key set in the JWKS format",
+      "documentation": "Endpoint to fetch all the public keys of the IDBB server. Returns public key set in the JWKS format",
       "method": "get",
       "endpoint": ".well-known/jwks.json",
       "responses": [
