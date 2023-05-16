@@ -14,7 +14,7 @@ Feature: The endpoint to checks the status of link code.
     And The /linked-authorization/link-status response should contain transactionId property equals provided transactionId
 
   @negative
-  Scenario: Not able to checks the status of link code because of the invalid transactionId
+  Scenario: Not able to check the status of link code because of the invalid transactionId
     Given Wants to check the status of link code
     When Send POST /linked-authorization/link-status request with given X-XSRF-TOKEN header, invalid transactionId, linkCode and requestTime
     Then Receive a response from the /linked-authorization/link-status endpoint
@@ -25,7 +25,7 @@ Feature: The endpoint to checks the status of link code.
     And The /linked-authorization/link-status response should contain errorCode property equals to "invalid_transaction_id"
 
   @negative
-  Scenario: Not able to checks the status of link code because of the invalid linkCode
+  Scenario: Not able to check the status of link code because of the invalid linkCode
     Given Wants to check the status of link code
     When Send POST /linked-authorization/link-status request with given X-XSRF-TOKEN header, transactionId, invalid linkCode and requestTime
     Then Receive a response from the /linked-authorization/link-status endpoint

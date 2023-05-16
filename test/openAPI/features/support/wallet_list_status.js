@@ -106,7 +106,7 @@ Then(
       .to.be.equal(transactionId)
 );
 
-// Scenario: Not able to checks the status of link code because of the invalid transactionId
+// Scenario: Not able to check the status of link code because of the invalid transactionId
 // Given and others Then for this scenario are written in the aforementioned example
 When(
   'Send POST \\/linked-authorization\\/link-status request with given X-XSRF-TOKEN header, invalid transactionId, linkCode and requestTime',
@@ -135,7 +135,7 @@ Then(
       .to.be.equal(errorCode)
 );
 
-// Scenario: Not able to checks the status of link code because of the invalid linkCode
+// Scenario: Not able to check the status of link code because of the invalid linkCode
 // Given and others Then for this scenario are written in the aforementioned example
 When(
   'Send POST \\/linked-authorization\\/link-status request with given X-XSRF-TOKEN header, transactionId, invalid linkCode and requestTime',

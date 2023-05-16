@@ -22,7 +22,7 @@ Before(endpointTag, () => {
   specWalletGenerateLinkCode = spec();
 });
 
-// Scenario: Successfully generate link code smoke type test
+// Scenario: Successfully generates link code smoke type test
 Given('Wants to generate link code', () => 'Wants to generate link code');
 
 When(
