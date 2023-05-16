@@ -195,80 +195,74 @@ module.exports = {
       },
     },
   },
-  // wallet_link_status
-  walletLinkStatusEndpoint: 'linked-authorization/link-status',
-  walletLiskStatusResponseSchema: {
-    type: 'object',
-    properties: {
-      responseTIme: { type: 'string' },
-      response: {
-        type: 'object',
-        properties: {
-          transactionId: { type: 'string' },
-          linkStatus: {
-            type: 'string',
-            enum: ['LINKED'],
-          },
-          linkedDateTime: { type: 'string' },
-          errors: {
-            type: 'array',
-            items: {
-              type: 'object',
-              properties: {
-                errorCode: {
-                  type: 'string',
-                  enum: [
-                    'invalid_transaction_id',
-                    'invalid_link_code',
-                    'response_timeout',
-                    'unknown_error',
-                  ],
-                  errorMessage: { type: 'string' },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  },
-  //shares
-  clientResponseSchema: {
+  // wallet_link_transaction
+  walletLinkTransactionEndpoint: 'linked-authorization/link-transaction',
+  walletLinkTransactionResponseSchema: {
     type: 'object',
     properties: {
       responseTime: { type: 'string' },
       response: {
         type: 'object',
-        properties: { clientId: { type: 'string' } },
-        errors: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              errorCode: {
-                type: 'string',
-                enum: this.clientCreateErrorCodeEnum,
-              },
-              errorMessage: { type: 'string' },
-            },
-            additionalProperties: false,
+        properties: {
+          linkTransactionId: { type: 'string' },
+          clientName: { type: 'string' },
+          logoUrl: { type: 'string' },
+          authorizeScopes: {
+            type: 'array',
+            items: { type: 'string' },
           },
+          essentialClaims: {
+            type: 'array',
+            items: { type: 'string' },
+          },
+          voluntaryClaims: {
+            type: 'array',
+            items: { type: 'string' },
+          },
+          authFactors: {
+            type: 'array',
+            items: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  type: {
+                    type: 'string',
+                    enum: ['PIN', 'OTP', 'L1-bio-device', 'Wallet'],
+                  },
+                  count: {
+                    type: 'integer',
+                  },
+                  bioSubTypes: {
+                    type: 'array',
+                    items: { type: 'string' },
+                  },
+                },
+                required: ['type'],
+              },
+            },
+          },
+        },
+        configs: { type: 'object' },
+      },
+    },
+    errors: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          errorCode: {
+            type: 'string',
+            enum: [
+              'invalid_link_code',
+              'invalid_transaction',
+              'invalid_client_id',
+              'unknown_error',
+            ],
+          },
+          errorMessage: { type: 'string' },
         },
       },
     },
   },
-  clientCreateErrorCodeEnum: [
-    'duplicate_client_id',
-    'invalid_public_key',
-    'invalid_input',
-    'invalid_client_id',
-    'invalid_client_name',
-    'invalid_rp_id',
-    'invalid_claim',
-    'invalid_acr',
-    'invalid_uri',
-    'invalid_redirect_uri',
-    'invalid_grant_type',
-    'invalid_client_auth',
-  ],
 };
