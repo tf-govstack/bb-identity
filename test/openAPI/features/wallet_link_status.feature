@@ -10,7 +10,7 @@ Feature: The endpoint to checks the status of link code.
     And The /linked-authorization/link-status endpoint response should be returned in a timely manner 15000ms
     And The /linked-authorization/link-status endpoint response should have status 200
     And The /linked-authorization/link-status endpoint response should have content-type: application/json header
-    And The /linked-authorization/link-status endpoint response should match json schema
+    And The /linked-authorization/link-status endpoint response should match json schema with no errors
     And The /linked-authorization/link-status response should contain transactionId property equals provided transactionId
 
   @negative
@@ -21,7 +21,7 @@ Feature: The endpoint to checks the status of link code.
     And The /linked-authorization/link-status endpoint response should be returned in a timely manner 15000ms
     And The /linked-authorization/link-status endpoint response should have status 200
     And The /linked-authorization/link-status endpoint response should have content-type: application/json header
-    And The /linked-authorization/link-status endpoint response should match json schema
+    And The /linked-authorization/link-status endpoint response should match json schema with errors
     And The /linked-authorization/link-status response should contain errorCode property equals to "invalid_transaction_id"
 
   @negative
@@ -32,5 +32,5 @@ Feature: The endpoint to checks the status of link code.
     And The /linked-authorization/link-status endpoint response should be returned in a timely manner 15000ms
     And The /linked-authorization/link-status endpoint response should have status 200
     And The /linked-authorization/link-status endpoint response should have content-type: application/json header
-    And The /linked-authorization/link-status endpoint response should match json schema
+    And The /linked-authorization/link-status endpoint response should match json schema with errors
     And The /linked-authorization/link-status response should contain errorCode property equals to "invalid_link_code"

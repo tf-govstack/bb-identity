@@ -66,12 +66,14 @@ Then(
 );
 
 Then(
-  'The \\/linked-authorization\\/link-code endpoint response should match json schema',
+  'The \\/linked-authorization\\/link-code endpoint response should match json schema with no errors',
   () => {
-    walletGenerateLinkCodeResponseSchema.properties.errors = [];
     chai
       .expect(specWalletGenerateLinkCode._response.json)
       .to.be.jsonSchema(walletGenerateLinkCodeResponseSchema);
+    chai
+      .expect(specWalletGenerateLinkCode._response.json.errors)
+      .have.lengthOf(0);
   }
 );
 
@@ -82,3 +84,46 @@ Then(
       .expect(specWalletGenerateLinkCode._response.json.response.transactionId)
       .to.be.equal(transactionId)
 );
+
+// Scenario: Not able to generate link code because of invalid transaction_id
+// Given and others Then for this scenario are written in the aforementioned example
+When(
+  'Send POST \\/linked-authorization\\/link-code request with given X-XSRF-TOKEN header, invalid transactionId and {string} as requestTime',
+  (requestTime) =>
+    specWalletGenerateLinkCode
+      .post(baseUrl)
+      .withHeaders(X_XSRF_TOKEN.key, X_XSRF_TOKEN.value)
+      .withJson({
+        requestTime: requestTime,
+        request: {
+          transactionId: '',
+        },
+      })
+);
+
+Then(
+  'The \\/linked-authorization\\/link-code endpoint response should match json schema with errors',
+  () => {
+    chai
+      .expect(specWalletGenerateLinkCode._response.json)
+      .to.be.jsonSchema(walletGenerateLinkCodeResponseSchema);
+    chai.expect(specWalletGenerateLinkCode._response.json.errors).to.not.be
+      .empty;
+  }
+);
+
+Then(
+  'The \\/linked-authorization\\/link-code response should contain errorCode property equals to {string}',
+  (errorCode) =>
+    chai
+      .expect(
+        specWalletGenerateLinkCode._response.json.errors
+          .map((error) => error.errorCode)
+          .toString()
+      )
+      .to.be.equal(errorCode)
+);
+
+After(endpointTag, () => {
+  specWalletGenerateLinkCode.end();
+});

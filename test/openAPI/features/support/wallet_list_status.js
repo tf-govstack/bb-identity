@@ -89,12 +89,12 @@ Then(
 );
 
 Then(
-  'The \\/linked-authorization\\/link-status endpoint response should match json schema',
+  'The \\/linked-authorization\\/link-status endpoint response should match json schema with no errors',
   () => {
-    walletGenerateLinkCodeResponseSchema.properties.errors = [];
     chai
       .expect(specWalletLinkStatus._response.json)
       .to.be.jsonSchema(walletLiskStatusResponseSchema);
+    chai.expect(specWalletLinkStatus._response.json.errors).have.lengthOf(0);
   }
 );
 
@@ -121,6 +121,16 @@ When(
           linkCode: recivedLinkCode,
         },
       })
+);
+
+Then(
+  'The \\/linked-authorization\\/link-status endpoint response should match json schema with errors',
+  () => {
+    chai
+      .expect(specWalletLinkStatus._response.json)
+      .to.be.jsonSchema(walletLiskStatusResponseSchema);
+    chai.expect(specWalletLinkStatus._response.json.errors).to.not.be.empty;
+  }
 );
 
 Then(
