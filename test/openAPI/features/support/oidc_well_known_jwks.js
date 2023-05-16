@@ -18,10 +18,10 @@ Before(endpointTag, () => {
   specJWKS = spec();
 });
 
-// Scenario: Successfully retrieves the IdP server's public keys
-Given(/^Wants to retrieve the IdP server's public keys$/, () => "Wants to retrieve the IdP server's public keys");
+// Scenario: Successfully retrieves the IDBB server's public keys
+Given(/^Wants to retrieve the IDBB server's public keys$/, () => "Wants to retrieve the IDBB server's public keys");
 
-When(/^GET request to retrieve all the public keys of the IdP server is sent$/, () => specJWKS.get(baseUrl));
+When(/^GET request to retrieve all the public keys of the IDBB server is sent$/, () => specJWKS.get(baseUrl));
 
 Then(/^The response from \/\.well\-known\/jwks\.json endpoint is received$/, async () => await specJWKS.toss());
 
