@@ -6,6 +6,7 @@ module.exports = {
   },
   defaultExpectedResponseTime: 15000,
   transactionId: 'transactionId01',
+  linkedCode: 'linkedCode01',
   X_XSRF_TOKEN: {
     key: 'X-XSRF-TOKEN',
     value: 'X-XSRF-TOKEN',
@@ -342,4 +343,33 @@ module.exports = {
     'invalid_grant_type',
     'invalid_client_auth',
   ],
+  //wallet_generate_link_auth_code
+  walletGenerateLinkAuthCodeEndpoint: 'linked-authorization/link-auth-code',
+  walletGenerateLinkAuthCodeResponseSchema: {
+    type: "object",
+    properties: {
+      responseTime: { type: "string" },
+      response: {
+        type: "object",
+        properties: {
+          code: { type: "string" },
+          redirectUri: { type: "string"},
+          state: { type: "string"},
+          nonce: { type: "string" }
+        },
+        required: [
+          "code",
+          "redirectUri",
+          "state",
+          "nonce"
+        ]
+      },
+      errors: { type: "string" }
+    },
+    required: [
+      "responseTime",
+      "response",
+      "errors"
+    ]
+  }
 };
