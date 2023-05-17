@@ -16,7 +16,7 @@ chai.use(require('chai-json-schema'));
 
 let specWalletLinkTransaction;
 let specWalletGenerateLinkCode;
-let recivedLinkCode;
+let receivedLinkCode;
 
 const baseUrl = localhost + walletLinkTransactionEndpoint;
 const endpointTag = { tags: `@endpoint=/${walletLinkTransactionEndpoint}` };
@@ -46,7 +46,7 @@ Given(
         },
       });
     await specWalletGenerateLinkCode.toss();
-    recivedLinkCode =
+    receivedLinkCode =
       specWalletGenerateLinkCode._response.json.response.linkCode;
   }
 );
@@ -57,7 +57,7 @@ When(
     specWalletLinkTransaction.post(baseUrl).withJson({
       requestTime: new Date().toISOString(),
       request: {
-        linkCode: recivedLinkCode,
+        linkCode: receivedLinkCode,
       },
     })
 );
