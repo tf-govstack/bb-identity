@@ -566,8 +566,35 @@
       "type": "http"
     },
     {
+      "uuid": "8f51c09f-816b-4137-a8aa-8e30bd56a2f7",
+      "documentation": "Endpoint to fetch all the public keys of the IDBB server. Returns public key set in the JWKS format",
+      "method": "get",
+      "endpoint": ".well-known/jwks.json",
+      "responses": [
+        {
+          "uuid": "a30c589f-e696-4472-96fa-0050decf17c7",
+          "body": "{\n  \"keys\": [\n    {{#repeat 4}}\n    {\n      \"kid\": \"{{faker 'random.alpha' 5}}\",\n      \"use\": \"sig\",\n      \"kty\": \"RSA\",\n      \"e\": \"string\",\n      \"n\": \"string\",\n      \"x5t#S256\": \"string\",\n      \"x5c\": \"string\",\n      \"exp\": \"string\"\n    }\n    {{/repeat}}\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Retrieved public key set in the JWKS format",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
+      "responseMode": null,
+      "type": "http"
+    },
+    {
       "uuid": "5674c6e6-5e80-4f0b-9bcb-30416f76d9a7",
-      "type": "http",
       "documentation": "This endpoint is only for facilitating the OIDC provider details in a standard way.",
       "method": "get",
       "endpoint": ".well-known/openid-configuration",
@@ -591,7 +618,8 @@
         }
       ],
       "enabled": true,
-      "responseMode": null
+      "responseMode": null,
+      "type": "http"
     }
   ],
   "proxyMode": false,
