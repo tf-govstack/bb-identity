@@ -6,7 +6,8 @@ const {
   oauthTokenEndpoint,
   defaultExpectedResponseTime,
   contentTypeHeader,
-  clientResponseSchema
+  oauthTokenResponse,
+  oauthTokenErrorResponse
 } = require("./helpers/helpers");
 const { jsonToBase64 } = require("./helpers/utils");
 
@@ -90,7 +91,7 @@ Then(/^The POST \/oauth\/token endpoint response should have content\-type: appl
 Then(/^The POST \/oauth\/token endpoint response should match json schema$/,
   () =>  chai
     .expect(specOAuthToken._response.json)
-    .to.be.jsonSchema(clientResponseSchema)
+    .to.be.jsonSchema(oauthTokenResponse)
 );
 
 Then(/^The POST \/oauth\/token endpoint response should contain "([^"]*)" as idToken$/,
@@ -120,6 +121,12 @@ When(
       redirect_uri: redirectUri,
     })
 });
+
+Then(/^The POST \/oauth\/token endpoint response should match json error schema$/,
+    () =>  chai
+        .expect(specOAuthToken._response.json)
+        .to.be.jsonSchema(oauthTokenErrorResponse)
+);
 
 Then(
   /^The POST \/oauth\/token endpoint response should contain "([^"]*)" as errorType$/,
@@ -199,16 +206,9 @@ When(
 // Scenario: The user is not able to receive the ID and access token because of the empty payload
 // Given, Then for this scenario are written in the aforementioned example
 When(
-  /^The User sends POST request with empty payload$/,
+  /^The User sends POST request without a payload$/,
   () => {
-    specOAuthToken.post(baseUrl).withJson({
-      grant_type: null,
-      client_assertion_type: null,
-      client_assertion: null,
-      client_id: null,
-      code: null,
-      redirect_uri: null,
-    })
+    specOAuthToken.post(baseUrl)
 });
 
 After(endpointTag, () => {
