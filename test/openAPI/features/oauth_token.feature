@@ -10,7 +10,7 @@ Feature: API to create access token
     And The POST /oauth/token endpoint response should have status 200
     And The POST /oauth/token endpoint response should have content-type: application/json header
     And The POST /oauth/token endpoint response should match json schema
-    And The POST /oauth/token endpoint response should contain "id_token" as idToken
+    And The POST /oauth/token endpoint response should contain "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" as idToken
 
   @unit @positive
   Scenario Outline: The user successfully receives the id and access token
@@ -21,7 +21,7 @@ Feature: API to create access token
     And The POST /oauth/token endpoint response should have status 200
     And The POST /oauth/token endpoint response should have content-type: application/json header
     And The POST /oauth/token endpoint response should match json schema
-    And The POST /oauth/token endpoint response should contain "id_token" as idToken
+    And The POST /oauth/token endpoint response should contain "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" as idToken
 
     Examples: Valid data
       | clientId           | audience     | redirectUri            |
@@ -36,7 +36,7 @@ Feature: API to create access token
     And The POST /oauth/token endpoint response should be returned in a timely manner 15000ms
     And The POST /oauth/token endpoint response should have status 400
     And The POST /oauth/token endpoint response should have content-type: application/json header
-    And The POST /oauth/token endpoint response should match json schema
+    And The POST /oauth/token endpoint response should match json error schema
     And The POST /oauth/token endpoint response should contain "invalid_assertion" as errorType
 
   Scenario: The user is not able to receive the ID and access token because of the invalid client_assertion_type
@@ -46,7 +46,7 @@ Feature: API to create access token
     And The POST /oauth/token endpoint response should be returned in a timely manner 15000ms
     And The POST /oauth/token endpoint response should have status 400
     And The POST /oauth/token endpoint response should have content-type: application/json header
-    And The POST /oauth/token endpoint response should match json schema
+    And The POST /oauth/token endpoint response should match json error schema
     And The POST /oauth/token endpoint response should contain "invalid_assertion_type" as errorType
 
   Scenario: The user is not able to receive the ID and access token because of the invalid redirect_uri
@@ -56,7 +56,7 @@ Feature: API to create access token
     And The POST /oauth/token endpoint response should be returned in a timely manner 15000ms
     And The POST /oauth/token endpoint response should have status 400
     And The POST /oauth/token endpoint response should have content-type: application/json header
-    And The POST /oauth/token endpoint response should match json schema
+    And The POST /oauth/token endpoint response should match json error schema
     And The POST /oauth/token endpoint response should contain "invalid_redirect_uri" as errorType
 
   Scenario: The user is not able to receive the ID and access token because of the invalid input
@@ -66,15 +66,15 @@ Feature: API to create access token
     And The POST /oauth/token endpoint response should be returned in a timely manner 15000ms
     And The POST /oauth/token endpoint response should have status 400
     And The POST /oauth/token endpoint response should have content-type: application/json header
-    And The POST /oauth/token endpoint response should match json schema
+    And The POST /oauth/token endpoint response should match json error schema
     And The POST /oauth/token endpoint response should contain "invalid_input" as errorType
 
   Scenario: The user is not able to receive the ID and access token because of the empty payload
     Given The user wants to receive the id token and access token
-    When The User sends POST request with empty payload
+    When The User sends POST request without a payload
     Then User receives a response from the POST /oauth/token endpoint
     And The POST /oauth/token endpoint response should be returned in a timely manner 15000ms
     And The POST /oauth/token endpoint response should have status 400
     And The POST /oauth/token endpoint response should have content-type: application/json header
-    And The POST /oauth/token endpoint response should match json schema
+    And The POST /oauth/token endpoint response should match json error schema
     And The POST /oauth/token endpoint response should contain "invalid_payload" as errorType

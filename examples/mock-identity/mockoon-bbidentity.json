@@ -1652,7 +1652,7 @@
       "responses": [
         {
           "uuid": "5c2cd23e-bb5e-4d43-9c2d-cf5eaf68fbaa",
-          "body": "{\n  \"id_token\": \"id_token\",\n  \"access_token\": \"string.string.string\",\n  \"token_type\": \"Bearer\",\n  \"expires_in\": 0\n}",
+          "body": "{\n  \"id_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\",\n  \"access_token\": \"string.string.string\",\n  \"token_type\": \"Bearer\",\n  \"expires_in\": 0\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Succesfully recieves the ID and access token",
