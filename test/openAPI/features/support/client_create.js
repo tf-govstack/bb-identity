@@ -27,26 +27,26 @@ Given(
 );
 
 When(
-  'User sends POST request with given {string} as requestTime, {string} as clientId, {string} as clientName, {string} as relyingPartyId, {string} as logoUri, empty object as publicKey, {string} as authContextRefs, {string} as userClaims, {string} as grantTypes, {string} as clientAuthMethods',
+  'User sends POST request with given requestTime, {string} as clientId, {string} as clientName, {string} as relyingPartyId, {string} as logoUri, {string} as publicKey, {string} as authContextRefs, {string} as userClaims, {string} as grantTypes, {string} as clientAuthMethods',
   (
-    requestTime,
     clientId,
     clientName,
     relyingPartyId,
     logoUri,
+    publicKey,
     authContextRefs,
     userClaims,
     grantTypes,
     clientAuthMethods
   ) =>
     specClientCreate.post(baseUrl).withJson({
-      requestTime: requestTime,
+      requestTime: new Date().toISOString(),
       request: {
         clientId: clientId,
         clientName: clientName,
         relyingPartyId: relyingPartyId,
         logoUri: logoUri,
-        publicKey: {},
+        publicKey: { publicKey },
         authContextRefs: [authContextRefs],
         userClaims: [userClaims],
         grantTypes: [grantTypes],
@@ -99,16 +99,21 @@ Then(
       .to.be.equal(clientId)
 );
 
+Then(
+  'The POST \\/client-mgmt\\/oidc-client endpoint response should contain empty errors array',
+  () => chai.expect(specClientCreate._response.json.errors).to.be.empty
+);
+
 // Scenario Outline: The new client is successfully added to the Open ID Connect (OIDC)
 // Given, Then for this scenario are written in the aforementioned example
 When(
-  'User sends POST request with given {string} as requestTime, {string} as clientId, {string} as clientName, {string} as relyingPartyId, {string} as logoUri, empty object as publicKey, {string} as authContextRefs, {string} as userClaims, {string} as grantTypes, {string} as clientAuthMethods, {string} as redirectUris',
+  'User sends POST request with given requestTime, {string} as clientId, {string} as clientName, {string} as relyingPartyId, {string} as logoUri, {string} as publicKey, {string} as authContextRefs, {string} as userClaims, {string} as grantTypes, {string} as clientAuthMethods, {string} as redirectUris',
   (
-    requestTime,
     clientId,
     clientName,
     relyingPartyId,
     logoUri,
+    publicKey,
     authContextRefs,
     userClaims,
     grantTypes,
@@ -116,13 +121,13 @@ When(
     redirectUris
   ) =>
     specClientCreate.post(baseUrl).withJson({
-      requestTime: requestTime,
+      requestTime: new Date().toISOString(),
       request: {
         clientId: clientId,
         clientName: clientName,
         relyingPartyId: relyingPartyId,
         logoUri: logoUri,
-        publicKey: {},
+        publicKey: { publicKey },
         authContextRefs: [authContextRefs],
         userClaims: [userClaims],
         grantTypes: [grantTypes],
@@ -179,7 +184,7 @@ When(
   'User sends POST request with given {string} as invalid authContextRefs',
   (authContextRefs) =>
     specClientCreate.post(baseUrl).withJson({
-      requestTime: '2011-10-05T14:48:00.000Z',
+      requestTime: new Date().toISOString(),
       request: {
         clientId: 'e-health-service-2',
         clientName: 'Health Service',
@@ -200,7 +205,7 @@ When(
   'User sends POST request with given {string} as invalid userClaims',
   (userClaims) =>
     specClientCreate.post(baseUrl).withJson({
-      requestTime: '2011-10-05T14:48:00.000Z',
+      requestTime: new Date().toISOString(),
       request: {
         clientId: 'e-health-service-3',
         clientName: 'Health Service',
@@ -221,7 +226,7 @@ When(
   'User sends POST request with given {string} as invalid grantTypes',
   (grantTypes) =>
     specClientCreate.post(baseUrl).withJson({
-      requestTime: '2011-10-05T14:48:00.000Z',
+      requestTime: new Date().toISOString(),
       request: {
         clientId: 'e-health-service-4',
         clientName: 'Health Service',
@@ -242,7 +247,7 @@ When(
   'User sends POST request with given {string} as invalid clientAuthMethods',
   (clientAuthMethods) =>
     specClientCreate.post(baseUrl).withJson({
-      requestTime: '2011-10-05T14:48:00.000Z',
+      requestTime: new Date().toISOString(),
       request: {
         clientId: 'e-health-service-5',
         clientName: 'Health Service',
@@ -263,7 +268,7 @@ When(
   'User sends POST request with given {string} as invalid clientName',
   (clientName) =>
     specClientCreate.post(baseUrl).withJson({
-      requestTime: '2011-10-05T14:48:00.000Z',
+      requestTime: new Date().toISOString(),
       request: {
         clientId: 'e-health-service-6',
         clientName: clientName,
@@ -284,7 +289,7 @@ When(
   'User sends POST request with given {string} as invalid relyingPartyId',
   (relyingPartyId) =>
     specClientCreate.post(baseUrl).withJson({
-      requestTime: '2011-10-05T14:48:00.000Z',
+      requestTime: new Date().toISOString(),
       request: {
         clientId: 'e-health-service-7',
         clientName: 'e-health-service',
@@ -305,7 +310,7 @@ When(
   'User sends POST request with given {string} as invalid logoUri',
   (logoUri) =>
     specClientCreate.post(baseUrl).withJson({
-      requestTime: '2011-10-05T14:48:00.000Z',
+      requestTime: new Date().toISOString(),
       request: {
         clientId: 'e-health-service-8',
         clientName: 'e-health-service',
@@ -326,7 +331,7 @@ When(
   'User sends POST request with given {string} as invalid clientId',
   (clientId) =>
     specClientCreate.post(baseUrl).withJson({
-      requestTime: '2011-10-05T14:48:00.000Z',
+      requestTime: new Date().toISOString(),
       request: {
         clientId: clientId,
         clientName: 'e-health-service',
