@@ -35,7 +35,7 @@ Given(
   'The client profile with {string} as clientId is created',
   async (clientId) => {
     specClientCreate.post(localhost + clientCreateEndpoint).withJson({
-      requestTime: '2011-10-05T14:48:00.000Z',
+      requestTime: new Date().toISOString(),
       request: {
         clientId: clientId,
         clientName: 'Health Service',
@@ -54,10 +54,9 @@ Given(
 );
 
 When(
-  'User sends PUT request with given {string} as client_id parameter, {string} as requestTime, {string} as clientName, {string} as status, {string} as logoUri, {string} as redirectUris, {string} as userClaims, {string} as authContextRefs, {string} as grantTypes, {string} as clientAuthMethods',
+  'User sends PUT request with given {string} as client_id parameter, requestTime, {string} as clientName, {string} as status, {string} as logoUri, {string} as redirectUris, {string} as userClaims, {string} as authContextRefs, {string} as grantTypes, {string} as clientAuthMethods',
   (
     client_id,
-    requestTime,
     clientName,
     status,
     logoUri,
@@ -71,7 +70,7 @@ When(
       .put(baseUrl)
       .withPathParams('client_id', client_id)
       .withJson({
-        requestTime: requestTime,
+        requestTime: new Date().toISOString(),
         request: {
           clientName: clientName,
           status: status,
@@ -129,6 +128,11 @@ Then(
       .to.be.equal(clientId)
 );
 
+Then(
+  'The PUT \\/client-mgmt\\/oidc-client\\/\\{client_id} endpoint response should contain empty errors array',
+  () => chai.expect(specClientUpdate._response.json.errors).to.be.empty
+);
+
 // Scenario: Not able to update the client because of invalid clientAuthMethods
 // Given, Then for this scenario are written in the aforementioned example
 When(
@@ -138,7 +142,7 @@ When(
       .put(baseUrl)
       .withPathParams('client_id', createdClientId)
       .withJson({
-        requestTime: '2022-09-22T08:03:45.000Z',
+        requestTime: new Date().toISOString(),
         request: {
           clientName: 'Health Service',
           status: 'active',
@@ -181,7 +185,7 @@ When(
       .put(baseUrl)
       .withPathParams('client_id', createdClientId)
       .withJson({
-        requestTime: '2022-09-22T08:03:45.000Z',
+        requestTime: new Date().toISOString(),
         request: {
           clientName: 'Health Service',
           status: 'active',
@@ -204,7 +208,7 @@ When(
       .put(baseUrl)
       .withPathParams('client_id', createdClientId)
       .withJson({
-        requestTime: '2022-09-22T08:03:45.000Z',
+        requestTime: new Date().toISOString(),
         request: {
           clientName: 'Health Service',
           status: 'active',
@@ -227,7 +231,7 @@ When(
       .put(baseUrl)
       .withPathParams('client_id', createdClientId)
       .withJson({
-        requestTime: '2022-09-22T08:03:45.000Z',
+        requestTime: new Date().toISOString(),
         request: {
           clientName: 'Health Service',
           status: 'active',
@@ -250,7 +254,7 @@ When(
       .put(baseUrl)
       .withPathParams('client_id', createdClientId)
       .withJson({
-        requestTime: '2022-09-22T08:03:45.000Z',
+        requestTime: new Date().toISOString(),
         request: {
           clientName: 'Health Service',
           status: 'active',
@@ -273,7 +277,7 @@ When(
       .put(baseUrl)
       .withPathParams('client_id', createdClientId)
       .withJson({
-        requestTime: '2022-09-22T08:03:45.000Z',
+        requestTime: new Date().toISOString(),
         request: {
           clientName: 'Health Service',
           status: 'active',
@@ -296,7 +300,7 @@ When(
       .put(baseUrl)
       .withPathParams('client_id', createdClientId)
       .withJson({
-        requestTime: '2022-09-22T08:03:45.000Z',
+        requestTime: new Date().toISOString(),
         request: {
           clientName: clientName,
           status: 'active',
@@ -319,7 +323,7 @@ When(
       .put(baseUrl)
       .withPathParams('client_id', client_id)
       .withJson({
-        requestTime: '2022-09-22T08:03:45.000Z',
+        requestTime: new Date().toISOString(),
         request: {
           clientName: 'Health Service',
           status: 'active',
