@@ -472,10 +472,7 @@
         }
       ],
       "enabled": true,
-      "responseMode": null,
-      "type": "http"
-      "responseMode": null,
-      "type": "http"
+      "responseMode": null
     },
     {
       "uuid": "45bd6c8d-c23c-42dd-9a73-51e98c7d7588",
@@ -1104,7 +1101,7 @@
   "data": [],
   "folders": [],
   "rootChildren": [
-     {
+    {
       "type": "route",
       "uuid": "45bd6c8d-c23c-42dd-9a73-51e98c7d7588"
     },
@@ -1124,6 +1121,5 @@
       "type": "route",
       "uuid": "8f51c09f-816b-4137-a8aa-8e30bd56a2f7"
     }
-  ],
-
+  ]
 }
