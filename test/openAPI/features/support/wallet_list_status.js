@@ -94,7 +94,7 @@ Then(
     chai
       .expect(specWalletLinkStatus._response.json)
       .to.be.jsonSchema(walletLiskStatusResponseSchema);
-    chai.expect(specWalletLinkStatus._response.json.errors).have.lengthOf(0);
+    chai.expect(specWalletLinkStatus._response.json.errors).to.be.empty;
   }
 );
 

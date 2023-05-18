@@ -71,9 +71,7 @@ Then(
     chai
       .expect(specWalletGenerateLinkCode._response.json)
       .to.be.jsonSchema(walletGenerateLinkCodeResponseSchema);
-    chai
-      .expect(specWalletGenerateLinkCode._response.json.errors)
-      .have.lengthOf(0);
+    chai.expect(specWalletGenerateLinkCode._response.json.errors).to.be.empty;
   }
 );
 
