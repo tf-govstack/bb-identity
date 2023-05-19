@@ -379,13 +379,13 @@
       "type": "http"
     },
     {
-      "uuid": "147bdd72-fe41-4bc8-89dc-1b1c154f5b38",
+      "uuid": "aae71439-4c3b-4f87-8f13-8341734a0c99",
       "documentation": "API to add new open ID connect (OIDC) clients,",
       "method": "post",
       "endpoint": "client-mgmt/oidc-client",
       "responses": [
         {
-          "uuid": "6a875a37-b7d7-480a-8167-cb8227f360c8",
+          "uuid": "ff20e6cc-6de3-413c-8c08-e743a6e2c3e2",
           "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"clientId\": \"string\"\n  },\n  \"errors\": []\n}",
           "latency": 0,
           "statusCode": 200,
@@ -592,6 +592,34 @@
       "enabled": true,
       "responseMode": null,
       "type": "http"
+    },
+    {
+      "uuid": "5674c6e6-5e80-4f0b-9bcb-30416f76d9a7",
+      "documentation": "This endpoint is only for facilitating the OIDC provider details in a standard way.",
+      "method": "get",
+      "endpoint": ".well-known/openid-configuration",
+      "responses": [
+        {
+          "uuid": "ca26fe7c-4914-4670-8881-365692a23410",
+          "body": "{\n  \"issuer\": \"string\",\n  \"authorization_endpoint\": \"string\",\n  \"token_endpoint\": \"string\",\n  \"userinfo_endpoint\": \"string\",\n  \"jwks_uri\": \"string\",\n  \"registration_endpoint\": \"string\",\n  \"scopes_supported\": [\n    \"openid\"\n  ],\n  \"response_types_supported\": [\n    \"code\"\n  ],\n  \"acr_values_supported\": [\n    \"string\"\n  ],\n  \"userinfo_signing_alg_values_supported\": [\n    \"string\"\n  ],\n  \"userinfo_encryption_alg_values_supported\": [\n    \"string\"\n  ],\n  \"userinfo_encryption_enc_values_supported\": [\n    \"string\"\n  ],\n  \"token_endpoint_auth_methods_supported\": [\n    \"private_key_jwt\"\n  ],\n  \"display_values_supported\": [\n    \"string\"\n  ],\n  \"claim_types_supported\": [\n    \"normal\"\n  ],\n  \"claims_supported\": [\n    \"string\"\n  ],\n  \"claims_locales_supported\": [\n    \"string\"\n  ],\n  \"ui_locales_supported\": [\n    \"string\"\n  ],\n  \"response_modes_supported\": [\n    \"query\"\n  ],\n  \"token_endpoint_auth_signing_alg_values_supported\": [\n    \"RS256\"\n  ],\n  \"id_token_signing_alg_values_supported\": [\n    \"RS256\"\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Successfully faciliated the OIDC provider detais",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
+      "responseMode": null,
+      "type": "http"
     }
   ],
   "proxyMode": false,
@@ -630,7 +658,7 @@
   "rootChildren": [
     {
       "type": "route",
-      "uuid": "147bdd72-fe41-4bc8-89dc-1b1c154f5b38"
+      "uuid": "aae71439-4c3b-4f87-8f13-8341734a0c99"
     },
     {
       "type": "route",
@@ -642,7 +670,7 @@
     },
     {
       "type": "route",
-      "uuid": "8f51c09f-816b-4137-a8aa-8e30bd56a2f7"
+      "uuid": "5674c6e6-5e80-4f0b-9bcb-30416f76d9a7"
     }
   ]
 }
