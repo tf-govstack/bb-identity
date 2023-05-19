@@ -86,6 +86,7 @@ module.exports = {
       'scopes_supported',
       'response_types_supported',
     ],
+  },
   oidcWellKnownJWKSEndpoint: '.well-known/jwks.json',
   oidcWellKnownJWKSResponseSchema: {
     type: 'object',
