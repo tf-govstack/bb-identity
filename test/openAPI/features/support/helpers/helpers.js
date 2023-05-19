@@ -383,11 +383,6 @@ module.exports = {
           },
         },
       }
-    },
-    required: [
-      "responseTime",
-      "response",
-      "errors"
-    ]
+    }
   }
 };
