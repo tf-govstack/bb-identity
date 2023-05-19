@@ -2510,12 +2510,70 @@
               "value": "",
               "invert": true,
               "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "request.challengeList",
+              "value": "",
+              "invert": true,
+              "operator": "empty_array"
             }
           ],
           "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": true
+        },
+        {
+          "uuid": "9cb8a231-62c8-4d13-afef-b150e0b67578",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_no_of_challenges\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Invalid challengeList",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "requestTime",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "request.linkedTransactionId",
+              "value": "^link_transaction_id_01$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.individualId",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "request.challengeList",
+              "value": "",
+              "invert": false,
+              "operator": "empty_array"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
         },
         {
           "uuid": "700d5649-5b0a-4227-a2dc-6f63de05865f",
@@ -2554,6 +2612,13 @@
               "value": "",
               "invert": true,
               "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "request.challengeList",
+              "value": "",
+              "invert": true,
+              "operator": "empty_array"
             }
           ],
           "rulesOperator": "AND",
@@ -2598,6 +2663,13 @@
               "value": "",
               "invert": false,
               "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "request.challengeList",
+              "value": "",
+              "invert": true,
+              "operator": "empty_array"
             }
           ],
           "rulesOperator": "AND",
