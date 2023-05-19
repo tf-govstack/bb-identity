@@ -364,7 +364,25 @@ module.exports = {
           "nonce"
         ]
       },
-      errors: { type: "string" }
+      errors: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            errorCode: {
+              type: 'string',
+              enum: [
+                'invalid_transaction',
+                'invalid_transaction_id',
+                'invalid_link_code',
+                'response_timeout',
+                'unknown_error'
+              ],
+              errorMessage: { type: 'string' },
+            },
+          },
+        },
+      }
     },
     required: [
       "responseTime",

@@ -54,7 +54,9 @@ Given(
 When(
     /^Send POST \/linked\-authorization\/link\-auth\-code request with given linkCode and transactionId$/,
     () =>
-        specWalletGenerateLinkAuthCode.post(baseUrl).withJson({
+        specWalletGenerateLinkAuthCode.post(baseUrl)
+          .withHeaders(X_XSRF_TOKEN.key, X_XSRF_TOKEN.value)
+          .withJson({
           requestTime: new Date().toISOString(),
           request: {
             linkedCode: receivedLinkCode,
@@ -90,12 +92,12 @@ Then(
 );
 
 Then(
-    /^The \/linked\-authorization\/link\-auth\-code endpoint response should match json schema$/,
+    /^The \/linked\-authorization\/link\-auth\-code endpoint response should match json schema with no errors$/,
     () => {
-      walletGenerateLinkAuthCodeResponseSchema.properties.errors = [];
       chai
           .expect(specWalletGenerateLinkAuthCode._response.json)
           .to.be.jsonSchema(walletGenerateLinkAuthCodeResponseSchema);
+      chai.expect(specWalletGenerateLinkAuthCode._response.json.errors).to.be.empty;
     }
 );
 
@@ -104,7 +106,9 @@ Then(
 When(
     /^Send POST \/linked\-authorization\/link\-auth\-code request with given invalid linkCode$/,
     () =>
-        specWalletGenerateLinkAuthCode.post(baseUrl).withJson({
+        specWalletGenerateLinkAuthCode.post(baseUrl)
+          .withHeaders(X_XSRF_TOKEN.key, X_XSRF_TOKEN.value)
+          .withJson({
           requestTime: new Date().toISOString(),
           request: {
             linkedCode: 'invalid_linked_code',
@@ -114,10 +118,24 @@ When(
 );
 
 Then(
+    /^The \/linked\-authorization\/link\-auth\-code endpoint response should match json schema with errors$/,
+    () => {
+      chai
+          .expect(specWalletGenerateLinkAuthCode._response.json)
+          .to.be.jsonSchema(walletGenerateLinkAuthCodeResponseSchema);
+      chai.expect(specWalletGenerateLinkAuthCode._response.json.errors).to.not.be.empty;
+    }
+);
+
+Then(
     /^The \/linked\-authorization\/link\-auth\-code response should contain errorCode property equals to "([^"]*)"$/,
     (errorCode) =>
         chai
-            .expect(specWalletGenerateLinkAuthCode._response.json.errors)
+            .expect(
+                specWalletGenerateLinkAuthCode._response.json.errors
+                    .map((error) => error.errorCode)
+                    .toString()
+            )
             .to.be.equal(errorCode)
 );
 

@@ -1541,7 +1541,7 @@
       "responses": [
         {
           "uuid": "dde1df64-be08-48d3-89a8-db8aad9cf785",
-          "body": "{\n  \"responseTime\": \"2011-10-05T14:49:00.000Z\",\n  \"response\": {\n    \"code\": \"code\",\n    \"redirectUri\": \"redirectUri\",\n    \"state\": \"state\",\n    \"nonce\": \"nonce\"\n  },\n  \"errors\": \"x\"\n}",
+          "body": "{\n  \"responseTime\": \"2011-10-05T14:49:00.000Z\",\n  \"response\": {\n    \"code\": \"code\",\n    \"redirectUri\": \"redirectUri\",\n    \"state\": \"state\",\n    \"nonce\": \"nonce\"\n  },\n  \"errors\": []\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Succesfully generate link auth code",
@@ -1572,14 +1572,14 @@
             },
             {
               "target": "body",
-              "modifier": "request.transactionId",
+              "modifier": "request.linkedCode",
               "value": "^[A-Za-z0-9]+$",
               "invert": false,
               "operator": "regex"
             },
             {
               "target": "body",
-              "modifier": "request.linkedCode",
+              "modifier": "request.transactionId",
               "value": "^[A-Za-z0-9]+$",
               "invert": false,
               "operator": "regex"
@@ -1588,14 +1588,14 @@
           "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
-          "default": false
+          "default": true
         },
         {
           "uuid": "56cd107f-fc24-4052-a0fe-40432bed09aa",
-          "body": "{\n  \"responseTime\": \"2011-10-05T14:49:00.000Z\",\n  \"response\": {\n    \"code\": \"code\",\n    \"redirectUri\": \"redirectUri\",\n    \"state\": \"state\",\n    \"nonce\": \"nonce\"\n  },\n  \"errors\": \"Unknown Type: array\"\n}",
+          "body": "{\n  \"responseTime\": \"2011-10-05T14:49:00.000Z\",\n  \"response\": {\n    \"code\": \"code\",\n    \"redirectUri\": \"redirectUri\",\n    \"state\": \"state\",\n    \"nonce\": \"nonce\"\n  },\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_link_code\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
-          "label": "Invalid transaction_id",
+          "label": "Invalid link_code",
           "headers": [
             {
               "key": "Content-Type",
@@ -1623,23 +1623,23 @@
             },
             {
               "target": "body",
-              "modifier": "request.transactionId",
+              "modifier": "request.linkedCode",
               "value": "^[A-Za-z0-9]+$",
               "invert": true,
               "operator": "regex"
             },
             {
               "target": "body",
-              "modifier": "request.linkedCode",
+              "modifier": "request.transactionId",
               "value": "^[A-Za-z0-9]+$",
-              "invert": true,
+              "invert": false,
               "operator": "regex"
             }
           ],
           "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
-          "default": true
+          "default": false
         }
       ],
       "enabled": true,

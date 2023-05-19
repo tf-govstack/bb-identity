@@ -10,7 +10,7 @@ Feature: The endpoint to validates the link-code and its expiry and generates th
     And The /linked-authorization/link-auth-code endpoint response should be returned in a timely manner 15000ms
     And The /linked-authorization/link-auth-code endpoint response should have status 200
     And The /linked-authorization/link-auth-code endpoint response should have content-type: application/json header
-    And The /linked-authorization/link-auth-code endpoint response should match json schema
+    And The /linked-authorization/link-auth-code endpoint response should match json schema with no errors
 
   @negative
   Scenario: Not able to validate the link-code and its expiry and generate the link auth code because of invalid linkCode
@@ -20,5 +20,5 @@ Feature: The endpoint to validates the link-code and its expiry and generates th
     And The /linked-authorization/link-auth-code endpoint response should be returned in a timely manner 15000ms
     And The /linked-authorization/link-auth-code endpoint response should have status 200
     And The /linked-authorization/link-auth-code endpoint response should have content-type: application/json header
-    And The /linked-authorization/link-auth-code endpoint response should match json schema
-    And The /linked-authorization/link-auth-code response should contain errorCode property equals to "Unknown Type: array"
+    And The /linked-authorization/link-auth-code endpoint response should match json schema with errors
+    And The /linked-authorization/link-auth-code response should contain errorCode property equals to "invalid_link_code"
