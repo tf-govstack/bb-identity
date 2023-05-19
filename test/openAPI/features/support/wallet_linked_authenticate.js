@@ -190,6 +190,19 @@ When(
     })
 );
 
+When(
+  'Send POST \\/linked-authorization\\/authenticate request with given invalid challengeList',
+  () =>
+    specWalletLinkedAuthenticate.post(baseUrl).withJson({
+      requestTime: new Date().toISOString(),
+      request: {
+        linkedTransactionId: receivedLinkedTransactionId,
+        individualId: individualId,
+        challengeList: [],
+      },
+    })
+);
+
 After(endpointTag, () => {
   specWalletGenerateLinkCode.end();
   specWalletLinkTransaction.end();
