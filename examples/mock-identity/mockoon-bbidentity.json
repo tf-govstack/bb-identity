@@ -2201,6 +2201,151 @@
       ],
       "enabled": true,
       "responseMode": null
+    },
+    {
+      "uuid": "4370f082-8742-4e17-8a05-0a5643f69e1e",
+      "type": "http",
+      "documentation": "Wallet binding endpoint is invoked by Wallet's backend server.",
+      "method": "post",
+      "endpoint": "wallet-binding",
+      "responses": [
+        {
+          "uuid": "9d3cfad3-8697-4f8d-b685-88f06f12f1cc",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"walletUserId\": \"string\",\n    \"certificate\": \"string\",\n    \"expireDateTime\": \"string\"\n  },\n  \"errors\": []\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Successfully generated wallet user id",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "requestTime",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "request.individualId",
+              "value": "^[a-zA-Z0-9]+$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.authFactorType",
+              "value": "^[a-zA-Z0-9]+$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.challengeList.format",
+              "value": "^[A-Za-z0-9]+-[A-Za-z0-9]+$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.format",
+              "value": "^[A-Za-z0-9]+-[A-Za-z0-9]+$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.challengeList.authFactorType",
+              "value": "^[a-zA-Z0-9]+$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.challengeList.challenge",
+              "value": "^[a-zA-Z0-9]+$",
+              "invert": false,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "c47d087b-0485-46b6-8e52-043eefe0ccec",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"walletUserId\": \"string\",\n    \"certificate\": \"string\",\n    \"expireDateTime\": \"string\"\n  },\n  \"errors\": [\n    {\n      \"errorCode\": \"unsupported_challenge_format\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Unsupported challenge format",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "requestTime",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "request.individualId",
+              "value": "^[a-zA-Z0-9]+$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.authFactorType",
+              "value": "^[a-zA-Z0-9]+$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.format",
+              "value": "[A-Za-z]+-[A-Za-z]+",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.challengeList.format",
+              "value": "[A-Za-z]+-[A-Za-z]+",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.challengeList.authFactorType",
+              "value": "^[a-zA-Z0-9]+$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.challengeList.challenge",
+              "value": "^[a-zA-Z0-9]+$",
+              "invert": false,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
     }
   ],
   "proxyMode": false,
@@ -2280,6 +2425,10 @@
     {
       "type": "route",
       "uuid": "432e2b24-4bf0-4573-9cac-f5bd555a838a"
+    },
+    {
+      "type": "route",
+      "uuid": "4370f082-8742-4e17-8a05-0a5643f69e1e"
     }
   ]
 }

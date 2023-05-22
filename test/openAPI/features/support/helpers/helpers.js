@@ -362,6 +362,42 @@ module.exports = {
       },
     },
   },
+  // wallet-binding
+  walletBindingEndpoint: 'wallet-binding',
+  walletBindingResponseSchema: {
+    type: "object",
+    properties: {
+      responseTime: { type: "string"  },
+      response: {
+        type: "object",
+        properties: {
+          walletUserId: { type: "string" },
+          certificate: { type: "string" },
+          expireDateTime: { type: "string" },
+        },
+        errors: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              errorCode: {
+                type: "string",
+                enum: [
+                  "unsupported_challenge_format",
+                  "key_binding_failed",
+                  "invalid_public_key",
+                  "invalid_auth_challenge",
+                  "duplicate_public_key"
+                ],
+              },
+              errorMessage: { type: "string" }
+            }
+          }
+        }
+      }
+    },
+    required: ["responseTime"]
+  },
   //shares
   clientResponseSchema: {
     type: 'object',
