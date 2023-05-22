@@ -12,6 +12,18 @@ const {
 chai.use(require('chai-json-schema'));
 
 let specClientCreate;
+const publicKey = JSON.stringify({
+  kty: 'RSA',
+  a: 'AQAB',
+  use: 'sig',
+  alg: 'RS256',
+  n: 'mykWIftknK1TQmbiazuik0rWGsxeOIUE3yfSQJgoCfdGXY4HfHE6AlNKFdIKZOXe-U-L21Klj692e9iZx05rHHaZvO0a4IzyFMOyw5wjBCWoBOcA4q93LPkZTSkIq9I2Vgr6Bzwu6X7QPMbmF8xAKX4KeSn_yZcsAhElHBOWkENmKp76yCyTeE4DAIGah1BcgiB_KWvOZOedwTRDLyQ0DZM1z07-N-rPh0qSd2UFRRY-b_jc9opjyRQq3d5ZkiB9W4ReAUhIKA9uc1RDs1shc3G8zgZp3qH6fYWmsOi23BOA_q8Z-wMHwPK2vEJvgZIWovAG5jGFbMilNcFQfzLJcQ',
+});
+
+const base64ToJson = (publicKey) => {
+  JSON.parse(publicKey);
+  return Buffer.from(publicKey).toString('base64');
+};
 
 const baseUrl = localhost + clientCreateEndpoint;
 const endpointTag = { tags: `@endpoint=/${clientCreateEndpoint}` };
@@ -27,18 +39,18 @@ Given(
 );
 
 When(
-  'User sends POST request with given requestTime, {string} as clientId, {string} as clientName, {string} as relyingPartyId, {string} as logoUri, {string} as publicKey, {string} as authContextRefs, {string} as userClaims, {string} as grantTypes, {string} as clientAuthMethods',
+  'User sends POST request with given requestTime, {string} as clientId, {string} as clientName, {string} as relyingPartyId, {string} as logoUri, publicKey, {string} as authContextRefs, {string} as userClaims, {string} as grantTypes, {string} as clientAuthMethods',
   (
     clientId,
     clientName,
     relyingPartyId,
     logoUri,
-    publicKey,
     authContextRefs,
     userClaims,
     grantTypes,
-    clientAuthMethods
-  ) =>
+    clientAuthMethods,
+    redirectUris
+  ) => {
     specClientCreate.post(baseUrl).withJson({
       requestTime: new Date().toISOString(),
       request: {
@@ -46,13 +58,15 @@ When(
         clientName: clientName,
         relyingPartyId: relyingPartyId,
         logoUri: logoUri,
-        publicKey: { publicKey },
+        publicKey: base64ToJson(publicKey),
         authContextRefs: [authContextRefs],
         userClaims: [userClaims],
         grantTypes: [grantTypes],
         clientAuthMethods: [clientAuthMethods],
+        redirectUris: [redirectUris],
       },
-    })
+    });
+  }
 );
 
 Then(
@@ -107,13 +121,12 @@ Then(
 // Scenario Outline: The new client is successfully added to the Open ID Connect (OIDC)
 // Given, Then for this scenario are written in the aforementioned example
 When(
-  'User sends POST request with given requestTime, {string} as clientId, {string} as clientName, {string} as relyingPartyId, {string} as logoUri, {string} as publicKey, {string} as authContextRefs, {string} as userClaims, {string} as grantTypes, {string} as clientAuthMethods, {string} as redirectUris',
+  'User sends POST request with given requestTime, {string} as clientId, {string} as clientName, {string} as relyingPartyId, {string} as logoUri, publicKey, {string} as authContextRefs, {string} as userClaims, {string} as grantTypes, {string} as clientAuthMethods, {string} as redirectUris',
   (
     clientId,
     clientName,
     relyingPartyId,
     logoUri,
-    publicKey,
     authContextRefs,
     userClaims,
     grantTypes,
@@ -127,12 +140,12 @@ When(
         clientName: clientName,
         relyingPartyId: relyingPartyId,
         logoUri: logoUri,
-        publicKey: { publicKey },
+        publicKey: base64ToJson(publicKey),
         authContextRefs: [authContextRefs],
         userClaims: [userClaims],
         grantTypes: [grantTypes],
         clientAuthMethods: [clientAuthMethods],
-        redirectUris: redirectUris,
+        redirectUris: [redirectUris],
       },
     })
 );
@@ -149,11 +162,12 @@ When(
         clientName: 'Health Service',
         relyingPartyId: 'bharath-gov',
         logoUri: 'http://example.com',
-        publicKey: {},
+        publicKey: base64ToJson(publicKey),
         authContextRefs: ['idbb:acr:generated-code'],
         userClaims: ['name'],
         grantTypes: ['authorization_code'],
         clientAuthMethods: ['private_key_jwt'],
+        redirectUris: ['http://example.com/login-success'],
       },
     })
 );
@@ -190,11 +204,12 @@ When(
         clientName: 'Health Service',
         relyingPartyId: 'bharath-gov',
         logoUri: 'http://example.com',
-        publicKey: {},
+        publicKey: base64ToJson(publicKey),
         authContextRefs: [authContextRefs],
         userClaims: ['name'],
         grantTypes: ['authorization_code'],
         clientAuthMethods: ['private_key_jwt'],
+        redirectUris: ['http://example.com/login-success'],
       },
     })
 );
@@ -211,11 +226,12 @@ When(
         clientName: 'Health Service',
         relyingPartyId: 'bharath-gov',
         logoUri: 'http://example.com',
-        publicKey: {},
+        publicKey: base64ToJson(publicKey),
         authContextRefs: ['idbb:acr:generated-code'],
         userClaims: [userClaims],
         grantTypes: ['authorization_code'],
         clientAuthMethods: ['private_key_jwt'],
+        redirectUris: ['http://example.com/login-success'],
       },
     })
 );
@@ -232,11 +248,12 @@ When(
         clientName: 'Health Service',
         relyingPartyId: 'bharath-gov',
         logoUri: 'http://example.com',
-        publicKey: {},
+        publicKey: base64ToJson(publicKey),
         authContextRefs: ['idbb:acr:generated-code'],
         userClaims: ['name'],
         grantTypes: [grantTypes],
         clientAuthMethods: ['private_key_jwt'],
+        redirectUris: ['http://example.com/login-success'],
       },
     })
 );
@@ -253,11 +270,12 @@ When(
         clientName: 'Health Service',
         relyingPartyId: 'bharath-gov',
         logoUri: 'http://example.com',
-        publicKey: {},
+        publicKey: base64ToJson(publicKey),
         authContextRefs: ['idbb:acr:generated-code'],
         userClaims: ['name'],
         grantTypes: ['authorization_code'],
         clientAuthMethods: [clientAuthMethods],
+        redirectUris: ['http://example.com/login-success'],
       },
     })
 );
@@ -274,11 +292,12 @@ When(
         clientName: clientName,
         relyingPartyId: 'bharath-gov',
         logoUri: 'http://example.com',
-        publicKey: {},
+        publicKey: base64ToJson(publicKey),
         authContextRefs: ['idbb:acr:generated-code'],
         userClaims: ['name'],
         grantTypes: ['authorization_code'],
         clientAuthMethods: ['private_key_jwt'],
+        redirectUris: ['http://example.com/login-success'],
       },
     })
 );
@@ -295,11 +314,12 @@ When(
         clientName: 'e-health-service',
         relyingPartyId: relyingPartyId,
         logoUri: 'http://example.com',
-        publicKey: {},
+        publicKey: base64ToJson(publicKey),
         authContextRefs: ['idbb:acr:generated-code'],
         userClaims: ['name'],
         grantTypes: ['authorization_code'],
         clientAuthMethods: ['private_key_jwt'],
+        redirectUris: ['http://example.com/login-success'],
       },
     })
 );
@@ -316,11 +336,12 @@ When(
         clientName: 'e-health-service',
         relyingPartyId: 'bharath-gov',
         logoUri: logoUri,
-        publicKey: {},
+        publicKey: base64ToJson(publicKey),
         authContextRefs: ['idbb:acr:generated-code'],
         userClaims: ['name'],
         grantTypes: ['authorization_code'],
         clientAuthMethods: ['private_key_jwt'],
+        redirectUris: ['http://example.com/login-success'],
       },
     })
 );
@@ -337,13 +358,56 @@ When(
         clientName: 'e-health-service',
         relyingPartyId: 'bharath-gov',
         logoUri: 'http://example.com',
-        publicKey: {},
+        publicKey: base64ToJson(publicKey),
         authContextRefs: ['idbb:acr:generated-code'],
         userClaims: ['name'],
         grantTypes: ['authorization_code'],
         clientAuthMethods: ['private_key_jwt'],
+        redirectUris: ['http://example.com/login-success'],
       },
     })
+);
+
+// Scenario: Not able to add the new client to the Open ID Connect (OIDC) because of invalid publicKey
+// Given, Then for this scenario are written in the aforementioned example
+When(
+  'User sends POST request with given publicKey as a string not JWT format',
+  () =>
+    specClientCreate.post(baseUrl).withJson({
+      requestTime: new Date().toISOString(),
+      request: {
+        clientId: 'e-health-service-8',
+        clientName: 'e-health-service',
+        relyingPartyId: 'bharath-gov',
+        logoUri: 'http://example.com',
+        publicKey: publicKey,
+        authContextRefs: ['idbb:acr:generated-code'],
+        userClaims: ['name'],
+        grantTypes: ['authorization_code'],
+        clientAuthMethods: ['private_key_jwt'],
+        redirectUris: ['http://example.com/login-success'],
+      },
+    })
+);
+
+// Scenario: Not able to add the new client to the Open ID Connect(OIDC) because of invalid redirectUris
+// Given, Then for this scenario are written in the aforementioned example
+When('User sends POST request with given none redirectUris', () =>
+  specClientCreate.post(baseUrl).withJson({
+    requestTime: new Date().toISOString(),
+    request: {
+      clientId: 'e-health-service-8',
+      clientName: 'e-health-service',
+      relyingPartyId: 'bharath-gov',
+      logoUri: 'http://example.com',
+      publicKey: base64ToJson(publicKey),
+      authContextRefs: ['idbb:acr:generated-code'],
+      userClaims: ['name'],
+      grantTypes: ['authorization_code'],
+      clientAuthMethods: ['private_key_jwt'],
+      redirectUris: [],
+    },
+  })
 );
 
 After(endpointTag, () => {

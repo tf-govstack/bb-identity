@@ -4,7 +4,7 @@ Feature: API to add new open ID connect (OIDC) clients.
   @smoke 
   Scenario: The new client is successfully added to the Open ID Connect (OIDC) smoke type test
     Given The user wants to add the new client to the Open ID Connect (OIDC)
-    When User sends POST request with given requestTime, "e-health-service" as clientId, "Health Service" as clientName, "bharath-gov" as relyingPartyId, "http://example.com" as logoUri, "bXlfcHVibGljX2tleQ==" as publicKey, "idbb:acr:generated-code" as authContextRefs, "name" as userClaims, "authorization_code" as grantTypes, "private_key_jwt" as clientAuthMethods
+    When User sends POST request with given requestTime, "e-health-service" as clientId, "Health Service" as clientName, "bharath-gov" as relyingPartyId, "http://example.com" as logoUri, publicKey, "idbb:acr:generated-code" as authContextRefs, "name" as userClaims, "authorization_code" as grantTypes, "private_key_jwt" as clientAuthMethods, "http://example.com/login-success" as redirectUris
     Then User receives a response from the POST /client-mgmt/oidc-client endpoint
     And The POST /client-mgmt/oidc-client endpoint response should be returned in a timely manner 15000ms
     And The POST /client-mgmt/oidc-client endpoint response should have status 200
@@ -16,7 +16,7 @@ Feature: API to add new open ID connect (OIDC) clients.
   @unit @positive
   Scenario Outline: The new client is successfully added to the Open ID Connect (OIDC)
     Given The user wants to add the new client to the Open ID Connect (OIDC)
-    When User sends POST request with given requestTime, "<clientId>" as clientId, "<clientName>" as clientName, "<relyingPartyId>" as relyingPartyId, "<logoUri>" as logoUri, "<publicKey>" as publicKey, "<authContextRefs>" as authContextRefs, "<userClaims>" as userClaims, "authorization_code" as grantTypes, "private_key_jwt" as clientAuthMethods, "<redirectUris>" as redirectUris
+    When User sends POST request with given requestTime, "<clientId>" as clientId, "<clientName>" as clientName, "<relyingPartyId>" as relyingPartyId, "<logoUri>" as logoUri, publicKey, "<authContextRefs>" as authContextRefs, "<userClaims>" as userClaims, "authorization_code" as grantTypes, "private_key_jwt" as clientAuthMethods, "<redirectUris>" as redirectUris
     Then User receives a response from the POST /client-mgmt/oidc-client endpoint
     And The POST /client-mgmt/oidc-client endpoint response should be returned in a timely manner 15000ms
     And The POST /client-mgmt/oidc-client endpoint response should have status 200
@@ -26,11 +26,11 @@ Feature: API to add new open ID connect (OIDC) clients.
     And The POST /client-mgmt/oidc-client endpoint response should contain empty errors array
 
     Examples: Valid data
-    | clientId           | clientName       | relyingPartyId | logoUri             | publicKey                | authContextRefs                    | userClaims         | redirectUris           |
-    | payment-service    | Payment Service  | abc-gov        | http://example1.com | bXlfcHVibGljX2tleV8wMQ== | idbb:acr:static-code               | given_name         | http://redirectMe1.com |
-    | e-bank-service     | Bank Service     | bankser-gov    | http://example2.com | aGlzX3B1YmxpY19rZXlfMDI= | idbb:acr:linked-wallet-static-code | family_name        | http://redirectMe2.com |
-    | e-commerce-service | Commerce Service | ecommer-gov    | http://example3.com | aGVyX3B1YmxpY19rZXlfMDE= | idbb:acr:biometrics-generated-code | middle_name        | http://redirectMe3.com |
-    | health-service     | Health Service   | health-gov     | http://example4.com | cHVibGljX2tleV8wMQ==     | idbb:acr:biometrics                | preferred_username | http://redirectMe4.com |
+    | clientId           | clientName       | relyingPartyId | logoUri             | authContextRefs                    | userClaims         | redirectUris           |
+    | payment-service    | Payment Service  | abc-gov        | http://example1.com | idbb:acr:static-code               | given_name         | http://redirectMe1.com |
+    | e-bank-service     | Bank Service     | bankser-gov    | http://example2.com | idbb:acr:linked-wallet-static-code | family_name        | http://redirectMe2.com |
+    | e-commerce-service | Commerce Service | ecommer-gov    | http://example3.com | idbb:acr:biometrics-generated-code | middle_name        | http://redirectMe3.com |
+    | health-service     | Health Service   | health-gov     | http://example4.com | idbb:acr:biometrics                | preferred_username | http://redirectMe4.com |
 
   @unit @negative
   Scenario: Not able to add the new client to the Open ID Connect (OIDC) because of invalid requestTime
@@ -130,3 +130,25 @@ Feature: API to add new open ID connect (OIDC) clients.
     And The POST /client-mgmt/oidc-client endpoint response should have content-type: application/json header
     And The POST /client-mgmt/oidc-client endpoint response should match json schema with error
     And The POST /client-mgmt/oidc-client endpoint response should match with error code "invalid_client_id"
+
+  @unit @negative
+  Scenario: Not able to add the new client to the Open ID Connect (OIDC) because of invalid publicKey
+    Given The user wants to add the new client to the Open ID Connect (OIDC)
+    When User sends POST request with given publicKey as a string not JWT format
+    Then User receives a response from the POST /client-mgmt/oidc-client endpoint
+    And The POST /client-mgmt/oidc-client endpoint response should be returned in a timely manner 15000ms
+    And The POST /client-mgmt/oidc-client endpoint response should have status 200
+    And The POST /client-mgmt/oidc-client endpoint response should have content-type: application/json header
+    And The POST /client-mgmt/oidc-client endpoint response should match json schema with error
+    And The POST /client-mgmt/oidc-client endpoint response should match with error code "invalid_public_key"
+
+  @unit @negative
+  Scenario: Not able to add the new client to the Open ID Connect (OIDC) because of empty array of redirectUris
+    Given The user wants to add the new client to the Open ID Connect (OIDC)
+    When User sends POST request with given none redirectUris
+    Then User receives a response from the POST /client-mgmt/oidc-client endpoint
+    And The POST /client-mgmt/oidc-client endpoint response should be returned in a timely manner 15000ms
+    And The POST /client-mgmt/oidc-client endpoint response should have status 200
+    And The POST /client-mgmt/oidc-client endpoint response should have content-type: application/json header
+    And The POST /client-mgmt/oidc-client endpoint response should match json schema with error
+    And The POST /client-mgmt/oidc-client endpoint response should match with error code "invalid_redirect_uri"
