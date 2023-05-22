@@ -424,6 +424,13 @@
             },
             {
               "target": "body",
+              "modifier": "request.clientName",
+              "value": "^duplicated$",
+              "invert": true,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
               "modifier": "request.relyingPartyId",
               "value": "^.{1,50}$",
               "invert": false,
@@ -506,6 +513,36 @@
               "modifier": "request.publicKey",
               "value": "^([a-zA-Z0-9_=]+)([a-zA-Z0-9_=]+)([a-zA-Z0-9_\\-\\+\\/=]*)",
               "invert": true,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
+          "uuid": "12c0867b-96ff-49e9-a990-a33757dd29d3",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"errors\": [\n    {\n      \"errorCode\": \"duplicate_client_id\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Duplicate clientId",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "request.clientName",
+              "value": "^duplicated$",
+              "invert": false,
               "operator": "regex"
             }
           ],

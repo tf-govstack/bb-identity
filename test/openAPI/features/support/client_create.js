@@ -355,7 +355,7 @@ When(
       requestTime: new Date().toISOString(),
       request: {
         clientId: clientId,
-        clientName: 'e-health-service',
+        clientName: 'e-health-service-9',
         relyingPartyId: 'bharath-gov',
         logoUri: 'http://example.com',
         publicKey: base64ToJson(publicKey),
@@ -376,7 +376,7 @@ When(
     specClientCreate.post(baseUrl).withJson({
       requestTime: new Date().toISOString(),
       request: {
-        clientId: 'e-health-service-8',
+        clientId: 'e-health-service-10',
         clientName: 'e-health-service',
         relyingPartyId: 'bharath-gov',
         logoUri: 'http://example.com',
@@ -396,7 +396,7 @@ When('User sends POST request with given none redirectUris', () =>
   specClientCreate.post(baseUrl).withJson({
     requestTime: new Date().toISOString(),
     request: {
-      clientId: 'e-health-service-8',
+      clientId: 'e-health-service-11',
       clientName: 'e-health-service',
       relyingPartyId: 'bharath-gov',
       logoUri: 'http://example.com',
@@ -406,6 +406,26 @@ When('User sends POST request with given none redirectUris', () =>
       grantTypes: ['authorization_code'],
       clientAuthMethods: ['private_key_jwt'],
       redirectUris: [],
+    },
+  })
+);
+
+// Scenario: Not able to add the new client to the Open ID Connect (OIDC) because of duplicate clientId
+// Given, Then for this scenario are written in the aforementioned example
+When('User sends POST request with given {string} as clientId', (clientId) =>
+  specClientCreate.post(baseUrl).withJson({
+    requestTime: new Date().toISOString(),
+    request: {
+      clientId: clientId,
+      clientName: 'duplicated',
+      relyingPartyId: 'bharath-gov',
+      logoUri: 'http://example.com',
+      publicKey: base64ToJson(publicKey),
+      authContextRefs: ['idbb:acr:generated-code'],
+      userClaims: ['name'],
+      grantTypes: ['authorization_code'],
+      clientAuthMethods: ['private_key_jwt'],
+      redirectUris: ['http://example.com/login-success'],
     },
   })
 );

@@ -152,3 +152,14 @@ Feature: API to add new open ID connect (OIDC) clients.
     And The POST /client-mgmt/oidc-client endpoint response should have content-type: application/json header
     And The POST /client-mgmt/oidc-client endpoint response should match json schema with error
     And The POST /client-mgmt/oidc-client endpoint response should match with error code "invalid_redirect_uri"
+
+  @unit @negative
+  Scenario: Not able to add the new client to the Open ID Connect (OIDC) because of duplicate clientId
+    Given The user wants to add the new client to the Open ID Connect (OIDC)
+    When User sends POST request with given "e-health-service" as clientId
+    Then User receives a response from the POST /client-mgmt/oidc-client endpoint
+    And The POST /client-mgmt/oidc-client endpoint response should be returned in a timely manner 15000ms
+    And The POST /client-mgmt/oidc-client endpoint response should have status 200
+    And The POST /client-mgmt/oidc-client endpoint response should have content-type: application/json header
+    And The POST /client-mgmt/oidc-client endpoint response should match json schema with error
+    And The POST /client-mgmt/oidc-client endpoint response should match with error code "duplicate_client_id"
