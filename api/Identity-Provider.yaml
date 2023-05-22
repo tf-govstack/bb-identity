@@ -288,6 +288,7 @@ paths:
                             - invalid_redirect_uri
                             - invalid_grant_type
                             - invalid_client_auth
+                            - invalid_request
                         errorMessage:
                           type: string
       description: |-
@@ -580,6 +581,7 @@ paths:
                             - invalid_transaction_id
                             - link_code_gen_failed
                             - invalid_transaction
+                            - invalid_request
                         errorMessage:
                           type: string
       operationId: get-authorization-generate-link-code
@@ -659,6 +661,7 @@ paths:
                             - invalid_link_code
                             - response_timeout
                             - unknown_error
+                            - invalid_request
                         errorMessage:
                           type: string
       operationId: post-authorization-link-status
@@ -741,6 +744,7 @@ paths:
                             - invalid_link_code
                             - response_timeout
                             - unknown_error
+                            - invalid_request
                         errorMessage:
                           type: string
       operationId: post-authorization-link-auth
@@ -848,6 +852,7 @@ paths:
                             - invalid_transaction
                             - invalid_client_id
                             - unknown_error
+                            - invalid_request
                         errorMessage:
                           type: string
       requestBody:
@@ -916,6 +921,7 @@ paths:
                             - invalid_no_of_challenges
                             - auth_failed
                             - unknown_error
+                            - invalid_request
                         errorMessage:
                           type: string
       requestBody:
@@ -1034,6 +1040,7 @@ paths:
                             - invalid_transaction
                             - invalid_accepted_claim
                             - invalid_permitted_scope
+                            - invalid_request
                         errorMessage:
                           type: string
       tags:
@@ -1289,6 +1296,7 @@ paths:
                             - invalid_public_key
                             - invalid_auth_challenge
                             - duplicate_public_key
+                            - invalid_request
                         errorMessage:
                           type: string
                 required:
