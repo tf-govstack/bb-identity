@@ -2215,7 +2215,12 @@
           "latency": 0,
           "statusCode": 200,
           "label": "Successfully generated wallet user id",
-          "headers": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
           "bodyType": "INLINE",
           "filePath": "",
           "databucketID": "",
@@ -2244,13 +2249,6 @@
             },
             {
               "target": "body",
-              "modifier": "request.challengeList.format",
-              "value": "^[A-Za-z0-9]+-[A-Za-z0-9]+$",
-              "invert": false,
-              "operator": "regex"
-            },
-            {
-              "target": "body",
               "modifier": "request.format",
               "value": "^[A-Za-z0-9]+-[A-Za-z0-9]+$",
               "invert": false,
@@ -2258,15 +2256,15 @@
             },
             {
               "target": "body",
-              "modifier": "request.challengeList.authFactorType",
-              "value": "^[a-zA-Z0-9]+$",
-              "invert": false,
-              "operator": "regex"
+              "modifier": "request.challengeList",
+              "value": "",
+              "invert": true,
+              "operator": "empty_array"
             },
             {
               "target": "body",
-              "modifier": "request.challengeList.challenge",
-              "value": "^[a-zA-Z0-9]+$",
+              "modifier": "request.publicKey",
+              "value": "^([a-zA-Z0-9_=]+)([a-zA-Z0-9_=]+)([a-zA-Z0-9_\\\\-\\\\+\\\\/=]*)",
               "invert": false,
               "operator": "regex"
             }
@@ -2282,7 +2280,12 @@
           "latency": 0,
           "statusCode": 200,
           "label": "Unsupported challenge format",
-          "headers": [],
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
           "bodyType": "INLINE",
           "filePath": "",
           "databucketID": "",
@@ -2318,22 +2321,15 @@
             },
             {
               "target": "body",
-              "modifier": "request.challengeList.format",
-              "value": "[A-Za-z]+-[A-Za-z]+",
-              "invert": false,
-              "operator": "regex"
+              "modifier": "request.challengeList",
+              "value": "",
+              "invert": true,
+              "operator": "empty_array"
             },
             {
               "target": "body",
-              "modifier": "request.challengeList.authFactorType",
-              "value": "^[a-zA-Z0-9]+$",
-              "invert": false,
-              "operator": "regex"
-            },
-            {
-              "target": "body",
-              "modifier": "request.challengeList.challenge",
-              "value": "^[a-zA-Z0-9]+$",
+              "modifier": "request.publicKey",
+              "value": "^([a-zA-Z0-9_=]+)([a-zA-Z0-9_=]+)([a-zA-Z0-9_\\\\-\\\\+\\\\/=]*)",
               "invert": false,
               "operator": "regex"
             }
@@ -2342,6 +2338,71 @@
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": true
+        },
+        {
+          "uuid": "fc19815f-ab7d-4972-ae2e-e6c7b79c1ec1",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"walletUserId\": \"string\",\n    \"certificate\": \"string\",\n    \"expireDateTime\": \"string\"\n  },\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_public_key\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Invalid public key",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "requestTime",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "body",
+              "modifier": "request.individualId",
+              "value": "^[a-zA-Z0-9]+$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.authFactorType",
+              "value": "^[a-zA-Z0-9]+$",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.format",
+              "value": "[A-Za-z]+-[A-Za-z]+",
+              "invert": false,
+              "operator": "regex"
+            },
+            {
+              "target": "body",
+              "modifier": "request.challengeList",
+              "value": "",
+              "invert": true,
+              "operator": "empty_array"
+            },
+            {
+              "target": "body",
+              "modifier": "request.publicKey",
+              "value": "^([a-zA-Z0-9_=]+)([a-zA-Z0-9_=]+)([a-zA-Z0-9_\\\\-\\\\+\\\\/=]*)",
+              "invert": true,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
         }
       ],
       "enabled": true,
@@ -2429,6 +2490,10 @@
     {
       "type": "route",
       "uuid": "4370f082-8742-4e17-8a05-0a5643f69e1e"
+    },
+    {
+      "type": "route",
+      "uuid": "8f51c09f-816b-4137-a8aa-8e30bd56a2f7"
     }
   ]
 }

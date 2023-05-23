@@ -362,7 +362,7 @@ module.exports = {
       },
     },
   },
-  // wallet-binding
+  // wallet_binding
   walletBindingEndpoint: 'wallet-binding',
   walletBindingResponseSchema: {
     type: "object",
