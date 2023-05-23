@@ -362,6 +362,36 @@ module.exports = {
       },
     },
   },
+  // wallet_consent
+  walletConsentEndpoint: 'linked-authorization/consent',
+  walletConsentResponseSchema: {
+    type: 'object',
+    properties: {
+      responseTime: { type: 'string' },
+      response: {
+        type: 'object',
+        properties: { linkedTransactionId: { type: 'string' } },
+      },
+      errors: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            errorCode: {
+              type: 'string',
+              enum: [
+                'invalid_transaction_id',
+                'invalid_transaction',
+                'invalid_accepted_claim',
+                'invalid_permitted_scope',
+              ],
+            },
+            errorMessage: { type: 'string' },
+          },
+        },
+      },
+    },
+  },
   // wallet_binding
   walletBindingEndpoint: 'wallet-binding',
   walletBindingResponseSchema: {
