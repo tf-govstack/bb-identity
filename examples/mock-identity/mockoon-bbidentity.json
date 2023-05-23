@@ -1156,6 +1156,34 @@
       "type": "http"
     },
     {
+      "uuid": "5674c6e6-5e80-4f0b-9bcb-30416f76d9a7",
+      "documentation": "This endpoint is only for facilitating the OIDC provider details in a standard way.",
+      "method": "get",
+      "endpoint": ".well-known/openid-configuration",
+      "responses": [
+        {
+          "uuid": "ca26fe7c-4914-4670-8881-365692a23410",
+          "body": "{\n  \"issuer\": \"string\",\n  \"authorization_endpoint\": \"string\",\n  \"token_endpoint\": \"string\",\n  \"userinfo_endpoint\": \"string\",\n  \"jwks_uri\": \"string\",\n  \"registration_endpoint\": \"string\",\n  \"scopes_supported\": [\n    \"openid\"\n  ],\n  \"response_types_supported\": [\n    \"code\"\n  ],\n  \"acr_values_supported\": [\n    \"string\"\n  ],\n  \"userinfo_signing_alg_values_supported\": [\n    \"string\"\n  ],\n  \"userinfo_encryption_alg_values_supported\": [\n    \"string\"\n  ],\n  \"userinfo_encryption_enc_values_supported\": [\n    \"string\"\n  ],\n  \"token_endpoint_auth_methods_supported\": [\n    \"private_key_jwt\"\n  ],\n  \"display_values_supported\": [\n    \"string\"\n  ],\n  \"claim_types_supported\": [\n    \"normal\"\n  ],\n  \"claims_supported\": [\n    \"string\"\n  ],\n  \"claims_locales_supported\": [\n    \"string\"\n  ],\n  \"ui_locales_supported\": [\n    \"string\"\n  ],\n  \"response_modes_supported\": [\n    \"query\"\n  ],\n  \"token_endpoint_auth_signing_alg_values_supported\": [\n    \"RS256\"\n  ],\n  \"id_token_signing_alg_values_supported\": [\n    \"RS256\"\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Successfully faciliated the OIDC provider detais",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
+      "responseMode": null,
+      "type": "http"
+    },
+    {
       "uuid": "7ab6c815-e9ae-4e3a-b04e-54239ab25d9f",
       "type": "http",
       "documentation": "Validate the link-code and its expiry and generate the linkTransactionId",
