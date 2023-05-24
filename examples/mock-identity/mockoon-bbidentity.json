@@ -2264,7 +2264,7 @@
             {
               "target": "body",
               "modifier": "request.publicKey",
-              "value": "^([a-zA-Z0-9_=]+)([a-zA-Z0-9_=]+)([a-zA-Z0-9_\\\\-\\\\+\\\\/=]*)",
+              "value": "^([a-zA-Z0-9_=]+)([a-zA-Z0-9_=]+)([a-zA-Z0-9_\-\+\/=]*)",
               "invert": false,
               "operator": "regex"
             }
@@ -2329,7 +2329,7 @@
             {
               "target": "body",
               "modifier": "request.publicKey",
-              "value": "^([a-zA-Z0-9_=]+)([a-zA-Z0-9_=]+)([a-zA-Z0-9_\\\\-\\\\+\\\\/=]*)",
+              "value": "^([a-zA-Z0-9_=]+)([a-zA-Z0-9_=]+)([a-zA-Z0-9_\-\+\/=]*)",
               "invert": false,
               "operator": "regex"
             }
@@ -2394,7 +2394,7 @@
             {
               "target": "body",
               "modifier": "request.publicKey",
-              "value": "^([a-zA-Z0-9_=]+)([a-zA-Z0-9_=]+)([a-zA-Z0-9_\\\\-\\\\+\\\\/=]*)",
+              "value": "^([a-zA-Z0-9_=]+)([a-zA-Z0-9_=]+)([a-zA-Z0-9_\-\+\/=]*)",
               "invert": true,
               "operator": "regex"
             }
