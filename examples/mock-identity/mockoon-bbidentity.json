@@ -472,7 +472,8 @@
         }
       ],
       "enabled": true,
-      "responseMode": null
+      "responseMode": null,
+      "type": "http"
     },
     {
       "uuid": "45bd6c8d-c23c-42dd-9a73-51e98c7d7588",
@@ -588,6 +589,36 @@
           "default": true
         },
         {
+          "uuid": "03b23315-afa8-48cc-87a1-6d8630c0cea8",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"clientId\": \"{{bodyRaw 'request.clientId'}}\"\n  },\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_public_key\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Invalid publicKey",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "request.publicKey",
+              "value": "^([a-zA-Z0-9_=]+)([a-zA-Z0-9_=]+)([a-zA-Z0-9_\\-\\+\\/=]*)",
+              "invert": true,
+              "operator": "regex"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false
+        },
+        {
           "uuid": "9428a1aa-4c76-4fdb-81c6-f62075acaaa7",
           "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"clientId\": \"{{bodyRaw 'request.clientId'}}\"\n  },\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_client_id\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
           "latency": 0,
@@ -673,7 +704,7 @@
           "default": false
         },
         {
-          "uuid": "9428a1aa-4c76-4fdb-81c6-f62075acaaa7",
+          "uuid": "1ea64ae0-7339-480d-9410-b2d23c05341e",
           "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"clientId\": \"{{bodyRaw 'request.clientId'}}\"\n  },\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_client_id\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
