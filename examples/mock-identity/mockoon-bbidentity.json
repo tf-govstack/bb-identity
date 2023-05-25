@@ -1,12 +1,10 @@
 {
   "uuid": "256918d8-70c9-4e45-ad37-a6cb1a3f39f7",
   "lastMigration": 27,
-  "lastMigration": 27,
   "name": "BB-Identity",
   "endpointPrefix": "",
   "latency": 0,
   "port": 3001,
-  "hostname": "",
   "hostname": "",
   "routes": [
     {
@@ -1130,106 +1128,6 @@
       "responseMode": null
     },
     {
-      "uuid": "fe5ca74b-beea-400b-b9d4-057370aeb705",
-      "type": "http",
-      "documentation": "Generate Link code",
-      "method": "post",
-      "endpoint": "linked-authorization/link-code",
-      "responses": [
-        {
-          "uuid": "13129174-8b5a-4d01-8aac-8b1d154c069a",
-          "body": "{\n  \"responseTime\": \"2011-10-05T14:49:00.000Z\",\n  \"response\": {\n    \"transactionId\": \"{{bodyRaw 'request.transactionId'}}\",\n    \"linkCode\": \"linkCode\",\n    \"expireDateTime\": \"2023-10-05T14:49:00.000Z\"\n  },\n  \"errors\": []\n}",
-          "latency": 0,
-          "statusCode": 200,
-          "label": "Succesfully generate link code",
-          "headers": [
-            {
-              "key": "Content-Type",
-              "value": "application/json"
-            }
-          ],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [
-            {
-              "target": "header",
-              "modifier": "X-XSRF-TOKEN",
-              "value": "^X-XSRF-TOKEN$",
-              "invert": false,
-              "operator": "regex"
-            },
-            {
-              "target": "body",
-              "modifier": "requestTime",
-              "value": "",
-              "invert": true,
-              "operator": "null"
-            },
-            {
-              "target": "body",
-              "modifier": "request.transactionId",
-              "value": "^[A-Za-z0-9]+$",
-              "invert": false,
-              "operator": "regex"
-            }
-          ],
-          "rulesOperator": "AND",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": true
-        },
-        {
-          "uuid": "3181a1d5-4546-4546-ac52-3e60a0ca944d",
-          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"transactionId\": \"{{bodyRaw 'request.transactionId'}}\",\n    \"linkCode\": \"string\",\n    \"expireDateTime\": \"string\"\n  },\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_transaction_id\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
-          "latency": 0,
-          "statusCode": 200,
-          "label": "Invalid transaction_id",
-          "headers": [
-            {
-              "key": "Content-Type",
-              "value": "application/json"
-            }
-          ],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [
-            {
-              "target": "header",
-              "modifier": "X-XSRF-TOKEN",
-              "value": "^X-XSRF-TOKEN$",
-              "invert": false,
-              "operator": "regex"
-            },
-            {
-              "target": "body",
-              "modifier": "requestTime",
-              "value": "",
-              "invert": true,
-              "operator": "null"
-            },
-            {
-              "target": "body",
-              "modifier": "request.transactionId",
-              "value": "^[A-Za-z0-9]+$",
-              "invert": true,
-              "operator": "regex"
-            }
-          ],
-          "rulesOperator": "AND",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": false
-        }
-      ],
-      "enabled": true,
-      "responseMode": null,
-      "type": "http"
-    },
-    {
       "uuid": "8f51c09f-816b-4137-a8aa-8e30bd56a2f7",
       "documentation": "Endpoint to fetch all the public keys of the IDBB server. Returns public key set in the JWKS format",
       "method": "get",
@@ -1587,11 +1485,19 @@
     },
     {
       "type": "route",
-      "uuid": "8f51c09f-816b-4137-a8aa-8e30bd56a2f7"
+      "uuid": "7ab6c815-e9ae-4e3a-b04e-54239ab25d9f"
     },
     {
       "type": "route",
-      "uuid": "7ab6c815-e9ae-4e3a-b04e-54239ab25d9f"
+      "uuid": "b1003b72-32f5-47f1-acdd-6875d6f9768c"
+    },
+    {
+      "type": "route",
+      "uuid": "5674c6e6-5e80-4f0b-9bcb-30416f76d9a7"
+    },
+    {
+      "type": "route",
+      "uuid": "cac1d80a-b7ea-4c5a-bb33-4c7c9e2d16e7"
     }
   ]
 }

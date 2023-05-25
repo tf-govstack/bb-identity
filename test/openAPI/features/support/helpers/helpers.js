@@ -195,6 +195,43 @@ module.exports = {
       },
     },
   },
+  // wallet_link_status
+  walletLinkStatusEndpoint: 'linked-authorization/link-status',
+  walletLiskStatusResponseSchema: {
+    type: 'object',
+    properties: {
+      responseTIme: { type: 'string' },
+      response: {
+        type: 'object',
+        properties: {
+          transactionId: { type: 'string' },
+          linkStatus: {
+            type: 'string',
+            enum: ['LINKED'],
+          },
+          linkedDateTime: { type: 'string' },
+          errors: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                errorCode: {
+                  type: 'string',
+                  enum: [
+                    'invalid_transaction_id',
+                    'invalid_link_code',
+                    'response_timeout',
+                    'unknown_error',
+                  ],
+                  errorMessage: { type: 'string' },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
   // wallet_link_transaction
   walletLinkTransactionEndpoint: 'linked-authorization/link-transaction',
   walletLinkTransactionResponseSchema: {
@@ -265,4 +302,44 @@ module.exports = {
       },
     },
   },
+
+  //shares
+  clientResponseSchema: {
+    type: 'object',
+    properties: {
+      responseTime: { type: 'string' },
+      response: {
+        type: 'object',
+        properties: { clientId: { type: 'string' } },
+        errors: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              errorCode: {
+                type: 'string',
+                enum: this.clientCreateErrorCodeEnum,
+              },
+              errorMessage: { type: 'string' },
+            },
+            additionalProperties: false,
+          },
+        },
+      },
+    },
+  },
+  clientCreateErrorCodeEnum: [
+    'duplicate_client_id',
+    'invalid_public_key',
+    'invalid_input',
+    'invalid_client_id',
+    'invalid_client_name',
+    'invalid_rp_id',
+    'invalid_claim',
+    'invalid_acr',
+    'invalid_uri',
+    'invalid_redirect_uri',
+    'invalid_grant_type',
+    'invalid_client_auth',
+  ],
 };
