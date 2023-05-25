@@ -4,7 +4,12 @@ module.exports = {
     key: 'content-type',
     value: 'application/json; charset=utf-8',
   },
-  defaultResponseTime: 15000,
+  defaultExpectedResponseTime: 15000,
+  transactionId: 'transactionId01',
+  X_XSRF_TOKEN: {
+    key: 'X-XSRF-TOKEN',
+    value: 'X-XSRF-TOKEN',
+  },
   oidcWellKnownOpenidConfigurationEndpoint: '.well-known/openid-configuration',
   oidcWellKnownOpenidConfigurationSchema: {
     type: 'object',
@@ -124,6 +129,39 @@ module.exports = {
   clientUpdateEndpoint: 'client-mgmt/oidc-client/{client_id}',
   // oidc_authorize
   oidcAuthorizeEndpoint: 'authorize',
+  // wallet_generate_link_code
+  walletGenerateLinkCodeEndpoint: 'linked-authorization/link-code',
+  walletGenerateLinkCodeResponseSchema: {
+    type: 'object',
+    properties: {
+      responseTime: { type: 'string' },
+      response: {
+        type: 'object',
+        properties: {
+          transactionId: { type: 'string' },
+          linkCode: { type: 'string' },
+          expireDateTime: { type: 'string' },
+        },
+      },
+      errors: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            errorCode: {
+              type: 'string',
+              enum: [
+                'invalid_transaction_id',
+                'link_code_gen_failed',
+                'invalid_transaction',
+              ],
+              errorMessage: { type: 'string' },
+            },
+          },
+        },
+      },
+    },
+  },
   //shares
   clientResponseSchema: {
     type: 'object',
