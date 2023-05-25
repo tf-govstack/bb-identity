@@ -383,7 +383,7 @@
           "body": "",
           "latency": 0,
           "statusCode": 200,
-          "label": "Successfully loads JS application, and validates the provided query parameters using oauth-details endpoint",
+          "label": "Successfully validates the provided query parameters using oauth-details endpoint",
           "headers": [],
           "bodyType": "INLINE",
           "filePath": "",
@@ -399,10 +399,24 @@
             },
             {
               "target": "query",
+              "modifier": "scope",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "query",
               "modifier": "response_type",
               "value": "code",
               "invert": false,
               "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "response_type",
+              "value": "",
+              "invert": true,
+              "operator": "null"
             },
             {
               "target": "query",
@@ -413,62 +427,30 @@
             },
             {
               "target": "query",
+              "modifier": "client_id",
+              "value": "",
+              "invert": true,
+              "operator": "null"
+            },
+            {
+              "target": "query",
               "modifier": "redirect_uri",
               "value": "^.{1,}$",
               "invert": false,
               "operator": "regex"
+            },
+            {
+              "target": "query",
+              "modifier": "redirect_uri",
+              "value": "",
+              "invert": true,
+              "operator": "null"
             }
           ],
           "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": true
-        },
-        {
-          "uuid": "12e4ba89-6dfb-4c15-a632-9a3158dcfb26",
-          "body": "",
-          "latency": 0,
-          "statusCode": 400,
-          "label": "Invalid request",
-          "headers": [],
-          "bodyType": "INLINE",
-          "filePath": "",
-          "databucketID": "",
-          "sendFileAsBody": false,
-          "rules": [
-            {
-              "target": "query",
-              "modifier": "scope",
-              "value": "^openid profile$|^openid$|^profile$|^email$|^address$|^phone$|^offline_access$",
-              "invert": true,
-              "operator": "regex"
-            },
-            {
-              "target": "query",
-              "modifier": "response_type",
-              "value": "code",
-              "invert": true,
-              "operator": "equals"
-            },
-            {
-              "target": "query",
-              "modifier": "client_id",
-              "value": "^.{1,}$",
-              "invert": true,
-              "operator": "regex"
-            },
-            {
-              "target": "query",
-              "modifier": "redirect_uri",
-              "value": "^.{1,}$",
-              "invert": true,
-              "operator": "regex"
-            }
-          ],
-          "rulesOperator": "OR",
-          "disableTemplating": false,
-          "fallbackTo404": false,
-          "default": false
         }
       ],
       "enabled": true,
@@ -619,12 +601,17 @@
           "default": false
         },
         {
-          "uuid": "9428a1aa-4c76-4fdb-81c6-f62075acaaa7",
-          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"clientId\": \"{{bodyRaw 'request.clientId'}}\"\n  },\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_client_id\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
+          "uuid": "468fc7ee-0274-4d38-8972-b54f6f4d74c0",
+          "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"clientId\": \"string\"\n  },\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_request\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
           "latency": 0,
-          "statusCode": 400,
-          "label": "Invalid request.",
-          "headers": [],
+          "statusCode": 200,
+          "label": "Invalid clientId",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
           "bodyType": "INLINE",
           "filePath": "",
           "databucketID": "",
