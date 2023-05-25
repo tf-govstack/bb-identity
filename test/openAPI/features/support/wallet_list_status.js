@@ -8,7 +8,6 @@ const {
   walletGenerateLinkCodeEndpoint,
   X_XSRF_TOKEN,
   transactionId,
-  walletGenerateLinkCodeResponseSchema,
   walletLiskStatusResponseSchema,
   walletLinkStatusEndpoint,
 } = require('./helpers/helpers');

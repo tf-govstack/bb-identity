@@ -232,6 +232,77 @@ module.exports = {
       },
     },
   },
+  // wallet_link_transaction
+  walletLinkTransactionEndpoint: 'linked-authorization/link-transaction',
+  walletLinkTransactionResponseSchema: {
+    type: 'object',
+    properties: {
+      responseTime: { type: 'string' },
+      response: {
+        type: 'object',
+        properties: {
+          linkTransactionId: { type: 'string' },
+          clientName: { type: 'string' },
+          logoUrl: { type: 'string' },
+          authorizeScopes: {
+            type: 'array',
+            items: { type: 'string' },
+          },
+          essentialClaims: {
+            type: 'array',
+            items: { type: 'string' },
+          },
+          voluntaryClaims: {
+            type: 'array',
+            items: { type: 'string' },
+          },
+          authFactors: {
+            type: 'array',
+            items: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  type: {
+                    type: 'string',
+                    enum: ['PIN', 'OTP', 'L1-bio-device', 'Wallet'],
+                  },
+                  count: {
+                    type: 'integer',
+                  },
+                  bioSubTypes: {
+                    type: 'array',
+                    items: { type: 'string' },
+                  },
+                },
+                required: ['type'],
+              },
+            },
+          },
+        },
+        configs: { type: 'object' },
+      },
+    },
+    errors: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          errorCode: {
+            type: 'string',
+            enum: [
+              'invalid_link_code',
+              'invalid_transaction',
+              'invalid_client_id',
+              'unknown_error',
+            ],
+          },
+          errorMessage: { type: 'string' },
+        },
+      },
+    },
+  },
+
   //shares
   clientResponseSchema: {
     type: 'object',
