@@ -30,7 +30,7 @@ When(
   () =>
     specWalletGenerateLinkCode
       .post(baseUrl)
-      .withHeaders(X_XSRF_TOKEN.key, X_XSRF_TOKEN.value)
+      .withHeaders(X_XSRF_TOKEN)
       .withJson({
         requestTime: new Date().toISOString(),
         request: {
