@@ -438,10 +438,6 @@ module.exports = {
     type: "string",
     format: "jwt"
   },
-  oidcUserinfoErrorSchema: {
-    type: "string",
-    enum: ["invalid_token", "unknown_error"]
-  },
   //shares
   clientResponseSchema: {
     type: 'object',
