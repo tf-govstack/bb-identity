@@ -3111,6 +3111,39 @@
       "enabled": true,
       "responseMode": null,
       "type": "http"
+    },
+    {
+      "uuid": "415293ba-d1e6-484a-8803-8166cfc8974c",
+      "type": "http",
+      "documentation": "API to receive user information",
+      "method": "get",
+      "endpoint": "oidc/userinfo",
+      "responses": [
+        {
+          "uuid": "0c40d908-de21-4c06-8687-c659b0109e96",
+          "body": "\"string\"",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "successfully receives user information",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/jwt"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
     }
   ],
   "proxyMode": false,
