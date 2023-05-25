@@ -163,39 +163,6 @@ module.exports = {
       },
     },
   },
-  // wallet_generate_link_code
-  walletGenerateLinkCodeEndpoint: 'linked-authorization/link-code',
-  walletGenerateLinkCodeResponseSchema: {
-    type: 'object',
-    properties: {
-      responseTime: { type: 'string' },
-      response: {
-        type: 'object',
-        properties: {
-          transactionId: { type: 'string' },
-          linkCode: { type: 'string' },
-          expireDateTime: { type: 'string' },
-        },
-      },
-      errors: {
-        type: 'array',
-        items: {
-          type: 'object',
-          properties: {
-            errorCode: {
-              type: 'string',
-              enum: [
-                'invalid_transaction_id',
-                'link_code_gen_failed',
-                'invalid_transaction',
-              ],
-              errorMessage: { type: 'string' },
-            },
-          },
-        },
-      },
-    },
-  },
   // wallet_link_status
   walletLinkStatusEndpoint: 'linked-authorization/link-status',
   walletLiskStatusResponseSchema: {
@@ -303,7 +270,34 @@ module.exports = {
       },
     },
   },
-
+  // oauth_token
+  oauthTokenEndpoint: 'oauth/token',
+  oauthTokenResponse: {
+    type: "object",
+    properties: {
+      id_token: { type: "string" },
+      access_token: { type: "string" },
+      token_type: { type: "string" },
+      expires_in: { type: "number" }
+    },
+    required: [
+      "id_token",
+      "access_token",
+      "token_type",
+      "expires_in"
+    ]
+  },
+  oauthTokenErrorResponse: {
+    type: "object",
+    properties: {
+      error: { type: "string" },
+      error_description: { type: "string" }
+    },
+    required: [
+      "error",
+      "error_description"
+    ]
+  },
   //shares
   clientResponseSchema: {
     type: 'object',
