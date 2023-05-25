@@ -120,6 +120,8 @@ module.exports = {
   },
   // client_create
   clientCreateEndpoint: 'client-mgmt/oidc-client',
+  // client_update
+  clientUpdateEndpoint: 'client-mgmt/oidc-client/{client_id}',
   //shares
   clientResponseSchema: {
     type: 'object',
