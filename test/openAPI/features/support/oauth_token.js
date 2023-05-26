@@ -33,7 +33,7 @@ Given(/^The user wants to receive the id token and access token$/,
   () => 'The user wants to receive the id token and access token'
 );
 
-When(
+Given(
  /^The User sends POST request with given "([^"]*)" as grantType, "([^"]*)" as code, "([^"]*)" as clientId, "([^"]*)" as clientAssertionType, "([^"]*)" as clientAssertion, "([^"]*)" as redirectUri, "([^"]*)" as iss, "([^"]*)" as sub, "([^"]*)" as aud, (\d+) as exp, (\d+) as iat$/,
   (
     grantType,

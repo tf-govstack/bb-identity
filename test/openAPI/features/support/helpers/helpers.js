@@ -4,6 +4,10 @@ module.exports = {
     key: 'content-type',
     value: 'application/json; charset=utf-8',
   },
+  contentTypeHeaderJWT: {
+    key: 'content-type',
+    value: 'application/jwt; charset=utf-8',
+  },
   defaultExpectedResponseTime: 15000,
   transactionId: 'transactionId01',
   linkedCode: 'linkedCode01',
@@ -427,6 +431,12 @@ module.exports = {
       },
     },
     required: ['responseTime'],
+  },
+  //oidc_userinfo
+  oidcUserinfoEndpoint: "oidc/userinfo",
+  oidcUserinfoResponseSchema: {
+    type: "string",
+    format: "jwt"
   },
   //shares
   clientResponseSchema: {
