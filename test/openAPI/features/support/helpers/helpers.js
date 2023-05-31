@@ -172,6 +172,7 @@ module.exports = {
   },
   // wallet_link_status
   walletLinkStatusEndpoint: 'linked-authorization/link-status',
+  walletLinkStatusExpectedResponseTime: 25000,
   walletLiskStatusResponseSchema: {
     type: 'object',
     properties: {
@@ -433,10 +434,10 @@ module.exports = {
     required: ['responseTime'],
   },
   //oidc_userinfo
-  oidcUserinfoEndpoint: "oidc/userinfo",
+  oidcUserinfoEndpoint: 'oidc/userinfo',
   oidcUserinfoResponseSchema: {
-    type: "string",
-    format: "jwt"
+    type: 'string',
+    format: 'jwt',
   },
   //shares
   clientResponseSchema: {
