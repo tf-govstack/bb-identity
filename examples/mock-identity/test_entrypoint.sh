@@ -1,3 +1,3 @@
 #!/bin/bash 
 chmod u+x entrypoint.sh
-docker-compose up -d --buidl test-app
+docker-compose up -d --build test-app
