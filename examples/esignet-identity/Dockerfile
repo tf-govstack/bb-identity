@@ -1,6 +1,6 @@
 FROM node:14-alpine
 
-RUN npm install -g @esignet/cli@2.2.1
+RUN npm install -g @mockoon/cli@2.2.1
 COPY esignet-bbidentity.json ./esignet-bbidentity.json
 
 COPY entrypoint.sh ./entrypoint.sh
