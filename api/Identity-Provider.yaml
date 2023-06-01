@@ -99,7 +99,6 @@ paths:
                       items:
                         type: string
                         minLength: 1
-                        maxLength: 1024
                         format: uri
                     authContextRefs:
                       type: array
@@ -344,7 +343,6 @@ paths:
                         type: string
                         format: uri
                         minLength: 1
-                        maxLength: 1024
                     userClaims:
                       type: array
                       description: 'Allowed user info claims, that can be requested by OIDC client in the authorize API'
