@@ -21,6 +21,14 @@ In common for all services of the Identity Building Block, the API expects the c
 
 ### Service Groups: Identity Usage
 
+The Identity usage APIs are a set of OpenAPI specifications exposed by the Identity Building Block to other building blocks and applications for user verification.
+
+The Identity usage APIs are based on the following principles:
+
+* Verification APIs are inspired from OpenID Connect protocol which simplifies integrations using pre-existing libraries
+* Only secure options in OpenID connect should be supported to ensure the user data is handled securely
+* All biometric capture for user verification should be done using [Secure Biometrics Interface standards](https://standards.ieee.org/ieee/3167/10925/)
+
 #### Service Group: Client Management
 
 {% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-identity/main/api/Identity-Provider.yaml" path="/client-mgmt/oidc-client" method="post" %}
