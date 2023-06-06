@@ -2408,7 +2408,7 @@
               "target": "body",
               "modifier": "request.challengeList",
               "value": "",
-              "invert": true,
+              "invert": false,
               "operator": "empty_array"
             },
             {
@@ -2494,14 +2494,14 @@
       "responseMode": null
     },
     {
-      "uuid": "432e2b24-4bf0-4573-9cac-f5bd555a838a",
+      "uuid": "0eb3794b-3f18-4007-acea-a12a6206b500",
       "type": "http",
       "documentation": "Checks the correctness of the data",
       "method": "post",
       "endpoint": "linked-authorization/authenticate",
       "responses": [
         {
-          "uuid": "c183981f-fd34-4a0a-a603-85334bb6ab91",
+          "uuid": "22dd46cf-5f0e-4223-98f5-3bbc264bc0a3",
           "body": "{\n  \"responseTime\": \"string\",\n  \"response\": {\n    \"linkedTransactionId\": \"{{bodyRaw 'request.linkedTransactionId'}}\"\n  },\n  \"errors\": []\n}",
           "latency": 0,
           "statusCode": 200,
@@ -2552,7 +2552,7 @@
           "default": true
         },
         {
-          "uuid": "9cb8a231-62c8-4d13-afef-b150e0b67578",
+          "uuid": "3df1ba84-4254-4bb9-a5d4-4f2cc957e107",
           "body": "{\n  \"responseTime\": \"string\",\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_no_of_challenges\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
@@ -2603,7 +2603,7 @@
           "default": false
         },
         {
-          "uuid": "700d5649-5b0a-4227-a2dc-6f63de05865f",
+          "uuid": "2506f4fc-ebd3-43b2-ab00-6af04b0372a7",
           "body": "{\n  \"responseTime\": \"2011-10-05T14:49:00.000Z\",\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_transaction_id\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
@@ -2654,7 +2654,7 @@
           "default": false
         },
         {
-          "uuid": "c729f372-adaa-4930-baaa-52e0e37e1500",
+          "uuid": "6c11bd91-661d-4af3-ad4d-52cb1e42d32e",
           "body": "{\n  \"responseTime\": \"2011-10-05T14:49:00.000Z\",\n  \"errors\": [\n    {\n      \"errorCode\": \"invalid_identifier\",\n      \"errorMessage\": \"string\"\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
@@ -2780,13 +2780,13 @@
       "responseMode": null
     },
     {
-      "uuid": "d4170fb5-331e-4065-8fc0-5a377bb57307",
+      "uuid": "1eb60f0f-7bd8-41bc-856e-6ab2eae647fc",
       "documentation": "",
       "method": "post",
       "endpoint": "oauth/token",
       "responses": [
         {
-          "uuid": "5c2cd23e-bb5e-4d43-9c2d-cf5eaf68fbaa",
+          "uuid": "ab735c72-7379-46db-b627-6c775ac712bf",
           "body": "{\n  \"id_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\",\n  \"access_token\": \"string.string.string\",\n  \"token_type\": \"Bearer\",\n  \"expires_in\": 0\n}",
           "latency": 0,
           "statusCode": 200,
@@ -2859,7 +2859,7 @@
           "default": false
         },
         {
-          "uuid": "33e4b39e-1394-477e-af92-b787b3398bf4",
+          "uuid": "28f14c2d-1949-4e95-8c12-0f786cca105a",
           "body": "{\n  \"error\": \"invalid_assertion\",\n  \"error_description\": \"string\"\n}",
           "latency": 0,
           "statusCode": 400,
@@ -2896,7 +2896,7 @@
           "default": false
         },
         {
-          "uuid": "7b2c9922-a21c-4c5a-9744-d1cdfbf63bd6",
+          "uuid": "cd1a53c4-4ecc-45c6-957d-6b0c5722513f",
           "body": "{\n  \"error\": \"invalid_assertion_type\",\n  \"error_description\": \"string\"\n}",
           "latency": 0,
           "statusCode": 400,
@@ -2933,7 +2933,7 @@
           "default": false
         },
         {
-          "uuid": "de6728ab-0e67-4747-9974-613bf9c625ad",
+          "uuid": "d918442b-4f2b-41ae-860e-16de3dc7c679",
           "body": "{\n  \"error\": \"invalid_redirect_uri\",\n  \"error_description\": \"string\"\n}",
           "latency": 0,
           "statusCode": 400,
@@ -2978,7 +2978,7 @@
           "default": false
         },
         {
-          "uuid": "b4ed8616-a68a-4559-ae00-67fb92a0157b",
+          "uuid": "0bc89e85-59a7-49a3-ad26-57cff1762c2b",
           "body": "{\n  \"error\": \"invalid_payload\",\n  \"error_description\": \"string\"\n}",
           "latency": 0,
           "statusCode": 400,
@@ -3043,7 +3043,7 @@
           "default": true
         },
         {
-          "uuid": "b4c73209-405e-4410-a31f-3ae44d8b8e20",
+          "uuid": "8f96fc7c-3a2d-460e-acab-858cdd85530e",
           "body": "{\n  \"error\": \"invalid_input\",\n  \"error_description\": \"string\"\n}",
           "latency": 0,
           "statusCode": 400,
@@ -3218,6 +3218,26 @@
     },
     {
       "type": "route",
+      "uuid": "1eb60f0f-7bd8-41bc-856e-6ab2eae647fc"
+    },
+    {
+      "type": "route",
+      "uuid": "0eb3794b-3f18-4007-acea-a12a6206b500"
+    },
+    {
+      "type": "route",
+      "uuid": "4370f082-8742-4e17-8a05-0a5643f69e1e"
+    },
+    {
+      "type": "route",
+      "uuid": "67587670-d11a-4e8e-a3ef-5cceb0eeed64"
+    },
+    {
+      "type": "route",
+      "uuid": "7ab6c815-e9ae-4e3a-b04e-54239ab25d9f"
+    },
+    {
+      "type": "route",
       "uuid": "d4170fb5-331e-4065-8fc0-5a377bb57307"
     },
     {
@@ -3226,23 +3246,7 @@
     },
     {
       "type": "route",
-      "uuid": "4370f082-8742-4e17-8a05-0a5643f69e1e"
-    },
-    {
-      "type": "route",
-      "uuid": "8f51c09f-816b-4137-a8aa-8e30bd56a2f7"
-    },
-    {
-      "type": "route",
-      "uuid": "432e2b24-4bf0-4573-9cac-f5bd555a838a"
-    },
-    {
-      "type": "route",
-      "uuid": "5674c6e6-5e80-4f0b-9bcb-30416f76d9a7"
-    },
-    {
-      "type": "route",
-      "uuid": "67587670-d11a-4e8e-a3ef-5cceb0eeed64"
+      "uuid": "415293ba-d1e6-484a-8803-8166cfc8974c"
     }
   ]
 }
