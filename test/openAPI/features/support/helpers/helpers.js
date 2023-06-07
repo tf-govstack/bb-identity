@@ -326,6 +326,7 @@ module.exports = {
                 'invalid_link_code',
                 'response_timeout',
                 'unknown_error',
+                'invalid_request'
               ],
               errorMessage: { type: 'string' },
             },
