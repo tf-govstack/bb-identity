@@ -12,7 +12,7 @@ const {
 chai.use(require('chai-json-schema'));
 
 let specClientCreate;
-let token;
+let token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJhUDBjQl85ei1oYWwtRm9qdXV2bmJTSGpoVm9qYl9oVlQ5NnU4Zjh0dFNFIn0.eyJleHAiOjE2ODY2ODA1MTgsImlhdCI6MTY4NjY0NDUxOCwianRpIjoiNzA4OWVmY2ItNTU4Zi00MTdiLWJhMmItMTcyZTE4MWU2ODNhIiwiaXNzIjoiaHR0cHM6Ly9pYW0ub25wcmVtYjMuaWRlbmNvZGUubGluay9hdXRoL3JlYWxtcy9tb3NpcCIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiI4MzNiN2I4YS1hOWY4LTQ4NGEtODFlZi00YWMwYTU2ODViOWMiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJtb3NpcC1wbXMtY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjgzOGNjMzU4LThiNTEtNDUxZC05ZWVhLWRlOGM2MTljODZhNyIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiUkVHSVNUUkFUSU9OX09GRklDRVIiLCJkZWZhdWx0LXJvbGVzLW1vc2lwIiwiUkVHSVNUUkFUSU9OX1BST0NFU1NPUiIsIlJFR0lTVFJBVElPTl9BRE1JTiIsIlpPTkFMX0FETUlOIiwiUkVHSVNUUkFUSU9OX1NVUEVSVklTT1IiLCJGVE1fUFJPVklERVIiLCJNQVNURVJEQVRBX0FETUlOIiwiUE1TX1VTRVIiLCJvZmZsaW5lX2FjY2VzcyIsIlBBUlRORVJfQURNSU4iLCJ1bWFfYXV0aG9yaXphdGlvbiIsIk1JU1AiLCJHTE9CQUxfQURNSU4iLCJQQVJUTkVSIiwiS0VZX01BS0VSIiwiUkVHSVNUUkFUSU9OX09QRVJBVE9SIiwiUEFSVE5FUk1BTkFHRVIiLCJBVVRIX1BBUlRORVIiLCJERVZJQ0VfUFJPVklERVIiLCJEZWZhdWx0IiwiQ0VOVFJBTF9BRE1JTiIsIlBNU19BRE1JTiIsIk9OTElORV9WRVJJRklDQVRJT05fUEFSVE5FUiIsIkFVVEgiLCJQT0xJQ1lNQU5BR0VSIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJnZXRfY2VydGlmaWNhdGUgdXBkYXRlX29pZGNfY2xpZW50IGFkZF9vaWRjX2NsaWVudCB1cGxvYWRfY2VydGlmaWNhdGUgcHJvZmlsZSBlbWFpbCIsInNpZCI6IjgzOGNjMzU4LThiNTEtNDUxZC05ZWVhLWRlOGM2MTljODZhNyIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoiMTEwMTIzIn0.U9elTbKBMSRKHnBAGmBv0lwff1ixAyo2DlhmSiVidkza9uRJ7CtD1ajGt3EeK7vspUfstkgiQfCs_1gl3kKxJdjKD1vktURj3BcGElmBLTZKJB4I-WuilHK5_OqiyrIH06JYy_T733BICP0qsx48I0srFc2w5mVix8Onb6ou7IAUUNc-571ipC_CB2b9eryoDO4ldxxjWkaGRBgC2lzMR0FE29H3lJzxLMwEsriK6Af1JH7ha-e7d21mCg4pI4n1-JI-6uhirJTmBNPQ-L5PAeeyu1Ejjch1LMIGyKyXNgJS381eWFs992BPY5wFS1KKcHUdxgJyFETX73VBmTllSg";
 const publicKey = JSON.stringify({
   kty: 'RSA',
   a: 'AQAB',
@@ -40,27 +40,6 @@ Given(
 );
 
 When(
-  'The user wants to authenticate',
-  async () => {
-    specClientCreate.post("https://api-internal.onpremb3.idencode.link/v1/authmanager/authenticate/internal/useridPwd").withJson({
-    id: "string",
-    version: "string",
-    requesttime: new Date().toISOString(),
-    metadata: {},
-    request: {
-      userName:"110123",
-      password: "Techno@123",
-      appId: "partner",
-      clientId: "mosip-pms-client",
-      clientSecret: "ozBwGl57JaAdEX3Z"
-    }
-  });
-
-  await specClientCreate.toss()
-  token = specClientCreate._response.json.response.token
-  })
-
-When(
   'User sends POST request with given requestTime, {string} as clientId, {string} as clientName, {string} as relyingPartyId, {string} as logoUri, publicKey, {string} as authContextRefs, {string} as userClaims, {string} as grantTypes, {string} as clientAuthMethods',
   (
     clientId,
@@ -74,7 +53,7 @@ When(
     redirectUris
   ) => {
     specClientCreate.post(baseUrl).withHeaders({
-      'Authorization': 'Bearer ${token}'
+      'Authorization': `Bearer ${token}`
   }).withJson({
       requestTime: new Date().toISOString(),
       request: {
