@@ -162,6 +162,7 @@ module.exports = {
                 'invalid_transaction_id',
                 'link_code_gen_failed',
                 'invalid_transaction',
+                'invalid_request',
               ],
               errorMessage: { type: 'string' },
             },
@@ -433,10 +434,10 @@ module.exports = {
     required: ['responseTime'],
   },
   //oidc_userinfo
-  oidcUserinfoEndpoint: "oidc/userinfo",
+  oidcUserinfoEndpoint: 'oidc/userinfo',
   oidcUserinfoResponseSchema: {
-    type: "string",
-    format: "jwt"
+    type: 'string',
+    format: 'jwt',
   },
   //shares
   clientResponseSchema: {
