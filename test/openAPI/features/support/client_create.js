@@ -29,8 +29,20 @@ const base64ToJson = (publicKey) => {
 const baseUrl = localhost + clientCreateEndpoint;
 const endpointTag = { tags: `@endpoint=/${clientCreateEndpoint}` };
 
-specClientCreate = spec();
-await specClientCreate.post("https://api-internal.onpremb3.idencode.link/v1/authmanager/authenticate/internal/useridPwd").withJson({
+Before(endpointTag, () => {
+  specClientCreate = spec();
+});
+
+// Scenario: The new client is successfully added to the Open ID Connect (OIDC) smoke type test
+Given(
+  'The user wants to add the new client to the Open ID Connect \\(OIDC)',
+  () => 'The user wants to add the new client to the Open ID Connect (OIDC)'
+);
+
+When(
+  'The user wants to authenticate',
+  async () => {
+    specClientCreate.post("https://api-internal.onpremb3.idencode.link/v1/authmanager/authenticate/internal/useridPwd").withJson({
     id: "string",
     version: "string",
     requesttime: new Date().toISOString(),
@@ -44,17 +56,9 @@ await specClientCreate.post("https://api-internal.onpremb3.idencode.link/v1/auth
     }
   });
 
-token = specClientCreate._response.json.response.token
-
-Before(endpointTag, async () => {
-  specClientCreate = spec();
-});
-
-// Scenario: The new client is successfully added to the Open ID Connect (OIDC) smoke type test
-Given(
-  'The user wants to add the new client to the Open ID Connect \\(OIDC)',
-  () => 'The user wants to add the new client to the Open ID Connect (OIDC)'
-);
+  await specClientCreate.toss()
+  token = specClientCreate._response.json.response.token
+  })
 
 When(
   'User sends POST request with given requestTime, {string} as clientId, {string} as clientName, {string} as relyingPartyId, {string} as logoUri, publicKey, {string} as authContextRefs, {string} as userClaims, {string} as grantTypes, {string} as clientAuthMethods',
