@@ -12,6 +12,7 @@ const {
 chai.use(require('chai-json-schema'));
 
 let specClientCreate;
+let token;
 const publicKey = JSON.stringify({
   kty: 'RSA',
   a: 'AQAB',
@@ -28,8 +29,23 @@ const base64ToJson = (publicKey) => {
 const baseUrl = localhost + clientCreateEndpoint;
 const endpointTag = { tags: `@endpoint=/${clientCreateEndpoint}` };
 
-Before(endpointTag, () => {
+Before(endpointTag, async () => {
   specClientCreate = spec();
+  await specClientCreate.post("https://api-internal.onpremb3.idencode.link/v1/authmanager/authenticate/internal/useridPwd").withJson({
+    id: "string",
+    version: "string",
+    requesttime: new Date().toISOString(),
+    metadata: {},
+    request: {
+      userName:"110123",
+      password: "Techno@123",
+      appId: "partner",
+      clientId: "mosip-pms-client",
+      clientSecret: "ozBwGl57JaAdEX3Z"
+    }
+  });
+
+  token = specClientCreate._response.json.response.token
 });
 
 // Scenario: The new client is successfully added to the Open ID Connect (OIDC) smoke type test
@@ -51,7 +67,9 @@ When(
     clientAuthMethods,
     redirectUris
   ) => {
-    specClientCreate.post(baseUrl).withJson({
+    specClientCreate.post(baseUrl).withHeaders({
+      'Authorization': 'Bearer ${token}'
+  }).withJson({
       requestTime: new Date().toISOString(),
       request: {
         clientId: clientId,
