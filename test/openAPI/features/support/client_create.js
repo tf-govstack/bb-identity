@@ -29,9 +29,8 @@ const base64ToJson = (publicKey) => {
 const baseUrl = localhost + clientCreateEndpoint;
 const endpointTag = { tags: `@endpoint=/${clientCreateEndpoint}` };
 
-Before(endpointTag, async () => {
-  specClientCreate = spec();
-  await specClientCreate.post("https://api-internal.onpremb3.idencode.link/v1/authmanager/authenticate/internal/useridPwd").withJson({
+specClientCreate = spec();
+await specClientCreate.post("https://api-internal.onpremb3.idencode.link/v1/authmanager/authenticate/internal/useridPwd").withJson({
     id: "string",
     version: "string",
     requesttime: new Date().toISOString(),
@@ -45,7 +44,10 @@ Before(endpointTag, async () => {
     }
   });
 
-  token = specClientCreate._response.json.response.token
+token = specClientCreate._response.json.response.token
+
+Before(endpointTag, async () => {
+  specClientCreate = spec();
 });
 
 // Scenario: The new client is successfully added to the Open ID Connect (OIDC) smoke type test
