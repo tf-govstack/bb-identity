@@ -1,8 +1,10 @@
 module.exports = {
-  localhost: 'http://localhost:3333/',
+  localhost: 'https://api-internal.onpremb3.idencode.link/v1/esignet/',
+  envBaseUrl: 'https://api-internal.onpremb3.idencode.link/',
+  oidcAuthorizationTokenEndpoint: 'v1/authmanager/authenticate/internal/useridPwd/',
   contentTypeHeader: {
     key: 'content-type',
-    value: 'application/json; charset=utf-8',
+    value: 'application/json',
   },
   contentTypeHeaderJWT: {
     key: 'content-type',
@@ -444,7 +446,7 @@ module.exports = {
     properties: {
       responseTime: { type: 'string' },
       response: {
-        type: 'object',
+        type: ['object', "null"],
         properties: { clientId: { type: 'string' } },
         errors: {
           type: 'array',
