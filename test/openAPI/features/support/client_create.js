@@ -8,7 +8,8 @@ const {
   clientCreateEndpoint,
   clientResponseSchema,
   envBaseUrl,
-  oidcAuthorizationTokenEndpoint
+  oidcAuthorizationTokenEndpoint,
+  oidcAuthorizationToken
 } = require('./helpers/helpers');
 
 chai.use(require('chai-json-schema'));
@@ -59,25 +60,26 @@ const invalidPublicKey = {
 
 const baseUrl = localhost + clientCreateEndpoint;
 const endpointTag = { tags: `@endpoint=/${clientCreateEndpoint}` };
-const authorizeUrl = envBaseUrl + oidcAuthorizationTokenEndpoint;
+//const authorizeUrl = envBaseUrl + oidcAuthorizationTokenEndpoint;
 
 BeforeAll(async () => {
-  specClientCreate = spec();
-  await specClientCreate.post(authorizeUrl).withJson({
-  id: "string",
-  version: "string",
-  requesttime: new Date().toISOString(),
-  metadata: {},
-  request: {
-    userName:"110123",
-    password: "Techno@123",
-    appId: "partner",
-    clientId: "mosip-pms-client",
-    clientSecret: "ozBwGl57JaAdEX3Z"
-  }
-});
+//   specClientCreate = spec();
+//   await specClientCreate.post(authorizeUrl).withJson({
+//   id: "string",
+//   version: "string",
+//   requesttime: new Date().toISOString(),
+//   metadata: {},
+//   request: {
+//     userName:"110123",
+//     password: "Techno@123",
+//     appId: "partner",
+//     clientId: "mosip-pms-client",
+//     clientSecret: "ozBwGl57JaAdEX3Z"
+//   }
+// });
 
-  request.setDefaultHeaders('Authorization', 'Bearer ' + specClientCreate._response.json.response.token);
+  //request.setDefaultHeaders('Authorization', 'Bearer ' + specClientCreate._response.json.response.token);
+  request.setDefaultHeaders('Authorization', 'Bearer ' + oidcAuthorizationToken);
   request.setDefaultTimeout(20000);
 })
 
