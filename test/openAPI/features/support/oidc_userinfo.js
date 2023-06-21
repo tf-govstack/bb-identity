@@ -45,7 +45,7 @@ Given(
     iat,
     ) => {
       specOAuthToken.post(localhost + oauthTokenEndpoint)
-          .withJson({
+          .withForm({
         grant_type: grantType,
         client_assertion_type: clientAssertionType,
         client_assertion:

@@ -1,4 +1,4 @@
-@method=GET @endpoint=/.well-known/openid-configuration
+@method=GET @endpoint=/oidc/.well-known/openid-configuration
 Feature: This endpoint is only used to facilitate the OIDC provider details in a standardised manner.
 
   @smoke @unit @positive

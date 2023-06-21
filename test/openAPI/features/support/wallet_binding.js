@@ -5,60 +5,92 @@ const {
   localhost,
   defaultExpectedResponseTime,
   walletBindingEndpoint,
+  walletBindingOtpEndpoint,
   walletBindingResponseSchema,
+  Binding_Partner_Id,
+  Binding_Partner_API_Key
 } = require('./helpers/helpers');
 
 chai.use(require('chai-json-schema'));
 
 let specWalletBinding;
-const publicKey = JSON.stringify({
+let specSendOtp;
+const publicKey = {
+  "kty": "RSA",
+  "e": "AQAB",
+  "use": "sig",
+  "alg": "RS256",
+  "n": "11-YFW6Xgt7QdwV4EWy5s_nM87JB-UCo7ykJBxNOkHoZJ_htcK2bi_J5ZxCvuZ9LSz0EdTc2gBT1-t0jEdldalD8Fd8U0TZ033c2Uk14DFI8QR2as1YYBxYgvNBPOfPFXrSH4H3C_B-fs8EqWfnX5wFUJqqum3_xyOkIvf02g1ZIJDIJp_jV0N67ugiccJmvkaVUekvDv87Ypgm755VhwAC6TsqhqxsS3WVjJOirvQ4vf1ZSrvi_T79naCnNM_weE2gyc3aunRVPAGXfNRFbe2J19ey_KoS1HlOObFuzRttC_0K4X0psB5G8NweK5M0Br05r7hliJvM12LR1ckpCMw"
+};
+const invalidPublicKey = {
   kty: 'RSA',
   a: 'AQAB',
   use: 'sig',
   alg: 'RS256',
   n: 'mykWIftknK1TQmbiazuik0rWGsxeOIUE3yfSQJgoCfdGXY4HfHE6AlNKFdIKZOXe-U-L21Klj692e9iZx05rHHaZvO0a4IzyFMOyw5wjBCWoBOcA4q93LPkZTSkIq9I2Vgr6Bzwu6X7QPMbmF8xAKX4KeSn_yZcsAhElHBOWkENmKp76yCyTeE4DAIGah1BcgiB_KWvOZOedwTRDLyQ0DZM1z07-N-rPh0qSd2UFRRY-b_jc9opjyRQq3d5ZkiB9W4ReAUhIKA9uc1RDs1shc3G8zgZp3qH6fYWmsOi23BOA_q8Z-wMHwPK2vEJvgZIWovAG5jGFbMilNcFQfzLJcQ',
-});
-
-const base64ToJson = (publicKey) => {
-  JSON.parse(publicKey);
-  return Buffer.from(publicKey).toString('base64');
 };
 
 const baseUrl = localhost + walletBindingEndpoint;
+const sendOtpUrl = localhost + walletBindingOtpEndpoint;
 const endpointTag = { tags: `@endpoint=/${walletBindingEndpoint}` };
 
 Before(endpointTag, () => {
   specWalletBinding = spec();
+  specSendOtp = spec();
 });
 
 // Scenario: Successfully validates the wallet and generates the wallet user id smoke type test
 Given('Wants to validate the wallet and generate wallet user id',
     () => 'Wants to validate the wallet and generate wallet user id');
 
+Given(/^Send otp with given "([^"]*)" as individualId$/,
+    async (individualId) => {
+      specSendOtp
+      .post(sendOtpUrl)
+      .withHeaders({
+        'PARTNER-ID': Binding_Partner_Id,
+        'PARTNER-API-KEY': Binding_Partner_API_Key
+      })
+      .withJson({
+        requestTime: new Date().toISOString(),
+        request: {
+          individualId: individualId,
+          otpChannels: ["email","phone"]
+        },
+      });
+
+      await specSendOtp.toss();
+      console.log(specSendOtp._response.json)
+    });
+
 When(
     /^Send POST \/wallet\-binding request with given "([^"]*)" as individualId and "([^"]*)" as authFactorType and "([^"]*)" as format and "([^"]*)" as challenge and publicKey$/,
     (individualId, authFactorType, format, challenge) =>
         specWalletBinding
             .post(baseUrl)
+            .withHeaders({
+              'PARTNER-ID': Binding_Partner_Id,
+              'PARTNER-API-KEY': Binding_Partner_API_Key
+            })
             .withJson({
               requestTime: new Date().toISOString(),
               request: {
                 individualId: individualId,
                 authFactorType: authFactorType,
                 format: format,
-                challengeList: {
+                challengeList: [{
                   authFactorType: authFactorType,
                   challenge: challenge,
                   format: format,
-                },
-                publicKey: base64ToJson(publicKey),
+                }],
+                publicKey: publicKey
               },
             })
 );
 
 Then(
     /^Receive a response from the \/wallet\-binding endpoint$/,
-    async () => await specWalletBinding.toss()
+    () => console.log(specWalletBinding._response.json)
 );
 
 Then(
@@ -97,12 +129,12 @@ When(
                 individualId: individualId,
                 authFactorType: authFactorType,
                 format: format,
-                challengeList: {
+                challengeList: [{
                   authFactorType: authFactorType,
                   challenge: challenge,
                   format: format,
-                },
-                publicKey: base64ToJson(publicKey),
+                }],
+                publicKey: publicKey,
               },
             })
 );
@@ -142,12 +174,12 @@ When(
           individualId: individualId,
           authFactorType: authFactorType,
           format: format,
-          challengeList: {
+          challengeList: [{
             authFactorType: authFactorType,
             challenge: challenge,
             format: format,
-          },
-          publicKey: publicKey,
+          }],
+          publicKey: invalidPublicKey,
         },
       })
 );

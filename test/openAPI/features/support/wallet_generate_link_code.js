@@ -86,13 +86,13 @@ Then(
 // Scenario: Not able to generate link code because of invalid transaction_id
 // Given and others Then for this scenario are written in the aforementioned example
 When(
-  'Send POST \\/linked-authorization\\/link-code request with given X-XSRF-TOKEN header, invalid transactionId and {string} as requestTime',
-  (requestTime) =>
+  'Send POST \\/linked-authorization\\/link-code request with given X-XSRF-TOKEN header, invalid transactionId and requestTime',
+  () =>
     specWalletGenerateLinkCode
       .post(baseUrl)
       .withHeaders(X_XSRF_TOKEN.key, X_XSRF_TOKEN.value)
       .withJson({
-        requestTime: requestTime,
+        requestTime: new Date().toISOString(),
         request: {
           transactionId: '',
         },
