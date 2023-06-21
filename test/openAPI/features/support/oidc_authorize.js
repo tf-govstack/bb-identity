@@ -4,11 +4,12 @@ const {
   localhost,
   oidcAuthorizeEndpoint,
   defaultExpectedResponseTime,
+  esignetUIUrl
 } = require('./helpers/helpers');
 
 let specOIDCAuthorize;
 
-const baseUrl = localhost + oidcAuthorizeEndpoint;
+const baseUrl = esignetUIUrl + oidcAuthorizeEndpoint;
 const endpointTag = { tags: `@endpoint=/${oidcAuthorizeEndpoint}` };
 
 Before(endpointTag, () => {

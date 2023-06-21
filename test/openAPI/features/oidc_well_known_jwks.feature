@@ -1,4 +1,4 @@
-@method=GET @endpoint=/.well-known/jwks.json
+@method=GET @endpoint=/oauth/.well-known/jwks.json
 Feature: Endpoint to retrieve all the public keys of the IDBB server
 
   @smoke @unit @positive

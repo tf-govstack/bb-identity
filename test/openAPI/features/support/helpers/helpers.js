@@ -2,7 +2,10 @@ module.exports = {
   localhost: 'https://api-internal.onpremb3.idencode.link/v1/esignet/',
   envBaseUrl: 'https://api-internal.onpremb3.idencode.link/',
   oidcAuthorizationTokenEndpoint: 'v1/authmanager/authenticate/internal/useridPwd/',
-  oidcAuthorizationToken: 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJhUDBjQl85ei1oYWwtRm9qdXV2bmJTSGpoVm9qYl9oVlQ5NnU4Zjh0dFNFIn0.eyJleHAiOjE2ODY5NDU4MjQsImlhdCI6MTY4NjkwOTgyNCwianRpIjoiOTdmZDJhNTAtNGQ0Ny00NzAzLWFkMmEtNWQzMmZmMDViNTgyIiwiaXNzIjoiaHR0cHM6Ly9pYW0ub25wcmVtYjMuaWRlbmNvZGUubGluay9hdXRoL3JlYWxtcy9tb3NpcCIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJjN2Y2OTcxOS01Y2MyLTQ2ZTMtOGE4MS1iMWFiNmZhYTE2NDciLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJtb3NpcC1wbXMtY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6IjA2MGUyZTI1LTMwOGQtNGJhMC1hOGQ1LTA3YzM1OWNhOTc2ZiIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiUkVHSVNUUkFUSU9OX09GRklDRVIiLCJLRVlfTUFLRVIiLCJSRUdJU1RSQVRJT05fT1BFUkFUT1IiLCJBVVRIX1BBUlRORVIiLCJEZWZhdWx0IiwiZGVmYXVsdC1yb2xlcy1tb3NpcCIsIkNFTlRSQUxfQURNSU4iLCJSRUdJU1RSQVRJT05fUFJPQ0VTU09SIiwiUkVHSVNUUkFUSU9OX0FETUlOIiwiWk9OQUxfQURNSU4iLCJSRUdJU1RSQVRJT05fU1VQRVJWSVNPUiIsIk1BU1RFUkRBVEFfQURNSU4iLCJPTkxJTkVfVkVSSUZJQ0FUSU9OX1BBUlRORVIiLCJBVVRIIiwib2ZmbGluZV9hY2Nlc3MiLCJQQVJUTkVSX0FETUlOIiwidW1hX2F1dGhvcml6YXRpb24iLCJHTE9CQUxfQURNSU4iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImdldF9jZXJ0aWZpY2F0ZSB1cGRhdGVfb2lkY19jbGllbnQgYWRkX29pZGNfY2xpZW50IHVwbG9hZF9jZXJ0aWZpY2F0ZSBwcm9maWxlIGVtYWlsIiwic2lkIjoiMDYwZTJlMjUtMzA4ZC00YmEwLWE4ZDUtMDdjMzU5Y2E5NzZmIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuYW1lIjoiZ2xvYmFsYWRtaW4gZ2xvYmFsYWRtaW4iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJnbG9iYWxhZG1pbiIsImdpdmVuX25hbWUiOiJnbG9iYWxhZG1pbiIsImZhbWlseV9uYW1lIjoiZ2xvYmFsYWRtaW4iLCJlbWFpbCI6Imdsb2JhbGFkbWluQGdtYWlsLmNvbSJ9.YBUyJlpebUCkPTjpmx0bFx3GilfYL8rwfERsROVuIe76Kv_KZ4qsCtyGitiGnPSA2n4Qh47yIjZfM5IWyTXdjMiSKJtmdU-f6pwb4wgd70w0JOqYkqym8GD6s1deqAKnt2GnyhHeOW5x2e4fK3GFfaxRZcZOzw2qgB9p6s85fGhnimX5k4wiicNEkgCRm-wkChxWSP96iCHUlEX7VltuYKg0-zdGAF65DBPFYGwNG8AX8jrNbHHV511ux_RB_HofAbzU07-VnZ-D3FoPyzAPwua1suvhTooRdjiBBF7fTwOXDsE6c9V8F6m7l1iDOStFOYs_bakMn0lCijv0kPcueQ',
+  esignetUIUrl: "https://esignet.onpremb3.idencode.link/",
+  oidcAuthorizationToken: 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJhUDBjQl85ei1oYWwtRm9qdXV2bmJTSGpoVm9qYl9oVlQ5NnU4Zjh0dFNFIn0.eyJleHAiOjE2ODczNjIxMzMsImlhdCI6MTY4NzMyNjEzMywianRpIjoiNWNjYTM3MmMtNmFiZi00MTJlLThlN2UtOTZhYTJkYzdiZWQ0IiwiaXNzIjoiaHR0cHM6Ly9pYW0ub25wcmVtYjMuaWRlbmNvZGUubGluay9hdXRoL3JlYWxtcy9tb3NpcCIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJjN2Y2OTcxOS01Y2MyLTQ2ZTMtOGE4MS1iMWFiNmZhYTE2NDciLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJtb3NpcC1wbXMtY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6ImVlNTc5ZjNlLWU1MjUtNDhjMy1hMDUyLWI4ZmJlYWE0ZmUwYyIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiUkVHSVNUUkFUSU9OX09GRklDRVIiLCJLRVlfTUFLRVIiLCJSRUdJU1RSQVRJT05fT1BFUkFUT1IiLCJBVVRIX1BBUlRORVIiLCJEZWZhdWx0IiwiZGVmYXVsdC1yb2xlcy1tb3NpcCIsIkNFTlRSQUxfQURNSU4iLCJSRUdJU1RSQVRJT05fUFJPQ0VTU09SIiwiUkVHSVNUUkFUSU9OX0FETUlOIiwiWk9OQUxfQURNSU4iLCJSRUdJU1RSQVRJT05fU1VQRVJWSVNPUiIsIk1BU1RFUkRBVEFfQURNSU4iLCJPTkxJTkVfVkVSSUZJQ0FUSU9OX1BBUlRORVIiLCJBVVRIIiwib2ZmbGluZV9hY2Nlc3MiLCJQQVJUTkVSX0FETUlOIiwidW1hX2F1dGhvcml6YXRpb24iLCJHTE9CQUxfQURNSU4iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImdldF9jZXJ0aWZpY2F0ZSB1cGRhdGVfb2lkY19jbGllbnQgYWRkX29pZGNfY2xpZW50IHVwbG9hZF9jZXJ0aWZpY2F0ZSBwcm9maWxlIGVtYWlsIiwic2lkIjoiZWU1NzlmM2UtZTUyNS00OGMzLWEwNTItYjhmYmVhYTRmZTBjIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuYW1lIjoiZ2xvYmFsYWRtaW4gZ2xvYmFsYWRtaW4iLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJnbG9iYWxhZG1pbiIsImdpdmVuX25hbWUiOiJnbG9iYWxhZG1pbiIsImZhbWlseV9uYW1lIjoiZ2xvYmFsYWRtaW4iLCJlbWFpbCI6Imdsb2JhbGFkbWluQGdtYWlsLmNvbSJ9.XQoMzDXNsg0OxwOK8RN_qBrEtweXzOgMxPi9AX_qFUSG1dTd57PMGUSeBj_IXuGKts-D10uaHi0mqeoZb44jadNyvtDMqFAVH_giSUIemt17Pi8zP7R8iloYRN-Fh2je2HZQqDxM1VGsgCNWWqS5S7LoSXnTMPa89CiM7SBwINhhRzrXHz0UnEKtw_izb7QGto4_-tSlLQM9hQ_0mHHIG9S9CGQXGV2aa1Vwa1-p5FQa-wUG5zbuALWtGRbin1yskGtjTIk9aakSMUsaUbuZUpHPTiQLDpnyX8epwu17NyoI9P6BfyRCdT-cyhtZ_x10RLMKHmfEBB6wuW-dbipQmA',
+  Binding_Partner_Id: 'mpartner-default-mimotokeybinding',
+  Binding_Partner_API_Key: '38942',
   contentTypeHeader: {
     key: 'content-type',
     value: 'application/json',
@@ -20,7 +23,7 @@ module.exports = {
   },
   individualId: '05a5eecd-8b70-480d-9662-b2e63e4bafdb',
   // oidc_well_openid_configuration
-  oidcWellKnownOpenidConfigurationEndpoint: '.well-known/openid-configuration',
+  oidcWellKnownOpenidConfigurationEndpoint: 'oidc/.well-known/openid-configuration',
   oidcWellKnownOpenidConfigurationSchema: {
     type: 'object',
     properties: {
@@ -29,7 +32,6 @@ module.exports = {
       token_endpoint: { type: 'string' },
       userinfo_endpoint: { type: 'string' },
       jwks_uri: { type: 'string' },
-      registration_endpoint: { type: 'string' },
       scopes_supported: {
         type: 'array',
         items: { type: 'string' },
@@ -97,13 +99,12 @@ module.exports = {
       'token_endpoint',
       'userinfo_endpoint',
       'jwks_uri',
-      'registration_endpoint',
       'scopes_supported',
       'response_types_supported',
     ],
   },
   // oidc_well_known_jwks
-  oidcWellKnownJWKSEndpoint: '.well-known/jwks.json',
+  oidcWellKnownJWKSEndpoint: 'oauth/.well-known/jwks.json',
   oidcWellKnownJWKSResponseSchema: {
     type: 'object',
     properties: {
@@ -125,7 +126,15 @@ module.exports = {
               e: { type: 'string' },
               n: { type: 'string' },
               'x5t#S256': { type: 'string' },
-              x5c: { type: 'string' },
+              x5c: 
+              {
+                type: 'array',
+                items: [
+                  {
+                    type: 'string'
+                  }
+                ]
+              },
               exp: { type: 'string' },
             },
             required: ['kid', 'use', 'kty', 'e', 'n', 'x5t#S256', 'x5c', 'exp'],
@@ -147,7 +156,7 @@ module.exports = {
     properties: {
       responseTime: { type: 'string' },
       response: {
-        type: 'object',
+        type: ['object', 'null'],
         properties: {
           transactionId: { type: 'string' },
           linkCode: { type: 'string' },
@@ -180,7 +189,7 @@ module.exports = {
     properties: {
       responseTIme: { type: 'string' },
       response: {
-        type: 'object',
+        type: ['object', 'null'],
         properties: {
           transactionId: { type: 'string' },
           linkStatus: {
@@ -217,7 +226,7 @@ module.exports = {
     properties: {
       responseTime: { type: 'string' },
       response: {
-        type: 'object',
+        type: ['object', 'null'],
         properties: {
           linkTransactionId: { type: 'string' },
           clientName: { type: 'string' },
@@ -344,7 +353,7 @@ module.exports = {
     properties: {
       responseTime: { type: 'string' },
       response: {
-        type: 'object',
+        type: ['object', 'null'],
         properties: { linkedTransactionId: { type: 'string' } },
       },
       errors: {
@@ -376,7 +385,7 @@ module.exports = {
     properties: {
       responseTime: { type: 'string' },
       response: {
-        type: 'object',
+        type: ['object', 'null'],
         properties: { linkedTransactionId: { type: 'string' } },
       },
       errors: {
@@ -400,13 +409,14 @@ module.exports = {
     },
   },
   // wallet_binding
-  walletBindingEndpoint: 'wallet-binding',
+  walletBindingEndpoint: 'binding/wallet-binding',
+  walletBindingOtpEndpoint: 'binding/binding-otp',
   walletBindingResponseSchema: {
     type: 'object',
     properties: {
       responseTime: { type: 'string' },
       response: {
-        type: 'object',
+        type: ['object', 'null'],
         properties: {
           walletUserId: { type: 'string' },
           certificate: { type: 'string' },

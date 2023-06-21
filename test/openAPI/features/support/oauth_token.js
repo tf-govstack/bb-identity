@@ -48,7 +48,7 @@ Given(
     exp,
     iat,
    ) => {
-    specOAuthToken.post(baseUrl).withJson({
+    specOAuthToken.post(baseUrl).withForm({
       grant_type: grantType,
       client_assertion_type: clientAssertionType,
       client_assertion:
@@ -112,7 +112,7 @@ When(
     clientAssertionType,
     redirectUri,
   ) => {
-    specOAuthToken.post(baseUrl).withJson({
+    specOAuthToken.post(baseUrl).withForm({
       grant_type: grantType,
       client_assertion_type: clientAssertionType,
       client_assertion: null,
@@ -147,7 +147,7 @@ When(
     clientAssertion,
     redirectUri,
   ) => {
-    specOAuthToken.post(baseUrl).withJson({
+    specOAuthToken.post(baseUrl).withForm({
       grant_type: grantType,
       client_assertion_type: null,
       client_assertion: clientAssertion,
@@ -169,7 +169,7 @@ When(
     clientAssertion,
     clientAssertionType,
   ) => {
-    specOAuthToken.post(baseUrl).withJson({
+    specOAuthToken.post(baseUrl).withForm({
       grant_type: grantType,
       client_assertion_type: clientAssertionType,
       client_assertion: clientAssertion,
@@ -192,7 +192,7 @@ When(
     clientAssertionType,
     redirectUri
       ) => {
-    specOAuthToken.post(baseUrl).withJson({
+    specOAuthToken.post(baseUrl).withForm({
       grant_type: grantType,
       client_assertion_type: clientAssertionType,
       client_assertion: clientAssertion,

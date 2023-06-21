@@ -15,7 +15,7 @@ Feature: The endpoint to generate link code.
   @negative
   Scenario: Not able to generate link code because of invalid transaction_id
     Given Wants to generate link code
-    When Send POST /linked-authorization/link-code request with given X-XSRF-TOKEN header, invalid transactionId and "2011-10-05T14:48:00.000Z" as requestTime
+    When Send POST /linked-authorization/link-code request with given X-XSRF-TOKEN header, invalid transactionId and requestTime
     Then Receive a response from the /linked-authorization/link-code endpoint
     And The /linked-authorization/link-code endpoint response should be returned in a timely manner 15000ms
     And The /linked-authorization/link-code endpoint response should have status 200
